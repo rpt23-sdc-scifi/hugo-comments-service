@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost/fec-soundcloud', {
+mongoose.connect('mongodb://localhost/fec-soundcloud-comments', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex: true
@@ -40,9 +40,8 @@ let saveComment = (comment) => {
     time_stamp: comment.time_stamp
 
   });
-  newComment.save((err, newComment) => {
-    if (err) return console.error('save error: ', err);
-  });
+
+  return newComment.save(newComment);
 }
 
 module.exports.saveComment = saveComment;

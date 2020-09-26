@@ -1,7 +1,7 @@
 const commentDb = require('./db/index');
 const loremIpsum = require("lorem-ipsum").LoremIpsum;
 
-const maxComments = 37;
+const maxComments = Math.floor(Math.random() * 200) + 37;
 const maxSongLength = 480; // in seconds, how long song is
 
 const lorem = new loremIpsum({
@@ -32,6 +32,7 @@ for ( let i = 1; i <= maxComments; i++) {
     time_stamp: randoTimeStamp(maxSongLength)
   }
 
-  commentDb.saveComment(tempComment);
-  console.log(`comment '${tempComment.content}' added`)
+  commentDb.saveComment(tempComment)
+  .then(comment => console.log(`comment '${comment.content}' added`))
+  .catch(error => console.error(error.message));
 }
