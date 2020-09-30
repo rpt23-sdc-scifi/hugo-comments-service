@@ -13,9 +13,9 @@ db.once('open', function() {
   console.log('mongodb connected!')
 });
 
-db.dropCollection("comments", (err, result) =>  {
-  console.log("comments collection dropped");
-});
+// db.dropCollection("comments", (err, result) =>  {
+//   console.log("comments collection dropped");
+// });
 
 const commentSchema = new mongoose.Schema({
   comment_id: {
@@ -29,9 +29,9 @@ const commentSchema = new mongoose.Schema({
   time_stamp: Number
 });
 
-let Comment = mongoose.model('Comment', commentSchema);
+const Comment = mongoose.model('Comment', commentSchema);
 
-let saveComment = (comment) => {
+const saveComment = (comment) => {
   let newComment = new Comment({
     comment_id: comment.comment_id,
     user_id:    comment.user_id,
@@ -44,6 +44,14 @@ let saveComment = (comment) => {
   return newComment.save(newComment);
 }
 
-module.exports.saveComment = saveComment;
+const getComments = () => {
+  return Comment.find();
+}
 
-// db.close();
+const getComment = (song_id) => {
+  return Comment.find({ song_id })
+}
+
+module.exports.getComments = getComments;
+module.exports.getComment = getComment;
+module.exports.saveComment = saveComment;
