@@ -13,7 +13,7 @@ db.once('open', function() {
   console.log('mongodb connected!')
 });
 
-// db.dropCollection("comments", (err, result) =>  {
+// db.dropCollection("comments", () =>  {
 //   console.log("comments collection dropped");
 // });
 
