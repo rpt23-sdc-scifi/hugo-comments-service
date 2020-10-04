@@ -45,7 +45,7 @@ const saveComment = (comment) => {
 }
 
 const getComments = () => {
-  return Comment.find();
+  return Comment.find().limit(1000);
 }
 
 const getComment = (song_id) => {
