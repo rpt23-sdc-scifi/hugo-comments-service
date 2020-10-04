@@ -6,8 +6,8 @@
   "scripts": {
     "seed": "node seed.js",
     "test": "mocha",
-    "build": "webpack --mode production -d --watch",
-    "start": "webpack-dev-server --open --mode development"
+    "build": "webpack --mode=production -d --watch",
+    "start": "webpack-dev-server --open --mode=development"
   },
   "keywords": [],
   "author": "",
