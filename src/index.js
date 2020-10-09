@@ -11,9 +11,9 @@ class App extends React.Component {
     this.getComments = this.getComments.bind(this);
   }
 
-  getComments() {
+  getComments(id) {
     // console.log('hi');
-    axios.get('http://localhost:4000/comments/1')
+    axios.get(`http://localhost:4000/comments/${id}`)
       .then(response => {
         const comments = response.data.data;
         this.setState({
@@ -23,7 +23,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    this.getComments();
+    this.getComments(1);
   }
 
   render() {
