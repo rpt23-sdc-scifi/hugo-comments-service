@@ -33,18 +33,18 @@ app.get('/comments/:id', async(req, res) => {
 
     const comment = await db.getComment(id);
 
-    if ( id > 100 ) {
+    if ( !comment || id > 100 ) {
       return res.status(400).json({
         succes: false,
         msg: `no song with id ${id}`
       });
     }
 
-    if ( comment.length === 0 ) {
+    if (  comment.length === 0 ) {
       return res.status(400).json({
-          succes: false,
-          msg: `song ${id} doesn't have comments`
-        });
+        succes: false,
+        msg: `song ${id} doesn't have comments`
+      });
     }
 
     res.status(200).send({
