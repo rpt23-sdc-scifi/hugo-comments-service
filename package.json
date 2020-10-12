@@ -6,6 +6,7 @@
   "scripts": {
     "seed": "node seed.js",
     "test": "mocha",
+    "server": "nodemon server/index.js",
     "build": "webpack --mode=production -d --watch",
     "start": "webpack-dev-server --open --mode=development"
   },
