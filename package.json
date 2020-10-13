@@ -6,6 +6,7 @@
   "scripts": {
     "seed": "node seed.js",
     "test": "mocha",
+    "server": "nodemon server/index.js",
     "build": "webpack --mode=production -d --watch",
     "start": "webpack-dev-server --open --mode=development"
   },
@@ -14,6 +15,7 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^0.20.0",
+    "cors": "^2.8.5",
     "lorem-ipsum": "^2.0.3",
     "mongoose": "^5.10.7",
     "react": "^16.13.1",
