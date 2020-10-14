@@ -1,6 +1,17 @@
-import React from "react";
+import React, { Fragment } from "react";
 import ReactDOM from "react-dom";
 import axios from 'axios';
+import styled from 'styled-components';
+
+const TolyComment = styled.span`
+  border: none;
+  color: #202020;
+`;
+
+const TolyUserComment = styled.span`
+  border: none;
+  color: #C0C0C0;
+`;
 
 class App extends React.Component {
   constructor() {
@@ -32,7 +43,11 @@ class App extends React.Component {
           {
             this.state.comments.map(comment =>
               // theres a bug if the modulus is a single didit it doesnt look like a time ie 3:1 when it should be 3:10
-              <p>{comment.content} at {parseInt(comment.time_stamp / 60)}:{(comment.time_stamp % 60)}</p>
+              <React.Fragment key={comment.comment_id}>
+                <TolyUserComment>Frankie Roberts 4 at {parseInt(comment.time_stamp / 60)}:{(comment.time_stamp % 60)}</TolyUserComment><br></br>
+                <TolyComment>{comment.content} </TolyComment>
+              </React.Fragment>
+
             )
           }
       </div>
