@@ -24,6 +24,8 @@ class App extends React.Component {
 
   getComments(id) {
     // console.log('hi');
+    // let commentsId = window.location.pathname.substring(1);
+    // console.log(commentsId);
     axios.get(`http://localhost:4000/comments/${id}`)
       .then(response => {
         const comments = response.data.data;
@@ -34,7 +36,10 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    this.getComments(1);
+    let commentsId = window.location.pathname.substring(1);
+    console.log(commentsId);
+    console.log('worked');
+    this.getComments(commentsId);
   }
 
   render() {
