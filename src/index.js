@@ -6,11 +6,15 @@ import styled from 'styled-components';
 const TolyComment = styled.span`
   border: none;
   color: #202020;
+  font-family: Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;
+  font-size: 12px;
 `;
 
 const TolyUserComment = styled.span`
   border: none;
   color: #C0C0C0;
+  font-family: Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;
+  font-size: 12px;
 `;
 
 class App extends React.Component {
