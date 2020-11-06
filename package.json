@@ -15,7 +15,10 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^0.20.0",
+    "brotli-webpack-plugin": "^1.1.0",
+    "compression-webpack-plugin": "^6.0.5",
     "cors": "^2.8.5",
+    "express-static-gzip": "^2.1.0",
     "lorem-ipsum": "^2.0.3",
     "mongoose": "^5.10.7",
     "react": "^16.13.1",
