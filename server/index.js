@@ -24,6 +24,7 @@ app.use(
 app.use(express.json());
 app.use(cors());
 
+// route to get all comments in database
 app.get("/comments", async (req, res) => {
   try {
     const comments = await db.getComments();
@@ -41,8 +42,8 @@ app.get("/comments", async (req, res) => {
   }
 });
 
-// ID = SONG ID!!!
-app.get("/comments/:id", async (req, res) => {
+// route to get all comments by song ID
+app.get("/comments/song/:id", async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -75,8 +76,44 @@ app.get("/comments/:id", async (req, res) => {
   }
 });
 
-app.post("/comments/:id", async (req, res) => {
+// route to get a comment by specific comment ID
+app.get("/comments/song/:id", async (req, res) => {
   try {
+    const { id } = req.params;
+
+    const comment = await db.getComment(id);
+
+    if (!comment || id > 100) {
+      return res.status(400).json({
+        succes: false,
+        msg: `no song with id ${id}`,
+      });
+    }
+
+    if (comment.length === 0) {
+      return res.status(400).json({
+        succes: false,
+        msg: `song ${id} doesn't have comments`,
+      });
+    }
+
+    res.status(200).send({
+      success: true,
+      data: comment,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({
+      succes: false,
+      msg: error,
+    });
+  }
+});
+
+// route to add a comment
+app.post("/comments", async (req, res) => {
+  try {
+    // auto-generate new comment ID (increment +1 existing max ID)
     const data = req.body;
     data.comment_id = req.params.id;
     console.log(data);
@@ -86,15 +123,6 @@ app.post("/comments/:id", async (req, res) => {
     console.log(err);
     res.status(400).send({ error: err.message });
   }
-  // db.saveComment;
-  // const saveComment = (comment) => {
-  //   let newComment = new Comment({
-  //     comment_id: comment.comment_id,
-  //     user_id: comment.user_id,
-  //     song_id: comment.song_id,
-  //     content: comment.content,
-  //     time_stamp: comment.time_stamp,
-  //   });
 });
 
 app.get("/:current", (req, res) => {
