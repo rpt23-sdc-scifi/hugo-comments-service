@@ -41,6 +41,7 @@ app.get("/comments", async (req, res) => {
   }
 });
 
+// ID = SONG ID!!!
 app.get("/comments/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -72,6 +73,28 @@ app.get("/comments/:id", async (req, res) => {
       msg: error,
     });
   }
+});
+
+app.post("/comments/:id", async (req, res) => {
+  try {
+    const data = req.body;
+    data.comment_id = req.params.id;
+    console.log(data);
+    const result = await db.saveComment(data);
+    res.status(201).send(result);
+  } catch (err) {
+    console.log(err);
+    res.status(400).send({ error: err.message });
+  }
+  // db.saveComment;
+  // const saveComment = (comment) => {
+  //   let newComment = new Comment({
+  //     comment_id: comment.comment_id,
+  //     user_id: comment.user_id,
+  //     song_id: comment.song_id,
+  //     content: comment.content,
+  //     time_stamp: comment.time_stamp,
+  //   });
 });
 
 app.get("/:current", (req, res) => {
