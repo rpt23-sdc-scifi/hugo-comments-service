@@ -27,15 +27,15 @@ class App extends React.Component {
   }
 
   getComments(id) {
-    // console.log('hi');
-    // let commentsId = window.location.pathname.substring(1);
-    // console.log(commentsId);
     axios.get(`/comments/song/${id}`)
       .then(response => {
-        const comments = response.data.data;
+        const comments = response.data;
         this.setState({
           comments
         });
+      })
+      .catch(error => {
+        console.log(error.response.data);
       });
   }
 
@@ -47,6 +47,10 @@ class App extends React.Component {
   }
 
   render() {
+    if (this.state.comments.length === 0) {
+      return <TolyComment>"No comments found for this song ID"</TolyComment>;
+    }
+
     return (
       <div className="container">
           {

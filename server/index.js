@@ -46,61 +46,52 @@ app.get("/comments", async (req, res) => {
 app.get("/comments/song/:id", async (req, res) => {
   try {
     const { id } = req.params;
-
     const comments = await db.getCommentsBySong(id);
-
-    console.log('comments: ', comments);
 
     if (comments.length === 0) {
       throw new Error(`song ${id} doesn't have comments`);
     }
 
-    res.status(200).send({
-      success: true,
-      data: comments,
-    });
+    res.status(200).send(comments);
   } catch (error) {
     console.error(error);
-    res.status(400).send({
-      success: false,
-      msg: error.message,
-    });
+    res.status(400).send({ error: error.message });
   }
 });
 
 // route to get a comment by specific comment ID
-app.get("/comments/id/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
+// app.get("/comments/id/:id", async (req, res) => {
+//   try {
+//     const { id } = req.params;
 
-    const comment = await db.getComment(id);
+//     const comment = await db.getComment(id);
 
-    if (!comment || id > 100) {
-      return res.status(400).json({
-        succes: false,
-        msg: `no song with id ${id}`,
-      });
-    }
+//     if (!comment || id > 100) {
+//       return res.status(400).json({
+//         succes: false,
+//         msg: `no song with id ${id}`,
+//       });
+//     }
 
-    if (comment.length === 0) {
-      return res.status(400).json({
-        succes: false,
-        msg: `song ${id} doesn't have comments`,
-      });
-    }
+//     if (comment.length === 0) {
+//       return res.status(400).json({
+//         succes: false,
+//         msg: `song ${id} doesn't have comments`,
+//       });
+//     }
 
-    res.status(200).send({
-      success: true,
-      data: comment,
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(400).json({
-      succes: false,
-      msg: error,
-    });
-  }
-});
+//     res.status(200).send({
+//       success: true,
+//       data: comment,
+//     });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(400).json({
+//       succes: false,
+//       msg: error,
+//     });
+//   }
+// });
 
 // route to add a comment
 app.post("/comments", async (req, res) => {
