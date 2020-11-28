@@ -47,37 +47,29 @@ app.get("/comments/song/:id", async (req, res) => {
   try {
     const { id } = req.params;
 
-    const comment = await db.getComment(id);
+    const comments = await db.getCommentsBySong(id);
 
-    if (!comment || id > 100) {
-      return res.status(400).json({
-        succes: false,
-        msg: `no song with id ${id}`,
-      });
-    }
+    console.log('comments: ', comments);
 
-    if (comment.length === 0) {
-      return res.status(400).json({
-        succes: false,
-        msg: `song ${id} doesn't have comments`,
-      });
+    if (comments.length === 0) {
+      throw new Error(`song ${id} doesn't have comments`);
     }
 
     res.status(200).send({
       success: true,
-      data: comment,
+      data: comments,
     });
   } catch (error) {
     console.error(error);
-    res.status(400).json({
-      succes: false,
-      msg: error,
+    res.status(400).send({
+      success: false,
+      msg: error.message,
     });
   }
 });
 
 // route to get a comment by specific comment ID
-app.get("/comments/song/:id", async (req, res) => {
+app.get("/comments/id/:id", async (req, res) => {
   try {
     const { id } = req.params;
 

@@ -30,7 +30,7 @@ class App extends React.Component {
     // console.log('hi');
     // let commentsId = window.location.pathname.substring(1);
     // console.log(commentsId);
-    axios.get(`/comments/${id}`)
+    axios.get(`/comments/song/${id}`)
       .then(response => {
         const comments = response.data.data;
         this.setState({

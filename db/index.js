@@ -51,10 +51,10 @@ const getCommentsBySong = (song_id) => {
   return Comment.find({ song_id });
 };
 
-const getCommentsByCommentID = (song_id) => {
-  return Comment.find({ song_id });
+const getCommentByID = (song_id) => {
+  return Comment.find({ comment_id });
 };
 
-module.exports.getComments = getComments;
-module.exports.getComment = getComment;
-module.exports.saveComment = saveComment;
+module.exports = {
+  getComments, getCommentsBySong, getCommentByID, saveComment
+}
