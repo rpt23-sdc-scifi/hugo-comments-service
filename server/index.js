@@ -25,7 +25,7 @@ app.use(
 app.use(express.json());
 app.use(cors());
 
-// route to get all comments in database
+// API: get all comments in database
 app.get("/api/comments", async (req, res) => {
   try {
     const comments = await db.getComments();
@@ -43,7 +43,7 @@ app.get("/api/comments", async (req, res) => {
   }
 });
 
-// route to get all comments by song ID
+// API: get all comments for a song ID
 app.get("/api/comments/song/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -55,7 +55,7 @@ app.get("/api/comments/song/:id", async (req, res) => {
   }
 });
 
-// route to get a comment by specific comment ID
+// API: get a comment by comment ID
 app.get("/api/comments/id/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -67,7 +67,7 @@ app.get("/api/comments/id/:id", async (req, res) => {
   }
 });
 
-// route to add a comment
+// API: add a new comment
 app.post("/api/comments", async (req, res) => {
   try {
     const data = req.body;
@@ -79,7 +79,7 @@ app.post("/api/comments", async (req, res) => {
   }
 });
 
-// route to update an existing comment
+// API: update an existing comment
 app.patch("/api/comments/id/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -92,7 +92,7 @@ app.patch("/api/comments/id/:id", async (req, res) => {
   }
 });
 
-// route to delete a comment
+// API: delete a comment
 app.delete("/api/comments/id/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -104,10 +104,10 @@ app.delete("/api/comments/id/:id", async (req, res) => {
   }
 });
 
-app.get("/", (req, res) => {
-  console.log("hit");
-  res.sendFile(path.join(__dirname, "../dist/index.html"));
-});
+// app.get("/", (req, res) => {
+//   console.log("hit");
+//   res.sendFile(path.join(__dirname, "../dist/index.html"));
+// });
 
 app.listen(port, () => {
   console.log(`server running on port ${port}`);
