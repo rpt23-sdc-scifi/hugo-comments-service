@@ -29,20 +29,6 @@ let newComment = {
 
 let newCommentID = null;
 
-describe("/GET comments", () => {
-  it("should GET all the comments", (done) => {
-    chai
-      .request(app)
-      .get("/api/comments")
-      .end((err, res) => {
-        res.should.have.status(200);
-        res.body.data.should.be.a("array");
-        res.body.data.length.should.be.gt(36);
-        done();
-      });
-  });
-});
-
 describe("/GET comments by song ID", () => {
   it("should GET comments for song_id", (done) => {
     chai

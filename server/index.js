@@ -1,8 +1,8 @@
 const express = require("express");
 const cors = require("cors");
-const db = require("../db/index");
 const path = require("path");
 const expressStaticGzip = require("express-static-gzip");
+const apiRouter = require("./api.js");
 
 const port = 4000;
 

@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const db = require("../db/index");
 
 // The Comments API is served at the "/api" path, i.e. "/api/comments"
 
@@ -51,7 +52,7 @@ router.post("/comments", async (req, res) => {
 });
 
 // API: update an existing comment
-app.patch("/comments/:id", async (req, res) => {
+router.patch("/comments/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const data = req.body;
@@ -64,7 +65,7 @@ app.patch("/comments/:id", async (req, res) => {
 });
 
 // API: delete a comment
-app.delete("/comments/:id", async (req, res) => {
+router.delete("/comments/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const result = await db.deleteComment(id);
