@@ -50,7 +50,7 @@ This comments service, which generates between 0 and 10 comments per song, store
   - 200 OK [object] [json]
   - Example:
 
-```
+```javascript
 {
   "count": 20011, // [integer] the number of records returned
   "data": [ /* array[object] list of comments */
