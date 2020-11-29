@@ -40,7 +40,7 @@ This comments service, which generates between 0 and 10 comments per song, store
 
 ## API:
 
-### GET COMMENTS: `/api/comments`
+### GET: `/api/comments`
 
 - List all existing comments. Can retrieve comments for a specific song.
 - Request Parameters:
@@ -64,8 +64,8 @@ This comments service, which generates between 0 and 10 comments per song, store
       ]
     }
     ```
-
-### GET COMMENT BY ID: `/api/comments/{commentId}`
+&nbsp;
+### GET: `/api/comments/{commentId}`
 
 - Retrieve one comment based on a unique ID identifier.
 - Request Parameters:
@@ -92,16 +92,29 @@ This comments service, which generates between 0 and 10 comments per song, store
       "error": "no comment with id 5fc3223c5b11641d723798c9"
     }
     ```
-- GET COMMENTS BY SONG ID: **/api/comments/song/:id**
-- GET COMMENTS BY COMMENT ID: **/api/comments/id:id**
-  - /api/reviews/:product_id/summary
-    - retrieves the average rating/summary for a review of a product
-  - /api/reviews/:product_id
-    - retrieves all the reviews for a product
-- POST: **/api/comments**
+&nbsp;
+### POST: `/api/comments`
+- Create a new comment.
+- Request Parameters: N/A
+- Request Body: [json]
+    - `user_id` [integer] *required*
+    - `song_id` [integer] *required*
+    - `content` [string] *required*
+    - `time_stamp` [string] *required*
+  - Example:
 
-  - creates a new review using information prodivided in the request body
-    - request body must contain product_id, username, review_heading, review_text, and review_rating
+    ```javascript
+    {
+    "user_id": 45,
+    "song_id": 182,
+    "content": "WTF??? This song is terrible.",
+    "time_stamp": 333,
+    "random": true
+    }
+    ```
+&nbsp;
+
+
 
 - PATCH
   - /api/reviews/update
