@@ -39,16 +39,24 @@ This comments service, which generates between 0 and 10 comments per song, store
 1. Access the app at **localhost:4000/{song_id}** where **{song_id}** is the Song ID. A list of comments by song is displayed.
 
 ## API
-- POST
-  - /comments
-  -
-    - creates a new review using information prodivided in the request body
-      - request body must contain product_id, username, review_heading, review_text, and review_rating
-- GET
+- GET ALL COMMENTS: **/api/comments**
+  - retrieves  in JSON format:
+- GET COMMENTS BY SONG ID: **/api/comments/song/:id**
+- GET COMMENTS BY COMMENT ID: **/api/comments/id:id**
   - /api/reviews/:product_id/summary
     - retrieves the average rating/summary for a review of a product
   - /api/reviews/:product_id
     - retrieves all the reviews for a product
+- POST: **/api/comments**
+
+  ```
+  if (isAwesome){
+    return true
+  }
+  ```
+    - creates a new review using information prodivided in the request body
+      - request body must contain product_id, username, review_heading, review_text, and review_rating
+
 - PATCH
   - /api/reviews/update
     - updates an existing review using information provided in the request body

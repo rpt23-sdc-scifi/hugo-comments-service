@@ -41,24 +41,24 @@ app.get("/api/comments", async (req, res) => {
   }
 });
 
-// API: get all comments for a song ID
-app.get("/api/comments/song/:id", async (req, res) => {
+// API: get a comment by comment ID
+app.get("/api/comments/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const comments = await db.getCommentsBySong(id);
-    res.status(200).send(comments);
+    const comment = await db.getCommentByID(id);
+    res.status(200).send(comment);
   } catch (error) {
     console.error(error);
     res.status(400).send({ error: error.message });
   }
 });
 
-// API: get a comment by comment ID
-app.get("/api/comments/id/:id", async (req, res) => {
+// API: get all comments for a song ID
+app.get("/api/comments/song/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const comment = await db.getCommentByID(id);
-    res.status(200).send(comment);
+    const comments = await db.getCommentsBySong(id);
+    res.status(200).send(comments);
   } catch (error) {
     console.error(error);
     res.status(400).send({ error: error.message });
@@ -78,7 +78,7 @@ app.post("/api/comments", async (req, res) => {
 });
 
 // API: update an existing comment
-app.patch("/api/comments/id/:id", async (req, res) => {
+app.patch("/api/comments/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const data = req.body;
@@ -91,7 +91,7 @@ app.patch("/api/comments/id/:id", async (req, res) => {
 });
 
 // API: delete a comment
-app.delete("/api/comments/id/:id", async (req, res) => {
+app.delete("/api/comments/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const result = await db.deleteComment(id);

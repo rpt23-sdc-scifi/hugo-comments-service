@@ -70,10 +70,10 @@ describe("/GET comments by song ID", () => {
 });
 
 describe("/GET comments by comment ID", () => {
-  it("should GET comments for specific comment_id", (done) => {
+  it("should GET comments for specific comment id", (done) => {
     chai
       .request(app)
-      .get(`/api/comments/id/${existingComment._id}`)
+      .get(`/api/comments/${existingComment._id}`)
       .end((err, res) => {
         res.should.have.status(200);
         res.body.should.be.a("object");
@@ -84,7 +84,7 @@ describe("/GET comments by comment ID", () => {
   it("should not GET any comments for a non-existant id 50000", (done) => {
     chai
       .request(app)
-      .get("/api/comments/id/50000")
+      .get("/api/comments/50000")
       .end((err, res) => {
         res.should.have.status(400);
         res.body.error.should.be.a("string");
@@ -116,7 +116,7 @@ describe("/PATCH comment", () => {
   it("should update an existing comment", (done) => {
     chai
       .request(app)
-      .patch(`/api/comments/id/${newCommentID}`)
+      .patch(`/api/comments/${newCommentID}`)
       .type("json")
       .send({
         content: "Yo, this is the best song EVER!!!",
@@ -135,7 +135,7 @@ describe("/DELETE comment", () => {
   it("should delete an existing comment", (done) => {
     chai
       .request(app)
-      .delete(`/api/comments/id/${newCommentID}`)
+      .delete(`/api/comments/${newCommentID}`)
       .end((err, res) => {
         res.should.have.status(200);
         res.body.should.be.a("object");
