@@ -4,6 +4,9 @@ const path = require("path");
 const expressStaticGzip = require("express-static-gzip");
 const apiRouter = require("./api.js");
 
+// open connectiong to the database
+require("../db/connect");
+
 const port = 4000;
 
 const app = express();

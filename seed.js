@@ -1,4 +1,4 @@
-const db = require('./db/index');
+const db = require('./db/connect');
 const loremIpsum = require("lorem-ipsum").LoremIpsum;
 
 const maxComments = 20000;
