@@ -94,11 +94,20 @@ const updateComment = async (comment_id, data) => {
   return result;
 };
 
+const deleteComment = async (comment_id) => {
+  const result = await Comment.findOneAndDelete({ comment_id });
+  if (result === null) {
+    throw new Error(`no comment with id ${comment_id}`);
+  }
+  return result;
+};
+
 module.exports = {
   getComments,
   getCommentsBySong,
   getCommentByID,
   saveComment,
   updateComment,
+  deleteComment,
   dropCollection,
 };

@@ -82,11 +82,10 @@ app.post("/comments", async (req, res) => {
 // route to update an existing comment
 app.patch("/comments/id/:id", async (req, res) => {
   try {
-    const id = req.params.id;
+    const { id } = req.params;
     const data = req.body;
-    console.log(id, data);
     const result = await db.updateComment(id, data);
-    res.status(201).send(result);
+    res.status(200).send(result);
   } catch (err) {
     console.log(err);
     res.status(400).send({ error: err.message });
@@ -94,6 +93,16 @@ app.patch("/comments/id/:id", async (req, res) => {
 });
 
 // route to delete a comment
+app.delete("/comments/id/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await db.deleteComment(id);
+    res.status(200).send(result);
+  } catch (err) {
+    console.log(err);
+    res.status(400).send({ error: err.message });
+  }
+});
 
 app.get("/:current", (req, res) => {
   console.log("hit");
