@@ -2,8 +2,6 @@
 
 > A Soundcloud (clone) service that handles and displays the comments for a song.
 
-#
-
 ## Related Projects:
 
 - Description Service: https://github.com/rpt23-sdc-scifi/kara-song-description
@@ -12,25 +10,19 @@
 - Related Tracks Service: https://github.com/rpt23-sdc-scifi/George-Related-Tracks
 - Hugo's Proxy: https://github.com/rpt23-sdc-scifi/hugo-proxy
 
-#
-
 ## Table of Contents:
 
 1. [Oerview](#overview)
-1. [Requirements](#requirements)
+1. [Setup](#setup)
 1. [Usage](#usage)
 1. [API](#api)
 1. [Development](#development)
-
-#
 
 ## Overview:
 
 For Hack Reactor's culminating Systems Design Capstone project, focused on databases and production deployment and optimization, students are asked to create 10 million mock primary records (i.e. songs).
 
 This comments service, which generates between 0 and 10 comments per song, stores up to 100 million records. A seeding script to generate this mock data is provided.
-
-#
 
 ## Setup:
 
@@ -41,12 +33,10 @@ This comments service, which generates between 0 and 10 comments per song, store
 1. After building the components, run `npm run sever` to start the application in development mode.
 1. Access the app at **localhost:4000/{song_id}** where **{song_id}** is the Song ID. A list of comments by song is displayed.
 
-### _Requirements_:
+### *Requirements*:
 
 - Node.js
 - MongoDB
-
-#
 
 ## API:
 
@@ -60,10 +50,10 @@ This comments service, which generates between 0 and 10 comments per song, store
   - 200 OK [object] [json]
   - Example:
 
-```json
+```
 {
   "count": 20011, // [integer] the number of records returned
-  "data": [ // array[object] list of comments
+  "data": [ /* array[object] list of comments */
     {
       "comment_id": "5fc3223c5b11641d723798c8", // [string] Mongo ObjectID; unique identifier
       "user_id": 4, // [integer] ID of associated user
