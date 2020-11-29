@@ -44,12 +44,12 @@ This comments service, which generates between 0 and 10 comments per song, store
 
 - List all existing comments. Can retrieve comments for a specific song.
 - Request Parameters:
-  - `song_id` [string] [query parameter]
+  - `song_id` [string] [query parameter] *optional*
     - Example: **/api/comments/?song_id=1**
+- Request Body: N/A
 - Responses:
   - `200 OK` [object] [json]
   - Example:
-
     ```javascript
     {
       "count": 20011, // [integer] the number of records returned
@@ -64,17 +64,19 @@ This comments service, which generates between 0 and 10 comments per song, store
       ]
     }
     ```
+
 &nbsp;
+
 ### GET: `/api/comments/{commentId}`
 
 - Retrieve one comment based on a unique ID identifier.
 - Request Parameters:
-  - `commentId` [string] [path parameter]
+  - `commentId` [string] [path parameter] *required*
     - Example: **/api/comments/5fc3223c5b11641d723798c8**
+- Request Body: N/A
 - Responses:
   - `200 OK` [object] [json]
   - Example:
-
     ```javascript
     {
       "comment_id": "5fc3223c5b11641d723798c8", // [string] Mongo ObjectID; unique identifier
@@ -84,15 +86,10 @@ This comments service, which generates between 0 and 10 comments per song, store
       "time_stamp": 125, // [integer] comment timestamp in song by seconds
     }
     ```
-  - `400 BAD REQUEST` [object] [json]
-  - Example:
+  - `400 BAD REQUEST` [object] [json] > *returns an error message*
 
-    ```javascript
-    {
-      "error": "no comment with id 5fc3223c5b11641d723798c9"
-    }
-    ```
 &nbsp;
+
 ### POST: `/api/comments`
 - Create a new comment.
 - Request Parameters: N/A
@@ -102,28 +99,54 @@ This comments service, which generates between 0 and 10 comments per song, store
     - `content` [string] *required*
     - `time_stamp` [string] *required*
   - Example:
-
     ```javascript
     {
-    "user_id": 45,
-    "song_id": 182,
-    "content": "WTF??? This song is terrible.",
-    "time_stamp": 333,
-    "random": true
+      "user_id": 45,
+      "song_id": 182,
+      "content": "WTF??? This song is terrible.",
+      "time_stamp": 333,
+      "random": true
     }
     ```
+- Responses:
+  - `201 OK` [object] [json] > *returns the created comment*
+  - `400 BAD REQUEST` [object] [json] > *returns an error message*
+
 &nbsp;
 
+### PATCH: `/api/comments/{commentId}`
+- Update one or many properties of an existing comment based on a unique ID identifier.
+- Request Parameters:
+  - `commentId` [string] [path parameter] *required*
+    - Example: **/api/comments/5fc3223c5b11641d723798c8**
+- Request Body: [json]
+    - `user_id` [integer] *optional*
+    - `song_id` [integer] *optional*
+    - `content` [string] *optional*
+    - `time_stamp` [string] *optional*
+  - Example:
+    ```javascript
+    {
+      "user_id": 35,
+      "content": "Wow, this is the best song EVER!!!",
+      "time_stamp": 26,
+    }
+    ```
+- Responses:
+  - `200 OK` [object] [json] > *returns the updated comment*
+  - `400 BAD REQUEST` [object] [json] > *returns an error message*
 
+&nbsp;
 
-- PATCH
-  - /api/reviews/update
-    - updates an existing review using information provided in the request body
-      - request body must contain review_id, in addition to properties to be updated
-- DELETE
-  - /api/reviews/delete
-    - removes an existing review from the database using information provided in the request body
-      - request body must contain review_id
+### DELETE: `/api/comments/{commentId}`
+- Delete an existing comment based on a unique ID identifier.
+- Request Parameters:
+  - `commentId` [string] [path parameter] *required*
+    - Example: **/api/comments/5fc3223c5b11641d723798c8**
+- Request Body: N/A
+- Responses:
+  - `200 OK` [object] [json] > *returns the deleted comment*
+  - `400 BAD REQUEST` [object] [json] > *returns an error message*
 
 ## Development
 
