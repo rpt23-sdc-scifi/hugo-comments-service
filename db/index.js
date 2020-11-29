@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 
-mongoose.connect("mongodb://localhost/fec-soundcloud-comments", {
+const database = 'fec-soundcloud-comments';
+
+mongoose.connect(`mongodb://localhost/${database}`, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex: true,
@@ -10,7 +12,7 @@ const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 
 db.once("open", function () {
-  console.log("mongodb connected!");
+  console.log(`mongodb connected to db "${database}"!`);
 });
 
 // db.dropCollection("comments", () =>  {

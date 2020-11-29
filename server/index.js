@@ -67,39 +67,6 @@ app.get("/comments/id/:id", async (req, res) => {
   }
 });
 
-// app.get("/comments/id/:id", async (req, res) => {
-//   try {
-//     const { id } = req.params;
-
-//     const comment = await db.getComment(id);
-
-//     if (!comment || id > 100) {
-//       return res.status(400).json({
-//         succes: false,
-//         msg: `no song with id ${id}`,
-//       });
-//     }
-
-//     if (comment.length === 0) {
-//       return res.status(400).json({
-//         succes: false,
-//         msg: ``,
-//       });
-//     }
-
-//     res.status(200).send({
-//       success: true,
-//       data: comment,
-//     });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(400).json({
-//       succes: false,
-//       msg: error,
-//     });
-//   }
-// });
-
 // route to add a comment
 app.post("/comments", async (req, res) => {
   try {
@@ -114,6 +81,10 @@ app.post("/comments", async (req, res) => {
     res.status(400).send({ error: err.message });
   }
 });
+
+// route to update an existing comment
+
+// route to delete a comment
 
 app.get("/:current", (req, res) => {
   console.log("hit");
