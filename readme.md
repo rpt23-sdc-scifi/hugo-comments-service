@@ -58,8 +58,8 @@ This comments service, which generates between 0 and 10 comments per song, store
       "comment_id": "5fc3223c5b11641d723798c8", // [string] Mongo ObjectID; unique identifier
       "user_id": 4, // [integer] ID of associated user
       "song_id": 29, // [integer] ID of associated song
-      "content": "Id anim dolor ea aliquip occaecat consectetur.", // [string]
-      "time_stamp": 125, // [integer] location in song where comment was made by seconds
+      "content": "Id anim dolor ea aliquip.", // [string] comment text
+      "time_stamp": 125, // [integer] comment timestamp in song by seconds
     }
   ]
 }
