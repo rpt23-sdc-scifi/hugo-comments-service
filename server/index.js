@@ -26,7 +26,7 @@ app.use(express.json());
 app.use(cors());
 
 // route to get all comments in database
-app.get("/comments", async (req, res) => {
+app.get("/api/comments", async (req, res) => {
   try {
     const comments = await db.getComments();
     res.status(200).send({
@@ -44,7 +44,7 @@ app.get("/comments", async (req, res) => {
 });
 
 // route to get all comments by song ID
-app.get("/comments/song/:id", async (req, res) => {
+app.get("/api/comments/song/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const comments = await db.getCommentsBySong(id);
@@ -56,7 +56,7 @@ app.get("/comments/song/:id", async (req, res) => {
 });
 
 // route to get a comment by specific comment ID
-app.get("/comments/id/:id", async (req, res) => {
+app.get("/api/comments/id/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const comment = await db.getCommentByID(id);
@@ -68,7 +68,7 @@ app.get("/comments/id/:id", async (req, res) => {
 });
 
 // route to add a comment
-app.post("/comments", async (req, res) => {
+app.post("/api/comments", async (req, res) => {
   try {
     const data = req.body;
     const result = await db.saveComment(data);
@@ -80,7 +80,7 @@ app.post("/comments", async (req, res) => {
 });
 
 // route to update an existing comment
-app.patch("/comments/id/:id", async (req, res) => {
+app.patch("/api/comments/id/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const data = req.body;
@@ -93,7 +93,7 @@ app.patch("/comments/id/:id", async (req, res) => {
 });
 
 // route to delete a comment
-app.delete("/comments/id/:id", async (req, res) => {
+app.delete("/api/comments/id/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const result = await db.deleteComment(id);
@@ -104,7 +104,7 @@ app.delete("/comments/id/:id", async (req, res) => {
   }
 });
 
-app.get("/:current", (req, res) => {
+app.get("/", (req, res) => {
   console.log("hit");
   res.sendFile(path.join(__dirname, "../dist/index.html"));
 });

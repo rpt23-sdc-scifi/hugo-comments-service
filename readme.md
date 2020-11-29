@@ -1,39 +1,47 @@
-# Reviews Service
+# SoundCloud Comments Service
 
-> A service that handles and displays the review information on a product page.
+> A Soundcloud (clone) service that handles and displays the comments for a song.
 
 ## Related Projects
 
-  - https://github.com/Team-Structure/images-service
-  - https://github.com/Team-Structure/Product-Information-Service
-  - https://github.com/Team-Structure/seller-catalog
+  - Description Service: https://github.com/rpt23-sdc-scifi/kara-song-description
+  - Images Service: https://github.com/rpt23-sdc-scifi/kara-soundcloud-images
+  - Songs Service: https://github.com/rpt23-sdc-scifi/Music
+  - Related Tracks Service: https://github.com/rpt23-sdc-scifi/George-Related-Tracks
+  - Hugo's Proxy: https://github.com/rpt23-sdc-scifi/hugo-proxy
 
 ## Table of Contents
 
+1. [Oerview](#overview)
 1. [Requirements](#requirements)
 1. [Usage](#usage)
 1. [API](#api)
 1. [Development](#development)
+
+## Overview
+
+For Hack Reactor's culminating Systems Design Capstone project, focused on databases and production deployment and optimization, students are asked to create 10 million mock primary records (i.e. songs).
+
+This comments service, which generates between 0 and 10 comments per song, stores up to 100 million records. A seeding script to generate this mock data is provided.
 
 ## Requirements
 
 - Node.js
 - MongoDB
 
-## Usage
+## Setup
 
 1. Clone this repo and go to its root directory.
 1. Run `npm install` to install its dependencies.
-1. After the dependencies are installed, seed the database with `npm run db:seed`
-1. Once the database is seeded, run `npm run build:dev` to build the browser components.
-1. After building the components, run `npm run start:dev` to start the application.
-1. You will then be able to access the app at **localhost:3001/products/{product_id}** where **{product_id}** is the Product ID number.
-
-The database seeding script `npm run db:seed` seeds Product ID numbers between 1 - 100 so going to http://localhost:3001/products/1 will show review information for the Product with a Product ID of 1.
+1. Seed the database with `npm run seed`.
+1. Run `npm run build` to build the browser components.
+1. After building the components, run `npm run sever` to start the application in development mode.
+1. Access the app at **localhost:4000/{song_id}** where **{song_id}** is the Song ID. A list of comments by song is displayed.
 
 ## API
 - POST
-  - /api/reviews/add-review
+  - /comments
+  -
     - creates a new review using information prodivided in the request body
       - request body must contain product_id, username, review_heading, review_text, and review_rating
 - GET
