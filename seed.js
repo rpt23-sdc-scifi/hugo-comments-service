@@ -1,7 +1,7 @@
 const db = require('./db/index');
 const loremIpsum = require("lorem-ipsum").LoremIpsum;
 
-const maxComments = Math.floor(Math.random() * 200) + 37;
+const maxComments = 20000;
 const maxSongLength = 480; // in seconds, how long song is
 
 const lorem = new loremIpsum({
