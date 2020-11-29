@@ -14,12 +14,20 @@ const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 
 db.once("open", function () {
-  console.log(`mongodb connected to db "${database}"!`);
+  console.log(`mongodb connected to database "${database}"!`);
 });
+
+const dropDatabase = async () => {
+  await db.dropDatabase();
+  console.log(`database "${database}" dropped`);
+};
 
 const dropCollection = async () => {
   await db.dropCollection("comments");
   console.log("comments collection dropped");
 };
 
-module.exports = dropCollection;
+module.exports = {
+  dropDatabase,
+  dropCollection,
+};
