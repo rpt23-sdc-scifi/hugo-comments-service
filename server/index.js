@@ -23,7 +23,7 @@ app.use(
 app.use(express.json());
 app.use(cors());
 
-// API: get all comments in database
+// API: get all comments that match search critiera
 app.get("/api/comments", async (req, res) => {
   try {
     const comments = await db.getComments();
@@ -47,18 +47,6 @@ app.get("/api/comments/:id", async (req, res) => {
     const { id } = req.params;
     const comment = await db.getCommentByID(id);
     res.status(200).send(comment);
-  } catch (error) {
-    console.error(error);
-    res.status(400).send({ error: error.message });
-  }
-});
-
-// API: get all comments for a song ID
-app.get("/api/comments/song/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-    const comments = await db.getCommentsBySong(id);
-    res.status(200).send(comments);
   } catch (error) {
     console.error(error);
     res.status(400).send({ error: error.message });

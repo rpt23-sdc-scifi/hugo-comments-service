@@ -40,23 +40,24 @@ const commentSchema = new mongoose.Schema({
   },
 });
 
+// modify comment fields when returning data to match API
+commentSchema.methods.toJSON = function () {
+  const obj = this.toObject();
+  obj["comment_id"] = obj._id;
+  delete obj._id;
+  delete obj.__v;
+  return obj;
+};
+
 const Comment = mongoose.model("Comment", commentSchema);
 
 const getComments = async () => {
-  return Comment.find().lean();
-};
-
-const getCommentsBySong = async (song_id) => {
-  const results = await Comment.find({ song_id }).lean();
-  if (results.length === 0) {
-    throw new Error(`song ${song_id} doesn't have comments`);
-  }
-  return results;
+  return Comment.find();
 };
 
 // this id is the MongoDB auto-generated ObjectId
 const getCommentByID = async (id) => {
-  const result = await Comment.findOne({ _id: id }).lean();
+  const result = await Comment.findOne({ _id: id });
   if (result === null) {
     throw new Error(`no comment with id ${id}`);
   }
@@ -94,7 +95,6 @@ const deleteComment = async (id) => {
 
 module.exports = {
   getComments,
-  getCommentsBySong,
   getCommentByID,
   saveComment,
   updateComment,
