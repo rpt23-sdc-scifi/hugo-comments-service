@@ -33,7 +33,7 @@ This comments service, which generates between 0 and 10 comments per song, store
 1. After building the components, run `npm run sever` to start the application in development mode.
 1. Access the app at **localhost:4000/{song_id}** where **{song_id}** is the Song ID. A list of comments by song is displayed.
 
-### *Requirements*:
+### _Requirements_:
 
 - Node.js
 - MongoDB
@@ -47,13 +47,35 @@ This comments service, which generates between 0 and 10 comments per song, store
   - `song_id` [string] [query parameter]
     - Example: **/api/comments/?song_id=1**
 - Responses:
-  - 200 OK [object] [json]
+  - `200 OK` [object] [json]
   - Example:
 
-```javascript
-{
-  "count": 20011, // [integer] the number of records returned
-  "data": [ /* array[object] list of comments */
+    ```javascript
+    {
+      "count": 20011, // [integer] the number of records returned
+      "data": [ /* array[object] list of comments */
+        {
+          "comment_id": "5fc3223c5b11641d723798c8", // [string] Mongo ObjectID; unique identifier
+          "user_id": 4, // [integer] ID of associated user
+          "song_id": 29, // [integer] ID of associated song
+          "content": "Id anim dolor ea aliquip.", // [string] comment text
+          "time_stamp": 125, // [integer] comment timestamp in song by seconds
+        }
+      ]
+    }
+    ```
+
+### GET COMMENT BY ID: `/api/comments/{commentId}`
+
+- Retrieve one comment based on a unique ID identifier.
+- Request Parameters:
+  - `commentId` [string] [path parameter]
+    - Example: **/api/comments/5fc3223c5b11641d723798c8**
+- Responses:
+  - `200 OK` [object] [json]
+  - Example:
+
+    ```javascript
     {
       "comment_id": "5fc3223c5b11641d723798c8", // [string] Mongo ObjectID; unique identifier
       "user_id": 4, // [integer] ID of associated user
@@ -61,10 +83,15 @@ This comments service, which generates between 0 and 10 comments per song, store
       "content": "Id anim dolor ea aliquip.", // [string] comment text
       "time_stamp": 125, // [integer] comment timestamp in song by seconds
     }
-  ]
-}
-```
+    ```
+  - `400 BAD REQUEST` [object] [json]
+  - Example:
 
+    ```javascript
+    {
+      "error": "no comment with id 5fc3223c5b11641d723798c9"
+    }
+    ```
 - GET COMMENTS BY SONG ID: **/api/comments/song/:id**
 - GET COMMENTS BY COMMENT ID: **/api/comments/id:id**
   - /api/reviews/:product_id/summary
