@@ -1,6 +1,5 @@
 const express = require("express");
 const cors = require("cors");
-const mongoose = require("mongoose");
 const db = require("../db/index");
 const path = require("path");
 const expressStaticGzip = require("express-static-gzip");
@@ -22,6 +21,8 @@ app.use(
 
 app.use(express.json());
 app.use(cors());
+
+app.use('/api', apiRouter);
 
 // API: get all comments that match search critiera
 app.get("/api/comments", async (req, res) => {
