@@ -1,55 +1,4 @@
-const mongoose = require("mongoose");
-
-const database = "soundcloud";
-
-mongoose.connect(`mongodb://localhost/${database}`, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useCreateIndex: true,
-  useFindAndModify: false,
-});
-
-const db = mongoose.connection;
-db.on("error", console.error.bind(console, "connection error:"));
-
-db.once("open", function () {
-  console.log(`mongodb connected to db "${database}"!`);
-});
-
-const dropCollection = async () => {
-  await db.dropCollection("comments");
-  console.log("comments collection dropped");
-};
-
-const commentSchema = new mongoose.Schema({
-  user_id: {
-    type: Number,
-    required: true,
-  },
-  song_id: {
-    type: Number,
-    required: true,
-  },
-  content: {
-    type: String,
-    required: true,
-  },
-  time_stamp: {
-    type: Number,
-    required: true,
-  },
-});
-
-// modify comment fields when returning data to match API
-commentSchema.methods.toJSON = function () {
-  const obj = this.toObject();
-  obj["comment_id"] = obj._id;
-  delete obj._id;
-  delete obj.__v;
-  return obj;
-};
-
-const Comment = mongoose.model("Comment", commentSchema);
+const Comment = require("./model.js");
 
 const getComments = async (filter) => {
   return Comment.find(filter);
@@ -99,5 +48,4 @@ module.exports = {
   saveComment,
   updateComment,
   deleteComment,
-  dropCollection,
 };
