@@ -1,6 +1,3 @@
-const mongoose = require("mongoose");
-const db = require("../db/index");
-
 let chai = require("chai");
 let chaiHttp = require("chai-http");
 let app = require("../server/index");
