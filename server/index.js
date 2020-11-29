@@ -28,14 +28,12 @@ app.get("/api/comments", async (req, res) => {
   try {
     const comments = await db.getComments();
     res.status(200).send({
-      success: true,
       count: comments.length,
       data: comments,
     });
   } catch (error) {
     console.error(error);
     res.status(400).json({
-      success: false,
       msg: error,
     });
   }
