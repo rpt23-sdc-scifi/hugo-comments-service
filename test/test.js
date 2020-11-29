@@ -1,6 +1,3 @@
-const mongoose = require("mongoose");
-const db = require("../db/index");
-
 let chai = require("chai");
 let chaiHttp = require("chai-http");
 let app = require("../server/index");
@@ -12,11 +9,11 @@ chai.use(chaiHttp);
 
 // ObjectID of comment that exists
 let existingComment = {
-  comment_id: "5fc3223c5b11641d723798c8",
-  user_id: 4,
-  song_id: 29,
-  content: "Id anim dolor ea aliquip occaecat consectetur.",
-  time_stamp: 125,
+  "user_id": 895597,
+  "song_id": 8888452,
+  "content": "Dolor esse velit cupidatat enim non tempor consequat.",
+  "time_stamp": 93,
+  "comment_id": "5fc367e0d17509f5cb743606"
 };
 
 let newComment = {
