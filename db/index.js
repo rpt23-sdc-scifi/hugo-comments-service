@@ -25,10 +25,22 @@ const commentSchema = new mongoose.Schema({
     unique: true,
     required: true,
   },
-  user_id: Number,
-  song_id: Number,
-  content: String,
-  time_stamp: Number,
+  user_id: {
+    type: Number,
+    required: true,
+  },
+  song_id: {
+    type: Number,
+    required: true,
+  },
+  content: {
+    type: String,
+    required: true,
+  },
+  time_stamp: {
+    type: Number,
+    required: true,
+  },
 });
 
 const Comment = mongoose.model("Comment", commentSchema);
@@ -39,7 +51,7 @@ const saveComment = (comment) => {
     user_id: comment.user_id,
     song_id: comment.song_id,
     content: comment.content,
-    time_stamp: comment.time_stamp,
+    time_stamp: comment.time_stamp, // random integer between zero and length of song in seconds
   });
 
   return newComment.save(newComment);

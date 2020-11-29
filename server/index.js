@@ -72,7 +72,7 @@ app.post("/comments", async (req, res) => {
   try {
     // auto-generate new comment ID (increment +1 existing max ID)
     const data = req.body;
-    data.comment_id = req.params.id;
+    // data.comment_id = req.params.comment_id;
     console.log(data);
     const result = await db.saveComment(data);
     res.status(201).send(result);
