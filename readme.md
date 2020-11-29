@@ -45,10 +45,16 @@ This comments service, which generates between 0 and 10 comments per song, store
 
 ### GET: `/api/comments`
 
-- List all existing comments. Can retrieve comments for a specific song.
+- List all existing comments. Can retrieve specific comments based on diferent search.
 - Request Parameters:
-  - `song_id` [string] [query parameter] *optional*
-    - Example: **/api/comments/?song_id=1**
+  - `song_id` [integer] [query parameter] *optional*
+      - Example: **/api/comments/?song_id=29**
+  - `user_id` [integer] [query parameter] *optional*
+      - Example: **/api/comments/?user_id=4**
+  - `time_stamp` [integer] [query parameter] *optional*
+      - Example: **/api/comments/?content=Id anim dolor ea aliquip.**
+  - `content` [string] [query parameter] *optional*
+      - Example: **/api/comments/?time_stamp=125**
 - Request Body: N/A
 - Responses:
   - `200 OK` [object] [json]

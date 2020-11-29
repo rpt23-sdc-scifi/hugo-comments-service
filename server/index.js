@@ -26,7 +26,11 @@ app.use(cors());
 // API: get all comments that match search critiera
 app.get("/api/comments", async (req, res) => {
   try {
+    console.log(req.query);
     for (parameter in req.query) {
+      if (parameter === "content") {
+        break;
+      }
       req.query[parameter] = Number(req.query[parameter]);
     }
     const comments = await db.getComments(req.query);
