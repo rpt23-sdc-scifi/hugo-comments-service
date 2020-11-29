@@ -1,4 +1,4 @@
-const commentDb = require('./db/index');
+const db = require('./db/index');
 const loremIpsum = require("lorem-ipsum").LoremIpsum;
 
 const maxComments = Math.floor(Math.random() * 200) + 37;
@@ -23,16 +23,24 @@ const randoTimeStamp = (maxTime) => {
   return Math.floor(Math.random() * maxTime);
 }
 
-for ( let i = 1; i <= maxComments; i++) {
-  let tempComment = {
-    comment_id: i,
-    user_id: randoUserId(),
-    song_id: randoSongId(),
-    content: lorem.generateSentences(1),
-    time_stamp: randoTimeStamp(maxSongLength)
+const seedComments = async () => {
+  try {
+    await db.dropCollection();
+    for ( let i = 1; i <= maxComments; i++) {
+      let tempComment = {
+        user_id: randoUserId(),
+        song_id: randoSongId(),
+        content: lorem.generateSentences(1),
+        time_stamp: randoTimeStamp(maxSongLength)
+      }
+      const result = await db.saveComment(tempComment);
+      console.log(`comment ID '${result.comment_id}' added`);
+    }
+  } catch (err) {
+    console.log(err);
   }
 
-  commentDb.saveComment(tempComment)
-  .then(comment => console.log(`comment '${comment.content}' added`))
-  .catch(error => console.error(error.message));
 }
+
+seedComments();
+

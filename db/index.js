@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const database = 'fec-soundcloud-comments';
+const database = "soundcloud";
 
 mongoose.connect(`mongodb://localhost/${database}`, {
   useNewUrlParser: true,
@@ -15,9 +15,10 @@ db.once("open", function () {
   console.log(`mongodb connected to db "${database}"!`);
 });
 
-// db.dropCollection("comments", () =>  {
-//   console.log("comments collection dropped");
-// });
+const dropCollection = async () => {
+  await db.dropCollection("comments");
+  console.log("comments collection dropped");
+};
 
 const commentSchema = new mongoose.Schema({
   comment_id: {
@@ -56,7 +57,6 @@ const saveComment = async (comment) => {
     content: comment.content,
     time_stamp: comment.time_stamp, // random integer between zero and length of song in seconds
   });
-  console.log(newComment);
   const result = await newComment.save(newComment);
   return result;
 };
@@ -82,5 +82,9 @@ const getCommentByID = async (comment_id) => {
 };
 
 module.exports = {
-  getComments, getCommentsBySong, getCommentByID, saveComment
-}
+  getComments,
+  getCommentsBySong,
+  getCommentByID,
+  saveComment,
+  dropCollection,
+};
