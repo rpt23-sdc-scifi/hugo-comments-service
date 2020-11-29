@@ -22,12 +22,6 @@ const dropCollection = async () => {
 };
 
 const commentSchema = new mongoose.Schema({
-  comment_id: {
-    type: Number,
-    unique: true,
-    required: true,
-    immutable: true,
-  },
   user_id: {
     type: Number,
     required: true,
@@ -60,20 +54,17 @@ const getCommentsBySong = async (song_id) => {
   return results;
 };
 
-const getCommentByID = async (comment_id) => {
-  const result = await Comment.findOne({ comment_id }).lean();
+// this id is the MongoDB auto-generated ObjectId
+const getCommentByID = async (id) => {
+  const result = await Comment.findOne({ _id: id }).lean();
   if (result === null) {
-    throw new Error(`no comment with id ${comment_id}`);
+    throw new Error(`no comment with id ${id}`);
   }
   return result;
 };
 
 const saveComment = async (comment) => {
-  // auto-generate new comment ID (increment +1 existing max ID)
-  // two methods: countDocuments() vs. estimatedDocumentCount(), which is faster for large collections but possibly inaccurate
-  const commentCount = await Comment.estimatedDocumentCount();
   let newComment = new Comment({
-    comment_id: commentCount + 1,
     user_id: comment.user_id,
     song_id: comment.song_id,
     content: comment.content,
@@ -83,21 +74,20 @@ const saveComment = async (comment) => {
   return result;
 };
 
-const updateComment = async (comment_id, data) => {
-  // the comment ID cannot be changed (immutable)
-  const result = await Comment.findOneAndUpdate({ comment_id }, data, {
+const updateComment = async (id, data) => {
+  const result = await Comment.findOneAndUpdate({ _id: id }, data, {
     new: true,
   });
   if (result === null) {
-    throw new Error(`no comment with id ${comment_id}`);
+    throw new Error(`no comment with id ${id}`);
   }
   return result;
 };
 
-const deleteComment = async (comment_id) => {
-  const result = await Comment.findOneAndDelete({ comment_id });
+const deleteComment = async (id) => {
+  const result = await Comment.findOneAndDelete({ _id: id });
   if (result === null) {
-    throw new Error(`no comment with id ${comment_id}`);
+    throw new Error(`no comment with id ${id}`);
   }
   return result;
 };
