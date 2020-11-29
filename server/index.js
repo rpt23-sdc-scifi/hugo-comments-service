@@ -9,8 +9,6 @@ const port = 4000;
 
 const app = express();
 
-// app.use(express.static('./dist'));
-
 app.use(
   "/",
   expressStaticGzip("./dist", {
@@ -104,10 +102,9 @@ app.delete("/api/comments/id/:id", async (req, res) => {
   }
 });
 
-// app.get("/", (req, res) => {
-//   console.log("hit");
-//   res.sendFile(path.join(__dirname, "../dist/index.html"));
-// });
+app.get("/:current", (req, res) => {
+  res.sendFile(path.join(__dirname, "../dist/index.html"));
+});
 
 app.listen(port, () => {
   console.log(`server running on port ${port}`);
