@@ -53,7 +53,7 @@ const getComments = async () => {
 };
 
 const getCommentsBySong = async (song_id) => {
-  const results = await Comment.find({ song_id }).lean;
+  const results = await Comment.find({ song_id }).lean();
   if (results.length === 0) {
     throw new Error(`song ${song_id} doesn't have comments`);
   }
@@ -61,7 +61,7 @@ const getCommentsBySong = async (song_id) => {
 };
 
 const getCommentByID = async (comment_id) => {
-  const result = await Comment.findOne({ comment_id });
+  const result = await Comment.findOne({ comment_id }).lean();
   if (result === null) {
     throw new Error(`no comment with id ${comment_id}`);
   }

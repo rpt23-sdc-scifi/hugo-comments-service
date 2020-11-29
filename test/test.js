@@ -16,31 +16,30 @@ describe('/GET comments', () => {
               res.should.have.status(200);
               res.body.data.should.be.a('array');
               res.body.data.length.should.be.gt(36);
-              res.body.data.length.should.be.below(1000);
           done();
         });
   });
 });
 
-describe('/GET comment', () => {
-  it('it should GET one comment for song_id 1', (done) => {
+describe('/GET comments', () => {
+  it('it should GET comments for song_id 1', (done) => {
     chai.request(app)
-        .get('/comments/1')
+        .get('/comments/song/1')
         .end((err, res) => {
               res.should.have.status(200);
-              res.body.data.should.be.a('array');
-              res.body.data.length.should.equal(1);
+              res.body.should.be.a('array');
           done();
         });
   });
 
-  it('it should not GET any comments for a non-existant song_id 101', (done) => {
+  it('it should not GET any comments for a non-existant song_id 50000', (done) => {
     chai.request(app)
-        .get('/comments/101')
+        .get('/comments/song/50000')
         .end((err, res) => {
               res.should.have.status(400);
-              res.body.msg.should.be.a('string');
-              // res.body.msg.should.equal('no song with id 101');
+              console.log(res.body.error);
+              res.body.error.should.be.a('string');
+              res.body.error.should.equal("song 50000 doesn't have comments");
           done();
         });
   });
