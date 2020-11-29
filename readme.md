@@ -2,6 +2,8 @@
 
 > A Soundcloud (clone) service that handles and displays the comments for a song.
 
+&nbsp;
+
 ## Related Projects:
 
 - Description Service: https://github.com/rpt23-sdc-scifi/kara-song-description
@@ -53,7 +55,7 @@ This comments service, which generates between 0 and 10 comments per song, store
   - Example:
     ```javascript
     {
-      "count": 20011, // [integer] the number of records returned
+      "count": 20011, // [integer] number of comments returned
       "data": [ /* array[object] list of comments */
         {
           "comment_id": "5fc3223c5b11641d723798c8", // [string] Mongo ObjectID; unique identifier
@@ -130,7 +132,6 @@ This comments service, which generates between 0 and 10 comments per song, store
     {
       "user_id": 35,
       "content": "Wow, this is the best song EVER!!!",
-      "time_stamp": 26,
     }
     ```
 - Responses:
