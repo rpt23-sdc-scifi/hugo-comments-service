@@ -45,20 +45,24 @@ const commentSchema = new mongoose.Schema({
 
 const Comment = mongoose.model("Comment", commentSchema);
 
-const saveComment = (comment) => {
+const saveComment = async (comment) => {
+  // auto-generate new comment ID (increment +1 existing max ID = total comment count)
+  // two methods: countDocuments() vs. estimatedDocumentCount() which is faster for large collections but possibly inaccurate
+  const commentCount = await Comment.estimatedDocumentCount();
   let newComment = new Comment({
-    comment_id: comment.comment_id,
+    comment_id: commentCount + 1,
     user_id: comment.user_id,
     song_id: comment.song_id,
     content: comment.content,
     time_stamp: comment.time_stamp, // random integer between zero and length of song in seconds
   });
-
-  return newComment.save(newComment);
+  console.log(newComment);
+  const result = await newComment.save(newComment);
+  return result;
 };
 
-const getComments = () => {
-  return Comment.find().limit(1000);
+const getComments = async () => {
+  return Comment.find();
 };
 
 const getCommentsBySong = async (song_id) => {
