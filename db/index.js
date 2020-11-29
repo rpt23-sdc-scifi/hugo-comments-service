@@ -51,8 +51,8 @@ commentSchema.methods.toJSON = function () {
 
 const Comment = mongoose.model("Comment", commentSchema);
 
-const getComments = async () => {
-  return Comment.find();
+const getComments = async (filter) => {
+  return Comment.find(filter);
 };
 
 // this id is the MongoDB auto-generated ObjectId
