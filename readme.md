@@ -32,6 +32,7 @@ This comments service, which generates between 0 and 10 comments per song, store
 1. Run `npm run build` to build the browser components.
 1. After building the components, run `npm run sever` to start the application in development mode.
 1. Access the app at **localhost:4000/{song_id}** where **{song_id}** is the Song ID. A list of comments by song is displayed.
+1. Run tests with `npm run tests`.
 
 ### _Requirements_:
 
@@ -148,6 +149,8 @@ This comments service, which generates between 0 and 10 comments per song, store
   - `200 OK` [object] [json] > *returns the deleted comment*
   - `400 BAD REQUEST` [object] [json] > *returns an error message*
 
+&nbsp;
+
 ## Development
 
 If you would like to contribute to this project, please fork this repository and propose your changes via a Pull Request.
@@ -156,21 +159,22 @@ You can install the project's dependencies by going to the root directory of the
 
 #### Currently Developed using...
 
-- Node v12.18.3
-- npm v6.14.6
-- MongoDB v4.4
+- Node 14.9.0
+- npm 6.14.8
+- MongoDB 4.4.0
 
 ### Dependencies
 
 - Express
-- React/React Router/react-onclickoutside
+- React
 - Styled-Components
 - Mongoose
+- Axios
 
 ### Development Dependencies
 
 - Webpack/Babel
-- Jest/Enzyme/SuperTest/Mongodb-Memory-Server
-- ESLint w/ Airbrb Style Guide
+- Chai/Mocha
+- Brotli
 
 Refer to package.json file in the root directory for dependency version numbers.
