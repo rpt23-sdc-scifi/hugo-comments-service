@@ -34,7 +34,7 @@ const seedComments = async () => {
         time_stamp: randoTimeStamp(maxSongLength)
       }
       const result = await db.saveComment(tempComment);
-      console.log(`comment ID '${result.comment_id}' added`);
+      console.log(`comment ${i} added`);
     }
   } catch (err) {
     console.log(err);
