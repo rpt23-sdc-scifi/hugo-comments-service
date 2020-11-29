@@ -27,9 +27,9 @@ class App extends React.Component {
   }
 
   getComments(id) {
-    axios.get(`/api/comments/song/${id}`)
+    axios.get(`/api/comments?song_id=${id}`)
       .then(response => {
-        const comments = response.data;
+        const comments = response.data.data;
         this.setState({
           comments
         });
