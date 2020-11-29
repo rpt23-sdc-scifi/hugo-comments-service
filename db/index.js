@@ -47,12 +47,20 @@ const getComments = () => {
   return Comment.find().limit(1000);
 };
 
-const getCommentsBySong = (song_id) => {
-  return Comment.find({ song_id });
+const getCommentsBySong = async (song_id) => {
+  const results = await Comment.find({ song_id });
+  if (results.length === 0) {
+    throw new Error(`song ${song_id} doesn't have comments`);
+  }
+  return results;
 };
 
-const getCommentByID = (song_id) => {
-  return Comment.find({ comment_id });
+const getCommentByID = async (comment_id) => {
+  const result = await Comment.findOne({ comment_id });
+  if (result === null) {
+    throw new Error(`no song with id ${comment_id}`);
+  }
+  return result;
 };
 
 module.exports = {

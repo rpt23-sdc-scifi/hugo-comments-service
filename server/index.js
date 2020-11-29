@@ -10,6 +10,7 @@ const port = 4000;
 const app = express();
 
 // app.use(express.static('./dist'));
+
 app.use(
   "/",
   expressStaticGzip("./dist", {
@@ -47,11 +48,6 @@ app.get("/comments/song/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const comments = await db.getCommentsBySong(id);
-
-    if (comments.length === 0) {
-      throw new Error(`song ${id} doesn't have comments`);
-    }
-
     res.status(200).send(comments);
   } catch (error) {
     console.error(error);
@@ -60,6 +56,17 @@ app.get("/comments/song/:id", async (req, res) => {
 });
 
 // route to get a comment by specific comment ID
+app.get("/comments/id/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const comment = await db.getCommentByID(id);
+    res.status(200).send(comment);
+  } catch (error) {
+    console.error(error);
+    res.status(400).send({ error: error.message });
+  }
+});
+
 // app.get("/comments/id/:id", async (req, res) => {
 //   try {
 //     const { id } = req.params;
@@ -76,7 +83,7 @@ app.get("/comments/song/:id", async (req, res) => {
 //     if (comment.length === 0) {
 //       return res.status(400).json({
 //         succes: false,
-//         msg: `song ${id} doesn't have comments`,
+//         msg: ``,
 //       });
 //     }
 
