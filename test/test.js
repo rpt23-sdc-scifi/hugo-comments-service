@@ -130,3 +130,17 @@ describe("/PATCH comment", () => {
       });
   });
 });
+
+describe("/DELETE comment", () => {
+  it("should delete an existing comment", (done) => {
+    chai
+      .request(app)
+      .delete(`/comments/id/${newCommentID}`)
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.body.should.be.a("object");
+        res.body._id.should.equal(newCommentID);
+        done();
+      });
+  });
+});
