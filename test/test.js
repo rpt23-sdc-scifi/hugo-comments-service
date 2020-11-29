@@ -12,11 +12,11 @@ chai.use(chaiHttp);
 
 // ObjectID of comment that exists
 let existingComment = {
-  comment_id: "5fc3223c5b11641d723798c8",
-  user_id: 4,
-  song_id: 29,
-  content: "Id anim dolor ea aliquip occaecat consectetur.",
-  time_stamp: 125,
+  "user_id": 895597,
+  "song_id": 8888452,
+  "content": "Dolor esse velit cupidatat enim non tempor consequat.",
+  "time_stamp": 93,
+  "comment_id": "5fc367e0d17509f5cb743606"
 };
 
 let newComment = {
@@ -28,20 +28,6 @@ let newComment = {
 };
 
 let newCommentID = null;
-
-describe("/GET comments", () => {
-  it("should GET all the comments", (done) => {
-    chai
-      .request(app)
-      .get("/api/comments")
-      .end((err, res) => {
-        res.should.have.status(200);
-        res.body.data.should.be.a("array");
-        res.body.data.length.should.be.gt(36);
-        done();
-      });
-  });
-});
 
 describe("/GET comments by song ID", () => {
   it("should GET comments for song_id", (done) => {

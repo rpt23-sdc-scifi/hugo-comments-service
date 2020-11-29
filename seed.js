@@ -25,7 +25,7 @@ const randoTimeStamp = (maxTime) => {
 
 const seedComments = async () => {
   try {
-    await db.dropCollection();
+    // await db.dropCollection();
     for ( let i = 1; i <= maxComments; i++) {
       let tempComment = {
         user_id: randoUserId(),
