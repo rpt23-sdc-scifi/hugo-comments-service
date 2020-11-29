@@ -1,60 +1,103 @@
 const mongoose = require("mongoose");
 
-mongoose.connect("mongodb://localhost/fec-soundcloud-comments", {
+const database = "soundcloud";
+
+mongoose.connect(`mongodb://localhost/${database}`, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex: true,
+  useFindAndModify: false,
 });
 
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 
 db.once("open", function () {
-  console.log("mongodb connected!");
+  console.log(`mongodb connected to db "${database}"!`);
 });
 
-// db.dropCollection("comments", () =>  {
-//   console.log("comments collection dropped");
-// });
+const dropCollection = async () => {
+  await db.dropCollection("comments");
+  console.log("comments collection dropped");
+};
 
 const commentSchema = new mongoose.Schema({
-  comment_id: {
+  user_id: {
     type: Number,
-    unique: true,
     required: true,
   },
-  user_id: Number,
-  song_id: Number,
-  content: String,
-  time_stamp: Number,
+  song_id: {
+    type: Number,
+    required: true,
+  },
+  content: {
+    type: String,
+    required: true,
+  },
+  time_stamp: {
+    type: Number,
+    required: true,
+  },
 });
+
+// modify comment fields when returning data to match API
+commentSchema.methods.toJSON = function () {
+  const obj = this.toObject();
+  obj["comment_id"] = obj._id;
+  delete obj._id;
+  delete obj.__v;
+  return obj;
+};
 
 const Comment = mongoose.model("Comment", commentSchema);
 
-const saveComment = (comment) => {
+const getComments = async (filter) => {
+  return Comment.find(filter);
+};
+
+// this id is the MongoDB auto-generated ObjectId
+const getCommentByID = async (id) => {
+  const result = await Comment.findOne({ _id: id });
+  if (result === null) {
+    throw new Error(`no comment with id ${id}`);
+  }
+  return result;
+};
+
+const saveComment = async (comment) => {
   let newComment = new Comment({
-    comment_id: comment.comment_id,
     user_id: comment.user_id,
     song_id: comment.song_id,
     content: comment.content,
-    time_stamp: comment.time_stamp,
+    time_stamp: comment.time_stamp, // length of song in seconds
   });
-
-  return newComment.save(newComment);
+  const result = await newComment.save(newComment);
+  return result;
 };
 
-const getComments = () => {
-  return Comment.find().limit(1000);
+const updateComment = async (id, data) => {
+  const result = await Comment.findOneAndUpdate({ _id: id }, data, {
+    new: true,
+  });
+  if (result === null) {
+    throw new Error(`no comment with id ${id}`);
+  }
+  return result;
 };
 
-const getCommentsBySong = (song_id) => {
-  return Comment.find({ song_id });
+const deleteComment = async (id) => {
+  const result = await Comment.findOneAndDelete({ _id: id });
+  if (result === null) {
+    throw new Error(`no comment with id ${id}`);
+  }
+  return result;
 };
 
-const getCommentsByCommentID = (song_id) => {
-  return Comment.find({ song_id });
+module.exports = {
+  getComments,
+  getCommentByID,
+  saveComment,
+  updateComment,
+  deleteComment,
+  dropCollection,
 };
-
-module.exports.getComments = getComments;
-module.exports.getComment = getComment;
-module.exports.saveComment = saveComment;

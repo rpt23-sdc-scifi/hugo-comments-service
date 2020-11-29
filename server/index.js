@@ -9,7 +9,6 @@ const port = 4000;
 
 const app = express();
 
-// app.use(express.static('./dist'));
 app.use(
   "/",
   expressStaticGzip("./dist", {
@@ -24,99 +23,45 @@ app.use(
 app.use(express.json());
 app.use(cors());
 
-// route to get all comments in database
-app.get("/comments", async (req, res) => {
+// API: get all comments that match search critiera
+app.get("/api/comments", async (req, res) => {
   try {
-    const comments = await db.getComments();
+    console.log(req.query);
+    for (parameter in req.query) {
+      if (parameter === "content") {
+        break;
+      }
+      req.query[parameter] = Number(req.query[parameter]);
+    }
+    const comments = await db.getComments(req.query);
     res.status(200).send({
-      success: true,
       count: comments.length,
       data: comments,
     });
   } catch (error) {
     console.error(error);
     res.status(400).json({
-      success: false,
       msg: error,
     });
   }
 });
 
-// route to get all comments by song ID
-app.get("/comments/song/:id", async (req, res) => {
+// API: get a comment by comment ID
+app.get("/api/comments/:id", async (req, res) => {
   try {
     const { id } = req.params;
-
-    const comment = await db.getComment(id);
-
-    if (!comment || id > 100) {
-      return res.status(400).json({
-        succes: false,
-        msg: `no song with id ${id}`,
-      });
-    }
-
-    if (comment.length === 0) {
-      return res.status(400).json({
-        succes: false,
-        msg: `song ${id} doesn't have comments`,
-      });
-    }
-
-    res.status(200).send({
-      success: true,
-      data: comment,
-    });
+    const comment = await db.getCommentByID(id);
+    res.status(200).send(comment);
   } catch (error) {
     console.error(error);
-    res.status(400).json({
-      succes: false,
-      msg: error,
-    });
+    res.status(400).send({ error: error.message });
   }
 });
 
-// route to get a comment by specific comment ID
-app.get("/comments/song/:id", async (req, res) => {
+// API: add a new comment
+app.post("/api/comments", async (req, res) => {
   try {
-    const { id } = req.params;
-
-    const comment = await db.getComment(id);
-
-    if (!comment || id > 100) {
-      return res.status(400).json({
-        succes: false,
-        msg: `no song with id ${id}`,
-      });
-    }
-
-    if (comment.length === 0) {
-      return res.status(400).json({
-        succes: false,
-        msg: `song ${id} doesn't have comments`,
-      });
-    }
-
-    res.status(200).send({
-      success: true,
-      data: comment,
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(400).json({
-      succes: false,
-      msg: error,
-    });
-  }
-});
-
-// route to add a comment
-app.post("/comments", async (req, res) => {
-  try {
-    // auto-generate new comment ID (increment +1 existing max ID)
     const data = req.body;
-    data.comment_id = req.params.id;
-    console.log(data);
     const result = await db.saveComment(data);
     res.status(201).send(result);
   } catch (err) {
@@ -125,8 +70,32 @@ app.post("/comments", async (req, res) => {
   }
 });
 
+// API: update an existing comment
+app.patch("/api/comments/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const data = req.body;
+    const result = await db.updateComment(id, data);
+    res.status(200).send(result);
+  } catch (err) {
+    console.log(err);
+    res.status(400).send({ error: err.message });
+  }
+});
+
+// API: delete a comment
+app.delete("/api/comments/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await db.deleteComment(id);
+    res.status(200).send(result);
+  } catch (err) {
+    console.log(err);
+    res.status(400).send({ error: err.message });
+  }
+});
+
 app.get("/:current", (req, res) => {
-  console.log("hit");
   res.sendFile(path.join(__dirname, "../dist/index.html"));
 });
 
