@@ -76,8 +76,7 @@ chai.use(chaiHttp);
 // });
 
 describe("/POST comment", () => {
-  let commentID = null;
-  it("should create a new comment with an auto incrementing ID", (done) => {
+  it("should create a new comment", (done) => {
     chai
       .request(app)
       .post("/comments")
@@ -94,9 +93,8 @@ describe("/POST comment", () => {
         res.body.should.be.a("object");
         res.body.song_id.should.equal(182);
         res.body.user_id.should.equal(45);
-        commentID = req.body.comment_id;
-        console.log('commentID: ', commentID);
-        commentID.should.be.above(1);
+        res.body.should.not.have.property("random");
+        done();
       })
   })
 });
