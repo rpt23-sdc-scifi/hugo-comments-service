@@ -26,7 +26,7 @@ const getRandomTimeStamp = (maxTime) => {
 
 const writer = csvWriter({ sendHeaders: false });
 
-// options {flags: "a"} means it will append instead of overwriting it, "r" is default overwrite
+// adding the option {flags: "a"} means it will append instead of overwriting it; "w" is the default overwrite
 writer.pipe(fs.createWriteStream("./seed/data.csv"));
 
 for (let i = 1; i <= count; i++) {
@@ -40,12 +40,3 @@ for (let i = 1; i <= count; i++) {
 }
 
 writer.end();
-
-// const writeDataToCSV = async () => {
-//   try {
-//   } catch (err) {
-//     console.log(err);
-//   }
-// };
-
-// writeDataToCSV();
