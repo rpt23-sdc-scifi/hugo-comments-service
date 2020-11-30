@@ -2,7 +2,7 @@ const fs = require("fs");
 const csvWriter = require("csv-write-stream");
 const loremIpsum = require("lorem-ipsum").LoremIpsum;
 
-const count = 6000000; // 6 million comments
+const count = 6000000; // 6 / 10 million comments
 const maxSongLength = 480; // in seconds
 
 const lorem = new loremIpsum({
@@ -13,7 +13,7 @@ const lorem = new loremIpsum({
 });
 
 const getRandomUserId = () => {
-  return Math.floor(Math.random() * 100000) + 1; // 100,000 users
+  return Math.floor(Math.random() * 1000000) + 1; // 1 million users
 };
 
 const getRandomSongId = () => {
@@ -27,7 +27,7 @@ const getRandomTimeStamp = (maxTime) => {
 const writer = csvWriter({ sendHeaders: false });
 
 // adding the option {flags: "a"} means it will append instead of overwriting it; "w" is the default overwrite
-writer.pipe(fs.createWriteStream("./seed/data.csv"));
+writer.pipe(fs.createWriteStream("./seed/data.csv", {flags: "a"}));
 
 for (let i = 1; i <= count; i++) {
   const comment = {
