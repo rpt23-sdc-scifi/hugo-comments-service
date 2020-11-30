@@ -2,7 +2,7 @@ const fs = require("fs");
 const csvWriter = require("csv-write-stream");
 const loremIpsum = require("lorem-ipsum").LoremIpsum;
 
-const count = 1000; // 100 million records
+const count = 10000000; // 10 million comments
 const maxSongLength = 480; // in seconds
 
 const lorem = new loremIpsum({
@@ -13,11 +13,11 @@ const lorem = new loremIpsum({
 });
 
 const getRandomUserId = () => {
-  return Math.floor(Math.random() * 1000000) + 1; // 1 million users
+  return Math.floor(Math.random() * 100000) + 1; // 100,000 users
 };
 
 const getRandomSongId = () => {
-  return Math.floor(Math.random() * 10000000) + 1; // 10 million users
+  return Math.floor(Math.random() * 1000000) + 1; // 1 million songs
 };
 
 const getRandomTimeStamp = (maxTime) => {
@@ -35,7 +35,7 @@ for (let i = 1; i <= count; i++) {
     time_stamp: getRandomTimeStamp(maxSongLength),
   };
   writer.write(comment);
-  if (i % 100 === 0) {
+  if (i % 10000 === 0) {
     console.log(`comment ${i} added to csv file`);
   }
 }
