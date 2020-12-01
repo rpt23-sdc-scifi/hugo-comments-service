@@ -36,25 +36,25 @@ This comments service, which generates between 0 and 10 comments per song, store
     - `user_id`: [integer] *optional*
     - `time_stamp`: [integer] *optional*
     - `content`: [string] *optional*
-    - Example: **/api/comments/?song_id=125**
+      - Example: **/api/comments/?song_id=125**
 - Request Body: N/A
 - Responses:
   - `200 OK` [object] [json]
-  - Example:
-    ```javascript
-    {
-      "count": 20011, // [integer] number of comments returned
-      "data": [ /* array[object] list of comments */
-        {
-          "comment_id": "5fc3223c5b11641d723798c8", // [string] Mongo ObjectID; unique identifier
-          "user_id": 4, // [integer] ID of associated user
-          "song_id": 29, // [integer] ID of associated song
-          "content": "Id anim dolor ea aliquip.", // [string] comment text
-          "time_stamp": 125, // [integer] comment timestamp in song by seconds
-        }
-      ]
-    }
-    ```
+    - Example:
+      ```javascript
+      {
+        "count": 20011, // [integer] number of comments returned
+        "data": [ /* array[object] list of comments */
+          {
+            "comment_id": "5fc3223c5b11641d723798c8", // [string] Mongo ObjectID; unique identifier
+            "user_id": 4, // [integer] ID of associated user
+            "song_id": 29, // [integer] ID of associated song
+            "content": "Id anim dolor ea aliquip.", // [string] comment text
+            "time_stamp": 125, // [integer] comment timestamp in song by seconds
+          }
+        ]
+      }
+      ```
   - `400 BAD REQUEST` [object] [json] > *returns an error message*
 
 &nbsp;
@@ -69,16 +69,16 @@ This comments service, which generates between 0 and 10 comments per song, store
 - Request Body: N/A
 - Responses:
   - `200 OK` [object] [json]
-  - Example:
-    ```javascript
-    {
-      "comment_id": "5fc3223c5b11641d723798c8", // [string] Mongo ObjectID; unique identifier
-      "user_id": 4, // [integer] ID of associated user
-      "song_id": 29, // [integer] ID of associated song
-      "content": "Id anim dolor ea aliquip.", // [string] comment text
-      "time_stamp": 125, // [integer] comment timestamp in song by seconds
-    }
-    ```
+    - Example:
+      ```javascript
+      {
+        "comment_id": "5fc3223c5b11641d723798c8", // [string] Mongo ObjectID; unique identifier
+        "user_id": 4, // [integer] ID of associated user
+        "song_id": 29, // [integer] ID of associated song
+        "content": "Id anim dolor ea aliquip.", // [string] comment text
+        "time_stamp": 125, // [integer] comment timestamp in song by seconds
+      }
+      ```
   - `400 BAD REQUEST` [object] [json] > *returns an error message*
 
 &nbsp;
@@ -110,8 +110,9 @@ This comments service, which generates between 0 and 10 comments per song, store
 ### `/api/comments/{commentId}` PATCH
 - Update one or many properties of an existing comment based on a unique ID identifier.
 - Request Parameters:
-  - `commentId` [string] [path parameter] *required*
-    - Example: **/api/comments/5fc3223c5b11641d723798c8**
+  - PATH PARAMETERS:
+    - `commentId`: [string] *required*
+        - Example: **/api/comments/5fc3223c5b11641d723798c8**
 - Request Body: [json]
     - `user_id` [integer] *optional*
     - `song_id` [integer] *optional*
@@ -135,7 +136,7 @@ This comments service, which generates between 0 and 10 comments per song, store
 - Request Parameters:
   - PATH PARAMETERS:
     - `commentId`: [string] *required*
-    - Example: **/api/comments/5fc3223c5b11641d723798c8**
+      - Example: **/api/comments/5fc3223c5b11641d723798c8**
 - Request Body: N/A
 - Responses:
   - `200 OK` [object] [json] > *returns the deleted comment*
@@ -143,7 +144,7 @@ This comments service, which generates between 0 and 10 comments per song, store
 
 &nbsp;
 
-## Development
+## Development:
 
 If you would like to contribute to this project, please fork this repository and propose your changes via a Pull Request.
 
@@ -164,13 +165,13 @@ You can install the project's dependencies by going to the root directory of the
 - Node.js
 - MongoDB
 
-#### Currently Developed using...
+#### _Currently Developed using..._:
 
 - Node 14.9.0
 - npm 6.14.8
 - MongoDB 4.4.0
 
-#### Dependencies
+#### _Dependencies_:
 
 - Express
 - React
@@ -178,7 +179,7 @@ You can install the project's dependencies by going to the root directory of the
 - Mongoose
 - Axios
 
-#### Development Dependencies
+#### _Development Dependencies_:
 
 - Webpack/Babel
 - Chai/Mocha
