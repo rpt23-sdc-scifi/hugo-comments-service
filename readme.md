@@ -27,9 +27,11 @@ This comments service, which generates between 0 and 10 comments per song, store
 
 ## API:
 
+The Comments Service API conforms to RESTful specifications. Create, Read, Update, and Delete operations are performed by making requests to the `/api/comments` endpoint.
+
 ### `/api/comments` GET
 
-- List all existing comments. Can retrieve specific comments based on diferent search critiera.
+- List all existing comments. Can retrieve specific comments based on diferent search criteria.
 - Request Parameters:
   - QUERY PARAMETERS:
     - `song_id`: [integer] *optional*
@@ -65,7 +67,7 @@ This comments service, which generates between 0 and 10 comments per song, store
 - Request Parameters:
   - PATH PARAMETERS:
     - `commentId`: [string] *required*
-    - Example: **/api/comments/5fc3223c5b11641d723798c8**
+      - Example: **/api/comments/5fc3223c5b11641d723798c8**
 - Request Body: N/A
 - Responses:
   - `200 OK` [object] [json]
