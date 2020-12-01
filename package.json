@@ -18,10 +18,12 @@
     "brotli-webpack-plugin": "^1.1.0",
     "compression-webpack-plugin": "^6.0.5",
     "cors": "^2.8.5",
+    "couchimport": "^1.5.1",
     "csv-write-stream": "^2.0.0",
     "express-static-gzip": "^2.1.0",
     "lorem-ipsum": "^2.0.3",
     "mongoose": "^5.10.7",
+    "nano": "^9.0.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "styled-components": "^5.2.0"
