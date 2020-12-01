@@ -15,11 +15,23 @@ echo "start script: seeding records into couchDB"
 #   -X POST http://admin:password@127.0.0.1:5984/demo \
 #   cat /Users/hugo/hack-reactor/sdc/hugo-comments-service/seed/demo.csv | couchimport --delimiter ","
 
-# using "ccurl" as a utility wrapper around curl
+# export COUCH_URL="http://admin:password@127.0.0.1:5984/"
+# export COUCH_DATABASE="demo2"
+# export COUCH_DELIMITER=","
+# curl -H 'Content-Type: application/json' \
+#   -X PUT http://admin:password@127.0.0.1:5984/demo2 \
+#   -d cat /Users/hugo/hack-reactor/sdc/hugo-comments-service/seed/demo.csv | couchimport
+
+
 export COUCH_URL="http://admin:password@127.0.0.1:5984/"
-export COUCH_DATABASE="wtf"
+export COUCH_DATABASE="comments"
 export COUCH_DELIMITER=","
-ccurl -X POST /wtf
+
+# write data in multiple parallel HTTP requests -- speed up large data imports
+export COUCH_PARALLELISM=100
+
+# using "ccurl" as a utility wrapper around curl
+ccurl -X PUT /comments
 cat /Users/hugo/hack-reactor/sdc/hugo-comments-service/seed/demo.csv | couchimport
 
 echo "end script: seeding records into couchDB"
