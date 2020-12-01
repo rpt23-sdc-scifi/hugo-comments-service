@@ -15,7 +15,6 @@
 ## Table of Contents:
 
 1. [Oerview](#overview)
-1. [Setup](#setup)
 1. [Usage](#usage)
 1. [API](#api)
 1. [Development](#development)
@@ -26,36 +25,18 @@ For Hack Reactor's culminating Systems Design Capstone project, focused on datab
 
 This comments service, which generates between 0 and 10 comments per song, stores up to 100 million records. A seeding script to generate this mock data is provided.
 
-## Setup:
-
-1. Clone this repo and go to its root directory.
-1. Run `npm install` to install its dependencies.
-1. Seed the database with `npm run seed`.
-1. Run `npm run build` to build the browser components.
-1. After building the components, run `npm run sever` to start the application in development mode.
-1. Access the app at **localhost:4000/{song_id}** where **{song_id}** is the Song ID. A list of comments by song is displayed.
-1. Run tests with `npm run tests`.
-
-### _Requirements_:
-
-- Node.js
-- MongoDB
-
 ## API:
 
-### GET: `/api/comments`
+### `/api/comments` GET
 
 - List all existing comments. Can retrieve specific comments based on diferent search critiera.
 - Request Parameters:
   - Query Parameters:
-  - `song_id`: [integer] *optional*
-      - Example: **/api/comments/?song_id=29**
-  - `user_id`: [integer] *optional*
-      - Example: **/api/comments/?user_id=4**
-  - `time_stamp`: [integer] *optional*
-      - Example: **/api/comments/?content=Id anim dolor ea aliquip.**
-  - `content`: [string] *optional*
-      - Example: **/api/comments/?time_stamp=125**
+    - `song_id`: [integer] *optional*
+    - `user_id`: [integer] *optional*
+    - `time_stamp`: [integer] *optional*
+    - `content`: [string] *optional*
+      - Example: **/api/comments/?song_id=125**
 - Request Body: N/A
 - Responses:
   - `200 OK` [object] [json]
@@ -78,7 +59,7 @@ This comments service, which generates between 0 and 10 comments per song, store
 
 &nbsp;
 
-### GET: `/api/comments/{commentId}`
+### `/api/comments/{commentId}` GET
 
 - Retrieve one comment based on a unique ID identifier.
 - Request Parameters:
@@ -101,7 +82,7 @@ This comments service, which generates between 0 and 10 comments per song, store
 
 &nbsp;
 
-### POST: `/api/comments`
+### `/api/comments` POST
 - Create a new comment.
 - Request Parameters: N/A
 - Request Body: [json]
@@ -125,7 +106,7 @@ This comments service, which generates between 0 and 10 comments per song, store
 
 &nbsp;
 
-### PATCH: `/api/comments/{commentId}`
+### `/api/comments/{commentId}` PATCH
 - Update one or many properties of an existing comment based on a unique ID identifier.
 - Request Parameters:
   - `commentId` [string] [path parameter] *required*
@@ -148,7 +129,7 @@ This comments service, which generates between 0 and 10 comments per song, store
 
 &nbsp;
 
-### DELETE: `/api/comments/{commentId}`
+### `/api/comments/{commentId}` DELETE
 - Delete an existing comment based on a unique ID identifier.
 - Request Parameters:
   - `commentId` [string] [path parameter] *required*
@@ -165,6 +146,21 @@ This comments service, which generates between 0 and 10 comments per song, store
 If you would like to contribute to this project, please fork this repository and propose your changes via a Pull Request.
 
 You can install the project's dependencies by going to the root directory of the project and running `npm install`.
+
+### Setup:
+
+1. Clone this repo and go to its root directory.
+1. Run `npm install` to install its dependencies.
+1. Seed the database with `npm run seed`.
+1. Run `npm run build` to build the browser components.
+1. After building the components, run `npm run sever` to start the application in development mode.
+1. Access the app at **localhost:4000/{song_id}** where **{song_id}** is the Song ID. A list of comments by song is displayed.
+1. Run tests with `npm run tests`.
+
+### _Requirements_:
+
+- Node.js
+- MongoDB
 
 #### Currently Developed using...
 
