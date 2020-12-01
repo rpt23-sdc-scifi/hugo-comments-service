@@ -32,6 +32,6 @@ export COUCH_PARALLELISM=100
 
 # using "ccurl" as a utility wrapper around curl
 ccurl -X PUT /comments
-cat /Users/hugo/hack-reactor/sdc/hugo-comments-service/seed/demo.csv | couchimport
+cat /Users/hugo/hack-reactor/sdc/hugo-comments-service/seed/data.csv | couchimport
 
 echo "end script: seeding records into couchDB"
