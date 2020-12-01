@@ -31,12 +31,12 @@ This comments service, which generates between 0 and 10 comments per song, store
 
 - List all existing comments. Can retrieve specific comments based on diferent search critiera.
 - Request Parameters:
-  - Query Parameters:
+  - QUERY PARAMETERS:
     - `song_id`: [integer] *optional*
     - `user_id`: [integer] *optional*
     - `time_stamp`: [integer] *optional*
     - `content`: [string] *optional*
-      - Example: **/api/comments/?song_id=125**
+    - Example: **/api/comments/?song_id=125**
 - Request Body: N/A
 - Responses:
   - `200 OK` [object] [json]
@@ -63,7 +63,8 @@ This comments service, which generates between 0 and 10 comments per song, store
 
 - Retrieve one comment based on a unique ID identifier.
 - Request Parameters:
-  - `commentId` [string] [path parameter] *required*
+  - PATH PARAMETERS:
+    - `commentId`: [string] *required*
     - Example: **/api/comments/5fc3223c5b11641d723798c8**
 - Request Body: N/A
 - Responses:
@@ -86,10 +87,10 @@ This comments service, which generates between 0 and 10 comments per song, store
 - Create a new comment.
 - Request Parameters: N/A
 - Request Body: [json]
-    - `user_id` [integer] *required*
-    - `song_id` [integer] *required*
-    - `content` [string] *required*
-    - `time_stamp` [string] *required*
+    - `user_id`: [integer] *required*
+    - `song_id`: [integer] *required*
+    - `content`: [string] *required*
+    - `time_stamp`: [string] *required*
   - Example:
     ```javascript
     {
@@ -132,7 +133,8 @@ This comments service, which generates between 0 and 10 comments per song, store
 ### `/api/comments/{commentId}` DELETE
 - Delete an existing comment based on a unique ID identifier.
 - Request Parameters:
-  - `commentId` [string] [path parameter] *required*
+  - PATH PARAMETERS:
+    - `commentId`: [string] *required*
     - Example: **/api/comments/5fc3223c5b11641d723798c8**
 - Request Body: N/A
 - Responses:
@@ -157,7 +159,7 @@ You can install the project's dependencies by going to the root directory of the
 1. Access the app at **localhost:4000/{song_id}** where **{song_id}** is the Song ID. A list of comments by song is displayed.
 1. Run tests with `npm run tests`.
 
-### _Requirements_:
+#### _Requirements_:
 
 - Node.js
 - MongoDB
@@ -168,7 +170,7 @@ You can install the project's dependencies by going to the root directory of the
 - npm 6.14.8
 - MongoDB 4.4.0
 
-### Dependencies
+#### Dependencies
 
 - Express
 - React
@@ -176,7 +178,7 @@ You can install the project's dependencies by going to the root directory of the
 - Mongoose
 - Axios
 
-### Development Dependencies
+#### Development Dependencies
 
 - Webpack/Babel
 - Chai/Mocha
