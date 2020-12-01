@@ -27,8 +27,10 @@ export COUCH_URL="http://admin:password@127.0.0.1:5984/"
 export COUCH_DATABASE="comments"
 export COUCH_DELIMITER=","
 
-# write data in multiple parallel HTTP requests -- speed up large data imports
-export COUCH_PARALLELISM=100
+# write data in multiple parallel HTTP requests -- speed up large data imports: 4-5 seems fastest?
+export COUCH_PARALLELISM=5
+# increase records per bulk write
+# export COUCH_BUFFER_SIZE=10000
 
 # using "ccurl" as a utility wrapper around curl
 ccurl -X PUT /comments
