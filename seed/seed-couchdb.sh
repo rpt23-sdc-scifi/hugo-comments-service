@@ -6,7 +6,6 @@ export COUCH_DELIMITER=","
 
 # write data in multiple parallel HTTP requests -- speed up large data imports: 4-5 seems fastest?
 export COUCH_PARALLELISM=5
-
 # increase records per bulk write
 # export COUCH_BUFFER_SIZE=10000
 
