@@ -54,6 +54,7 @@ for (let i = 1; i <= count; i++) {
   const time_stamp = getRandomTimeStamp(maxSongLength);
 
   commentsWriter.write({
+    comment_id: i,
     user_id,
     song_id,
     content_id,
@@ -61,15 +62,17 @@ for (let i = 1; i <= count; i++) {
   });
 
   usersWriter.write({
+    user_id: i,
     system_number: user_id,
   });
 
   songsWriter.write({
+    song_id: i,
     system_number: song_id,
   });
 
-
   contentWriter.write({
+    content_id: i,
     text,
   });
 }

@@ -1,4 +1,4 @@
--- script created from MySQL Workbench
+-- schema created from MySQL Workbench
 
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
@@ -52,9 +52,9 @@ CREATE INDEX `idx_system_number` ON `soundcloud`.`users` (`system_number` ASC);
 DROP TABLE IF EXISTS `soundcloud`.`content` ;
 
 CREATE TABLE IF NOT EXISTS `soundcloud`.`content` (
-  `content-Id` INT NOT NULL AUTO_INCREMENT,
+  `content_id` INT NOT NULL AUTO_INCREMENT,
   `text` VARCHAR(255) NULL,
-  PRIMARY KEY (`content-Id`))
+  PRIMARY KEY (`content_id`))
 ENGINE = InnoDB;
 
 CREATE INDEX `idx_text` ON `soundcloud`.`content` (`text` ASC);
@@ -66,12 +66,12 @@ CREATE INDEX `idx_text` ON `soundcloud`.`content` (`text` ASC);
 DROP TABLE IF EXISTS `soundcloud`.`comments` ;
 
 CREATE TABLE IF NOT EXISTS `soundcloud`.`comments` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `comment_id` INT(11) NOT NULL AUTO_INCREMENT,
   `user_id` INT(11) NOT NULL,
   `song_id` INT(11) NOT NULL,
   `content_id` INT NOT NULL,
   `time_stamp` INT(11) NOT NULL,
-  PRIMARY KEY (`id`),
+  PRIMARY KEY (`comment_id`),
   CONSTRAINT `song_id`
     FOREIGN KEY (`song_id`)
     REFERENCES `soundcloud`.`songs` (`song_id`)
@@ -84,7 +84,7 @@ CREATE TABLE IF NOT EXISTS `soundcloud`.`comments` (
     ON UPDATE CASCADE,
   CONSTRAINT `content_id`
     FOREIGN KEY (`content_id`)
-    REFERENCES `soundcloud`.`content` (`content-Id`)
+    REFERENCES `soundcloud`.`content` (`content_id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -95,9 +95,37 @@ CREATE INDEX `idx_user_id` ON `soundcloud`.`comments` (`user_id` ASC);
 
 CREATE INDEX `idx_song_id` ON `soundcloud`.`comments` (`song_id` ASC);
 
-CREATE INDEX `idx_content` ON `soundcloud`.`comments` (`content_id` ASC);
+CREATE INDEX `idx_content_id` ON `soundcloud`.`comments` (`content_id` ASC);
 
 CREATE INDEX `idx_time_stamp` ON `soundcloud`.`comments` (`time_stamp` ASC);
+
+-- -----------------------------------------------------
+-- LOAD CSV DATA FROM FILES
+-- -----------------------------------------------------
+
+LOAD DATA LOCAL INFILE './seed/comments.csv'
+INTO TABLE `soundcloud`.`comments`
+FIELDS TERMINATED BY ','
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS;
+
+LOAD DATA LOCAL INFILE './seed/users.csv'
+INTO TABLE `soundcloud`.`users`
+FIELDS TERMINATED BY ','
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS;
+
+LOAD DATA LOCAL INFILE './seed/songs.csv'
+INTO TABLE `soundcloud`.`songs`
+FIELDS TERMINATED BY ','
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS;
+
+LOAD DATA LOCAL INFILE './seed/content.csv'
+INTO TABLE `soundcloud`.`content`
+FIELDS TERMINATED BY ','
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
