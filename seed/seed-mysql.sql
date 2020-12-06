@@ -103,29 +103,25 @@ CREATE INDEX `idx_time_stamp` ON `soundcloud`.`comments` (`time_stamp` ASC);
 -- LOAD CSV DATA FROM FILES
 -- -----------------------------------------------------
 
-LOAD DATA LOCAL INFILE './seed/comments.csv'
+LOAD DATA LOCAL INFILE './seed/data/comments.csv'
 INTO TABLE `soundcloud`.`comments`
 FIELDS TERMINATED BY ','
-LINES TERMINATED BY '\n'
-IGNORE 1 ROWS;
+LINES TERMINATED BY '\n';
 
-LOAD DATA LOCAL INFILE './seed/users.csv'
+LOAD DATA LOCAL INFILE './seed/data/users.csv'
 INTO TABLE `soundcloud`.`users`
 FIELDS TERMINATED BY ','
-LINES TERMINATED BY '\n'
-IGNORE 1 ROWS;
+LINES TERMINATED BY '\n';
 
-LOAD DATA LOCAL INFILE './seed/songs.csv'
+LOAD DATA LOCAL INFILE './seed/data/songs.csv'
 INTO TABLE `soundcloud`.`songs`
 FIELDS TERMINATED BY ','
-LINES TERMINATED BY '\n'
-IGNORE 1 ROWS;
+LINES TERMINATED BY '\n';
 
-LOAD DATA LOCAL INFILE './seed/content.csv'
+LOAD DATA LOCAL INFILE './seed/data/content.csv'
 INTO TABLE `soundcloud`.`content`
 FIELDS TERMINATED BY ','
-LINES TERMINATED BY '\n'
-IGNORE 1 ROWS;
+LINES TERMINATED BY '\n';
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
