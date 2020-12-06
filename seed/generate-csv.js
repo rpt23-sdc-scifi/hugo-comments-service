@@ -70,7 +70,7 @@ const generateUsersCSV = (count) => {
   for (let i = 1; i <= count / 10; i++) {
 
     writer.write({
-      system_number: getRandomUserId(),
+      system_number: getRandomUserId(count / 10),
     });
   }
 
@@ -86,7 +86,7 @@ const generateSongsCSV = (count) => {
   for (let i = 1; i <= count / 10; i++) {
 
     writer.write({
-      system_number: getRandomSongId(),
+      system_number: getRandomSongId(count / 10),
     });
   }
 
