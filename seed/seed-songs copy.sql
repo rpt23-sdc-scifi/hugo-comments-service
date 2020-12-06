@@ -10,7 +10,7 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 -- -----------------------------------------------------
 -- Schema soundcloud
 -- -----------------------------------------------------
-DROP SCHEMA IF EXISTS `soundcloud` ;
+-- DROP SCHEMA IF EXISTS `soundcloud` ;
 
 -- -----------------------------------------------------
 -- Schema soundcloud
