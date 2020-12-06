@@ -41,7 +41,7 @@ CREATE INDEX `idx_text` ON `soundcloud`.`content` (`text` ASC);
 -- LOAD CSV DATA FROM FILES
 -- -----------------------------------------------------
 
-LOAD DATA LOCAL INFILE './seed/data/content.csv'
+LOAD DATA LOCAL INFILE './seed/data/content-test.csv'
 INTO TABLE `soundcloud`.`content`
 FIELDS TERMINATED BY ','
 LINES TERMINATED BY '\n'

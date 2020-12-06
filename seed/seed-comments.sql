@@ -64,7 +64,7 @@ CREATE INDEX `idx_time_stamp` ON `soundcloud`.`comments` (`time_stamp` ASC);
 -- LOAD CSV DATA FROM FILES
 -- -----------------------------------------------------
 
-LOAD DATA LOCAL INFILE './seed/data/comments.csv'
+LOAD DATA LOCAL INFILE './seed/data/comments-test.csv'
 INTO TABLE `soundcloud`.`comments`
 FIELDS TERMINATED BY ','
 LINES TERMINATED BY '\n'
