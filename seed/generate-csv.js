@@ -111,10 +111,10 @@ const generateContentCSV = (count) => {
 };
 
 const generateCSVFiles = () => {
-  generateCommentsCSV();
-  generateUsersCSV();
-  generateSongsCSV();
-  generateContentCSV();
+  // generateCommentsCSV();
+  // generateUsersCSV();
+  // generateSongsCSV();
+  // generateContentCSV();
 };
 
 const count = 1000; // number of comments

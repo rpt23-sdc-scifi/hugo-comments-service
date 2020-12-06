@@ -1,3 +1,7 @@
+/*  Execute this file from the command line by typing:
+ *    mysql -u root < seed/seed-comments.sql
+ *  to create the database and the tables.*/
+
 -- schema created from MySQL Workbench
 
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
@@ -17,47 +21,6 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 -- -----------------------------------------------------
 CREATE SCHEMA IF NOT EXISTS `soundcloud` DEFAULT CHARACTER SET utf8 ;
 USE `soundcloud` ;
-
--- -----------------------------------------------------
--- Table `soundcloud`.`songs`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `soundcloud`.`songs` ;
-
-CREATE TABLE IF NOT EXISTS `soundcloud`.`songs` (
-  `song_id` INT NOT NULL AUTO_INCREMENT,
-  `system_number` INT NULL,
-  PRIMARY KEY (`song_id`))
-ENGINE = InnoDB;
-
-CREATE INDEX `idx_system_number` ON `soundcloud`.`songs` (`system_number` ASC);
-
-
--- -----------------------------------------------------
--- Table `soundcloud`.`users`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `soundcloud`.`users` ;
-
-CREATE TABLE IF NOT EXISTS `soundcloud`.`users` (
-  `user_id` INT NOT NULL AUTO_INCREMENT,
-  `system_number` INT NULL,
-  PRIMARY KEY (`user_id`))
-ENGINE = InnoDB;
-
-CREATE INDEX `idx_system_number` ON `soundcloud`.`users` (`system_number` ASC);
-
-
--- -----------------------------------------------------
--- Table `soundcloud`.`content`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `soundcloud`.`content` ;
-
-CREATE TABLE IF NOT EXISTS `soundcloud`.`content` (
-  `content_id` INT NOT NULL AUTO_INCREMENT,
-  `text` VARCHAR(255) NULL,
-  PRIMARY KEY (`content_id`))
-ENGINE = InnoDB;
-
-CREATE INDEX `idx_text` ON `soundcloud`.`content` (`text` ASC);
 
 
 -- -----------------------------------------------------
@@ -87,9 +50,7 @@ CREATE TABLE IF NOT EXISTS `soundcloud`.`comments` (
     REFERENCES `soundcloud`.`content` (`content_id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
-ENGINE = InnoDB
-AUTO_INCREMENT = 10259775
-DEFAULT CHARACTER SET = utf8;
+ENGINE = InnoDB;
 
 CREATE INDEX `idx_user_id` ON `soundcloud`.`comments` (`user_id` ASC);
 
@@ -106,29 +67,10 @@ CREATE INDEX `idx_time_stamp` ON `soundcloud`.`comments` (`time_stamp` ASC);
 LOAD DATA LOCAL INFILE './seed/data/comments.csv'
 INTO TABLE `soundcloud`.`comments`
 FIELDS TERMINATED BY ','
-LINES TERMINATED BY '\n';
-
-LOAD DATA LOCAL INFILE './seed/data/users.csv'
-INTO TABLE `soundcloud`.`users`
-FIELDS TERMINATED BY ','
-LINES TERMINATED BY '\n';
-
-LOAD DATA LOCAL INFILE './seed/data/songs.csv'
-INTO TABLE `soundcloud`.`songs`
-FIELDS TERMINATED BY ','
-LINES TERMINATED BY '\n';
-
-LOAD DATA LOCAL INFILE './seed/data/content.csv'
-INTO TABLE `soundcloud`.`content`
-FIELDS TERMINATED BY ','
-LINES TERMINATED BY '\n';
+LINES TERMINATED BY '\n'
+(user_id, song_id, content_id, time_stamp);
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
-
-
-/*  Execute this file from the command line by typing:
- *    mysql -u root < seed/seed-mysql.sql
- *  to create the database and the tables.*/

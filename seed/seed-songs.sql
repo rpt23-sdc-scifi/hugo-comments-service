@@ -1,3 +1,7 @@
+/*  Execute this file from the command line by typing:
+ *    mysql -u root < seed/seed-songs.sql
+ *  to create the database and the tables.*/
+
 -- schema created from MySQL Workbench
 
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
@@ -46,6 +50,3 @@ SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 
-/*  Execute this file from the command line by typing:
- *    mysql -u root < seed/seed-mysql.sql
- *  to create the database and the tables.*/
