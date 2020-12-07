@@ -60,10 +60,36 @@ Song.init(
   }
 );
 
-// the defined model is the class itself
-console.log(User === sequelize.models.User); // true
+const Content = sequelize.define(
+  "Content",
+  {
+    // Model attributes are defined here
+    content_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    text: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+  },
+  {
+    // Other model options go here
+    tableName: "content",
+    timestamps: false,
+    indexes: [
+      {
+        name: "idx_text",
+        fields: ["text"],
+      },
+    ],
+  }
+);
 
 module.exports = {
   User,
   Song,
+  Content,
 };

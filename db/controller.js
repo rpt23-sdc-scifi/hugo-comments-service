@@ -1,41 +1,42 @@
-const { User, Song } = require("./models.js");
+const { User, Song, Content } = require("./models.js");
 
 const getComments = async (filter) => {
-  const result = await User.findAll({
-    limit: 1000,
+  // const result = await User.findAll({
+  //   limit: 1000,
+  //   where: {
+  //     user_id: 1,
+  //   },
+  // });
+  // console.log(result);
+
+  const result2 = await Content.findAll({
     where: {
-      user_id: 1,
-    },
-  });
-  console.log(result);
-  const result2 = await Song.findAll({
-    where: {
-      song_id: 1,
+      text: "Nulla eiusmod ut sint dolore.",
     },
   });
   console.log(result2);
 
-  const newUser = await User.create({ system_number: 100000000 });
-  console.log("newUser's auto-generated ID:", newUser);
+  // const newUser = await User.create({ system_number: 100000000 });
+  // console.log("newUser's auto-generated ID:", newUser);
 
-  await User.update({system_number: -100}, {
-    where: {
-      system_number: 100000000
-    }
-  })
+  // await User.update({system_number: -100}, {
+  //   where: {
+  //     system_number: 100000000
+  //   }
+  // })
 
-  await User.destroy({
-    where: {
-      system_number: -100
-    }
-  });
+  // await User.destroy({
+  //   where: {
+  //     system_number: -100
+  //   }
+  // });
 
-  const result3 = await User.findAll({
-    where: {
-      system_number: -100
-    },
-  });
-  console.log(result3);
+  // const result3 = await User.findAll({
+  //   where: {
+  //     system_number: -100
+  //   },
+  // });
+  // console.log(result3);
 
 };
 
