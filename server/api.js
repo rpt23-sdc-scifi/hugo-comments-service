@@ -13,15 +13,19 @@ router.get("/comments", async (req, res) => {
     song_id = Number(song_id);
 
     const comments = await db.getComments(user_id, song_id, content);
-    res.status(200).send({
+
+    const result = {
       count: comments.length,
       data: comments,
-    });
+    };
+    // send 404 if request is valid but no results found
+    if (comments.length === 0) {
+      res.status(404).send(result);
+    }
+
+    res.status(200).send(result);
   } catch (error) {
-    console.error(error);
-    res.status(400).json({
-      msg: error,
-    });
+    res.status(400).send({ error: err.message });
   }
 });
 
@@ -30,6 +34,11 @@ router.get("/comments/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const comment = await db.getCommentByID(id);
+
+    // send 404 if request is valid but no results found
+    if (comment === null) {
+      res.status(404).send({ message: "no results found" });
+    }
     res.status(200).send(comment);
   } catch (error) {
     console.error(error);
@@ -65,9 +74,9 @@ router.patch("/comments/:id", async (req, res) => {
 // API: delete a comment
 router.delete("/comments/:id", async (req, res) => {
   try {
-    const { id } = req.params;
+    const id = Number(req.params.id);
     const result = await db.deleteComment(id);
-    res.status(200).send(result);
+    res.status(200).send({ message: "successfully deleted comment" });
   } catch (err) {
     console.log(err);
     res.status(400).send({ error: err.message });
