@@ -23,6 +23,7 @@
     "express-static-gzip": "^2.1.0",
     "lorem-ipsum": "^2.0.3",
     "mongoose": "^5.10.7",
+    "mysql2": "^2.2.5",
     "nano": "^9.0.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
