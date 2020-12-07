@@ -101,10 +101,10 @@ const Comment = sequelize.define(
     user_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: {
-        model: User,
-        key: "user_id"
-      }
+      // references: {
+      //   model: User,
+      //   key: "user_id"
+      // }
     },
     song_id: {
       type: DataTypes.INTEGER,
@@ -151,8 +151,18 @@ const Comment = sequelize.define(
   }
 );
 
-// Project.hasMany(Task, { foreignKey: 'tasks_pk' });
-// Task.belongsTo(Project, { foreignKey: 'tasks_pk' });
+User.hasMany(Comment, {
+  foreignKey: "user_id"
+});
+Comment.belongsTo(User, {
+  foreignKey: "user_id"
+});
+
+// User.hasMany(Comments);
+// Comment.hasOne();
+
+// User.hasOne(Comment);
+// User.hasMany(Comment);
 
 module.exports = {
   User,

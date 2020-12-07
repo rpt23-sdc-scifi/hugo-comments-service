@@ -11,7 +11,7 @@ const getComments = async (filter) => {
 
   const result2 = await Comment.findAll({
     where: {
-      comment_id: 1,
+      comment_id: 2,
     },
   });
   console.log(result2);
