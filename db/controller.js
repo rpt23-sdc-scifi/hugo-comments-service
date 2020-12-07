@@ -111,9 +111,9 @@ const saveComment = async (data) => {
   );
 
   // create new comment with keys pointing to referenced tables
-  await Comment.create(data);
+  const result = await Comment.create(data);
 
-  return true;
+  return result.toJSON().comment_id;
 };
 
 const updateComment = async (id, data) => {
@@ -153,12 +153,13 @@ const updateComment = async (id, data) => {
   await comment.save();
   await comment.reload();
 
-  return true;
+  return comment.toJSON().comment_id;
 };
 
 const deleteComment = async (id) => {
   const comment = await Comment.findByPk(id);
-  return comment.destroy();
+  await comment.destroy();
+  return comment.toJSON().comment_id;
 };
 
 module.exports = {

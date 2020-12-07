@@ -50,8 +50,8 @@ router.get("/comments/:id", async (req, res) => {
 router.post("/comments", async (req, res) => {
   try {
     const data = req.body;
-    await db.saveComment(data);
-    res.status(201).send({ message: "successfully created comment" });
+    const comment_id = await db.saveComment(data);
+    res.status(201).send({ comment_id, message: "successfully created comment" });
   } catch (err) {
     console.log(err);
     res.status(400).send({ error: err.message });
@@ -63,8 +63,8 @@ router.patch("/comments/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const data = req.body;
-    await db.updateComment(id, data);
-    res.status(200).send({ message: `successfully updated comment ${id}` });
+    const comment_id = await db.updateComment(id, data);
+    res.status(200).send({ comment_id, message: "successfully updated comment" });
   } catch (err) {
     console.log(err);
     res.status(400).send({ error: err.message });
@@ -75,8 +75,8 @@ router.patch("/comments/:id", async (req, res) => {
 router.delete("/comments/:id", async (req, res) => {
   try {
     const id = Number(req.params.id);
-    await db.deleteComment(id);
-    res.status(200).send({ message: `successfully deleted comment ${id}` });
+    const comment_id = await db.deleteComment(id);
+    res.status(200).send({ comment_id, message: "successfully deleted comment" });
   } catch (err) {
     console.log(err);
     res.status(400).send({ error: err.message });

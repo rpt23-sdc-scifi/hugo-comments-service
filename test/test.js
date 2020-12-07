@@ -7,13 +7,12 @@ chai.use(chaiHttp);
 
 // I should probably be using a seperate test database for these tests, but I don't feel like coding it right now, maybe later
 
-// ObjectID of comment that exists
+// Existing comment data: comment #1 (already loaded into database)
 let existingComment = {
-  "user_id": 895597,
-  "song_id": 8888452,
-  "content": "Dolor esse velit cupidatat enim non tempor consequat.",
-  "time_stamp": 93,
-  "comment_id": "5fc367e0d17509f5cb743606"
+  user_id: 987987,
+  song_id: 65,
+  content: "YES! Greatest song.",
+  time_stamp: 100,
 };
 
 let newComment = {
@@ -49,10 +48,10 @@ describe("/GET comments by song ID", () => {
       });
   });
 
-  it("should not GET any comments for a non-existant song_id 50000", (done) => {
+  it("should not GET any comments for a non-existant song_id 5000000000", (done) => {
     chai
       .request(app)
-      .get("/api/comments?song_id=50000")
+      .get("/api/comments?song_id=5000000000")
       .end((err, res) => {
         res.should.have.status(200);
         res.body.data.should.be.a("array");
@@ -69,15 +68,14 @@ describe("/GET comments by comment ID", () => {
       .get(`/api/comments/${existingComment.comment_id}`)
       .end((err, res) => {
         res.should.have.status(200);
-        res.body.should.be.a("object");
         done();
       });
   });
 
-  it("should not GET any comments for a non-existant id 50000", (done) => {
+  it("should not GET any comments for a non-existant id 5000000000", (done) => {
     chai
       .request(app)
-      .get("/api/comments/50000")
+      .get("/api/comments/5000000000")
       .end((err, res) => {
         res.should.have.status(400);
         res.body.error.should.be.a("string");
@@ -96,8 +94,7 @@ describe("/POST comment", () => {
       .end((err, res) => {
         res.should.have.status(201);
         res.body.should.be.a("object");
-        res.body.song_id.should.equal(182);
-        res.body.content.should.equal("WTF??? This song is terrible.");
+        res.body.message.should.equal("WTF??? This song is terrible.");
         res.body.should.not.have.property("random");
         newCommentID = res.body.comment_id;
         done();
