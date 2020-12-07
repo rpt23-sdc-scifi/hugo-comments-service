@@ -88,8 +88,75 @@ const Content = sequelize.define(
   }
 );
 
+const Comment = sequelize.define(
+  "Comment",
+  {
+    // Model attributes are defined here
+    comment_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    user_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: User,
+        key: "user_id"
+      }
+    },
+    song_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: Song,
+        key: "song_id"
+      }
+    },
+    content_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: Content,
+        key: "content_id"
+      }
+    },
+    time_stamp: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+  },
+  {
+    // Other model options go here
+    timestamps: false,
+    indexes: [
+      {
+        name: "idx_user_id",
+        fields: ["user_id"],
+      },
+      {
+        name: "idx_song_id",
+        fields: ["song_id"],
+      },
+      {
+        name: "idx_content_id",
+        fields: ["content_id"],
+      },
+      {
+        name: "idx_time_stamp",
+        fields: ["time_stamp"],
+      },
+    ],
+  }
+);
+
+// Project.hasMany(Task, { foreignKey: 'tasks_pk' });
+// Task.belongsTo(Project, { foreignKey: 'tasks_pk' });
+
 module.exports = {
   User,
   Song,
   Content,
+  Comment
 };

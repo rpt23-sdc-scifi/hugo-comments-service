@@ -1,4 +1,4 @@
-const { User, Song, Content } = require("./models.js");
+const { User, Song, Content, Comment } = require("./models.js");
 
 const getComments = async (filter) => {
   // const result = await User.findAll({
@@ -9,9 +9,9 @@ const getComments = async (filter) => {
   // });
   // console.log(result);
 
-  const result2 = await Content.findAll({
+  const result2 = await Comment.findAll({
     where: {
-      text: "Nulla eiusmod ut sint dolore.",
+      comment_id: 1,
     },
   });
   console.log(result2);
