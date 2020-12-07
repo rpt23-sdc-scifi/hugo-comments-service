@@ -1,8 +1,19 @@
-const Comment = require("./model.js");
+const { User } = require("./models.js");
 
 const getComments = async (filter) => {
-  return Comment.find(filter);
+  const result = await User.findAll({
+    where: {
+      user_id: 1,
+    },
+  });
+  console.log(result);
 };
+
+getComments();
+
+
+
+
 
 // this id is the MongoDB auto-generated ObjectId
 const getCommentByID = async (id) => {
