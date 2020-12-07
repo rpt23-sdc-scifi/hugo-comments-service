@@ -151,6 +151,7 @@ const Comment = sequelize.define(
   }
 );
 
+// Add associations / foreign keys
 User.hasMany(Comment, {
   foreignKey: "user_id"
 });
@@ -158,11 +159,20 @@ Comment.belongsTo(User, {
   foreignKey: "user_id"
 });
 
-// User.hasMany(Comments);
-// Comment.hasOne();
+Song.hasMany(Comment, {
+  foreignKey: "song_id"
+});
+Comment.belongsTo(Song, {
+  foreignKey: "song_id"
+});
 
-// User.hasOne(Comment);
-// User.hasMany(Comment);
+Content.hasMany(Comment, {
+  foreignKey: "content_id"
+});
+Comment.belongsTo(Content, {
+  foreignKey: "content_id"
+});
+
 
 module.exports = {
   User,

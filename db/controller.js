@@ -10,8 +10,10 @@ const getComments = async (filter) => {
   // console.log(result);
 
   const result2 = await Comment.findAll({
+    limit: 1000,
     where: {
-      comment_id: 2,
+      song_id: 641135,
+      user_id: 723936,
     },
   });
   console.log(result2);
