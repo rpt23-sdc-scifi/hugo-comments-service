@@ -42,7 +42,6 @@ const getComments = async (user_id, song_id, content) => {
 const getCommentByID = async (id) => {
   const result = await Comment.findByPk(id, {
     raw: true,
-    limit: 1000,
     attributes: [
       "comment_id",
       [sequelize.col("User.system_number"), "user_id"],
@@ -112,8 +111,9 @@ const saveComment = async (data) => {
   );
 
   // create new comment with keys pointing to referenced tables
-  const newComment = await Comment.create(data);
-  return newComment;
+  await Comment.create(data);
+
+  return true;
 };
 
 const updateComment = async (id, data) => {
@@ -153,7 +153,7 @@ const updateComment = async (id, data) => {
   await comment.save();
   await comment.reload();
 
-  return comment;
+  return true;
 };
 
 const deleteComment = async (id) => {
