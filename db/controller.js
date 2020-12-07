@@ -38,59 +38,41 @@ const getComments = async (user_id, song_id, content) => {
   return result;
 };
 
-// const result2 = await Comment.findAll({
-//   limit: 1000,
-//   where: {
-//     song_id: 641135,
-//     user_id: 723936,
-//   },
-// });
-
-// const result2 = await Comment.findByPk(10000);
-// console.log(result2);
-
-// const newUser = await User.create({ system_number: 100000000 });
-// console.log("newUser's auto-generated ID:", newUser);
-
-// await User.update({system_number: -100}, {
-//   where: {
-//     system_number: 100000000
-//   }
-// })
-
-// await User.destroy({
-//   where: {
-//     system_number: -100
-//   }
-// });
-
-// const result3 = await User.findAll({
-//   where: {
-//     system_number: -100
-//   },
-// });
-// console.log(result3);
-
 const getCommentByID = async (id) => {
   const result = await Comment.findByPk(id);
   return result;
 };
 
 const saveComment = async (comment) => {
-  const newComment = await Comment.create({
-    user_id: comment.user_id,
-    song_id: comment.song_id,
-    content: comment.content,
-    time_stamp: comment.time_stamp,
-    include: [
-      {
-        association: Comment.User,
-        include: [],
-      },
-    ],
+  // get user, song, content info -- create if doesn't exist
+  const song = await Song.findOrCreate({
+    where: {
+      system_number: comment.song_id,
+    },
   });
-  const result = await newComment.save(newComment);
-  return result;
+  const song_id = song[0].toJSON().song_id;
+
+  const user = await User.findOrCreate({
+    where: {
+      system_number: comment.user_id,
+    },
+  });
+  const user_id = user[0].toJSON().user_id;
+
+  const content = await Content.findOrCreate({
+    where: {
+      text: comment.content,
+    },
+  });
+  const content_id = content[0].toJSON().content_id;
+
+  const newComment = await Comment.create({
+    user_id,
+    song_id,
+    content_id,
+    time_stamp: comment.time_stamp,
+  });
+  return newComment;
 };
 
 const updateComment = async (id, data) => {
