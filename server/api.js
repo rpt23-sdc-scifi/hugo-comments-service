@@ -7,14 +7,12 @@ const db = require("../db/controller.js");
 // API: get all comments that match search critiera
 router.get("/comments", async (req, res) => {
   try {
-    console.log(req.query);
-    for (parameter in req.query) {
-      if (parameter === "content") {
-        break;
-      }
-      req.query[parameter] = Number(req.query[parameter]);
-    }
-    const comments = await db.getComments(req.query);
+    let { user_id, song_id, content } = req.query;
+
+    user_id = Number(user_id);
+    song_id = Number(song_id);
+
+    const comments = await db.getComments(user_id, song_id, content);
     res.status(200).send({
       count: comments.length,
       data: comments,

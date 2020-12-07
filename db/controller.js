@@ -1,7 +1,12 @@
 const sequelize = require("./connect.js");
+const { Op } = require("sequelize");
 const { User, Song, Content, Comment } = require("./models.js");
 
-const getComments = async (filter) => {
+const getComments = async (user_id, song_id, content) => {
+  const userWhereCondition = user_id ? { system_number: user_id } : {};
+  const songWhereCondition = song_id ? { system_number: song_id } : {};
+  const contentWhereCondition = content ? { text: content } : {};
+
   const result = await Comment.findAll({
     raw: true,
     limit: 1000,
@@ -17,29 +22,24 @@ const getComments = async (filter) => {
         model: User,
         attributes: [],
         required: true,
-        where: {
-          system_number: 424323,
-        },
+        where: userWhereCondition,
       },
       {
         model: Song,
         attributes: [],
         required: true,
-        where: {
-          system_number: 2529958,
-        },
+        where: songWhereCondition,
       },
       {
         model: Content,
         attributes: [],
         required: true,
-        // where: {
-        //   system_number: 2529958,
-        // }
+        where: contentWhereCondition,
       },
     ],
   });
-  console.log(result);
+
+  return result;
 
   // const result2 = await Comment.findAll({
   //   limit: 1000,
@@ -74,8 +74,6 @@ const getComments = async (filter) => {
   // });
   // console.log(result3);
 };
-
-getComments();
 
 // this id is the MongoDB auto-generated ObjectId
 const getCommentByID = async (id) => {
