@@ -43,35 +43,41 @@ const getCommentByID = async (id) => {
   return result;
 };
 
-const saveComment = async (comment) => {
-  // get user, song, content info -- create if doesn't exist
-  const song = await Song.findOrCreate({
-    where: {
-      system_number: comment.song_id,
-    },
-  });
-  const song_id = song[0].toJSON().song_id;
-
+const findOrCreateReferenceData = async (data) => {
   const user = await User.findOrCreate({
     where: {
-      system_number: comment.user_id,
+      system_number: data.user_id,
     },
   });
   const user_id = user[0].toJSON().user_id;
 
+  const song = await Song.findOrCreate({
+    where: {
+      system_number: data.song_id,
+    },
+  });
+  const song_id = song[0].toJSON().song_id;
+
   const content = await Content.findOrCreate({
     where: {
-      text: comment.content,
+      text: data.content,
     },
   });
   const content_id = content[0].toJSON().content_id;
 
-  const newComment = await Comment.create({
-    user_id,
+  return {
     song_id,
+    user_id,
     content_id,
-    time_stamp: comment.time_stamp,
-  });
+    time_stamp: data.time_stamp,
+  };
+};
+
+const saveComment = async (comment) => {
+  // get user, song, content info -- create if doesn't exist
+  const data = await findOrCreateReferenceData(comment);
+  // create new comment with keys pointing to referenced tables
+  const newComment = await Comment.create(data);
   return newComment;
 };
 
