@@ -21,10 +21,11 @@ router.get("/comments", async (req, res) => {
     // send 404 if request is valid but no results found
     if (comments.length === 0) {
       res.status(404).send(result);
+      return;
     }
 
     res.status(200).send(result);
-  } catch (error) {
+  } catch (err) {
     res.status(400).send({ error: err.message });
   }
 });
@@ -37,12 +38,12 @@ router.get("/comments/:id", async (req, res) => {
 
     // send 404 if request is valid but no results found
     if (comment === null) {
-      res.status(404).send({ message: "no results found" });
+      res.status(404).send({ comment_id: id, message: "no results found" });
     }
     res.status(200).send(comment);
-  } catch (error) {
-    console.error(error);
-    res.status(400).send({ error: error.message });
+  } catch (err) {
+    console.error(err);
+    res.status(400).send({ error: err.message });
   }
 });
 
@@ -51,7 +52,9 @@ router.post("/comments", async (req, res) => {
   try {
     const data = req.body;
     const comment_id = await db.saveComment(data);
-    res.status(201).send({ comment_id, message: "successfully created comment" });
+    res
+      .status(201)
+      .send({ comment_id, message: "successfully created comment" });
   } catch (err) {
     console.log(err);
     res.status(400).send({ error: err.message });
@@ -64,7 +67,9 @@ router.patch("/comments/:id", async (req, res) => {
     const { id } = req.params;
     const data = req.body;
     const comment_id = await db.updateComment(id, data);
-    res.status(200).send({ comment_id, message: "successfully updated comment" });
+    res
+      .status(200)
+      .send({ comment_id, message: "successfully updated comment" });
   } catch (err) {
     console.log(err);
     res.status(400).send({ error: err.message });
@@ -76,7 +81,9 @@ router.delete("/comments/:id", async (req, res) => {
   try {
     const id = Number(req.params.id);
     const comment_id = await db.deleteComment(id);
-    res.status(200).send({ comment_id, message: "successfully deleted comment" });
+    res
+      .status(200)
+      .send({ comment_id, message: "successfully deleted comment" });
   } catch (err) {
     console.log(err);
     res.status(400).send({ error: err.message });

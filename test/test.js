@@ -9,6 +9,7 @@ chai.use(chaiHttp);
 
 // Existing comment data: comment #1 (already loaded into database)
 let existingComment = {
+  comment_id: 1,
   user_id: 987987,
   song_id: 65,
   content: "YES! Greatest song.",
@@ -53,7 +54,7 @@ describe("/GET comments by song ID", () => {
       .request(app)
       .get("/api/comments?song_id=5000000000")
       .end((err, res) => {
-        res.should.have.status(200);
+        res.should.have.status(404);
         res.body.data.should.be.a("array");
         res.body.data.should.have.lengthOf(0);
         done();
@@ -77,8 +78,8 @@ describe("/GET comments by comment ID", () => {
       .request(app)
       .get("/api/comments/5000000000")
       .end((err, res) => {
-        res.should.have.status(400);
-        res.body.error.should.be.a("string");
+        res.should.have.status(404);
+        res.body.message.should.equal("no results found");
         done();
       });
   });
@@ -94,8 +95,7 @@ describe("/POST comment", () => {
       .end((err, res) => {
         res.should.have.status(201);
         res.body.should.be.a("object");
-        res.body.message.should.equal("WTF??? This song is terrible.");
-        res.body.should.not.have.property("random");
+        res.body.message.should.equal("successfully created comment");
         newCommentID = res.body.comment_id;
         done();
       });
@@ -114,8 +114,8 @@ describe("/PATCH comment", () => {
       .end((err, res) => {
         res.should.have.status(200);
         res.body.should.be.a("object");
-        res.body.song_id.should.equal(182);
-        res.body.content.should.equal("Yo, this is the best song EVER!!!");
+        res.body.comment_id.should.equal(newCommentID);
+        res.body.message.should.equal("successfully updated comment");
         done();
       });
   });
@@ -130,6 +130,7 @@ describe("/DELETE comment", () => {
         res.should.have.status(200);
         res.body.should.be.a("object");
         res.body.comment_id.should.equal(newCommentID);
+        res.body.message.should.equal("successfully deleted comment");
         done();
       });
   });
