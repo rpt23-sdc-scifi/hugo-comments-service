@@ -1,22 +1,56 @@
+const sequelize = require("./connect.js");
 const { User, Song, Content, Comment } = require("./models.js");
 
 const getComments = async (filter) => {
-  // const result = await User.findAll({
+  const result = await Comment.findAll({
+    raw: true,
+    limit: 1000,
+    attributes: [
+      "comment_id",
+      [sequelize.col("User.system_number"), "user_id"],
+      [sequelize.col("Song.system_number"), "song_id"],
+      [sequelize.col("Content.text"), "content"],
+      "time_stamp",
+    ],
+    include: [
+      {
+        model: User,
+        attributes: [],
+        required: true,
+        where: {
+          system_number: 424323,
+        },
+      },
+      {
+        model: Song,
+        attributes: [],
+        required: true,
+        where: {
+          system_number: 2529958,
+        },
+      },
+      {
+        model: Content,
+        attributes: [],
+        required: true,
+        // where: {
+        //   system_number: 2529958,
+        // }
+      },
+    ],
+  });
+  console.log(result);
+
+  // const result2 = await Comment.findAll({
   //   limit: 1000,
   //   where: {
-  //     user_id: 1,
+  //     song_id: 641135,
+  //     user_id: 723936,
   //   },
   // });
-  // console.log(result);
 
-  const result2 = await Comment.findAll({
-    limit: 1000,
-    where: {
-      song_id: 641135,
-      user_id: 723936,
-    },
-  });
-  console.log(result2);
+  // const result2 = await Comment.findByPk(10000);
+  // console.log(result2);
 
   // const newUser = await User.create({ system_number: 100000000 });
   // console.log("newUser's auto-generated ID:", newUser);
@@ -39,14 +73,9 @@ const getComments = async (filter) => {
   //   },
   // });
   // console.log(result3);
-
 };
 
 getComments();
-
-
-
-
 
 // this id is the MongoDB auto-generated ObjectId
 const getCommentByID = async (id) => {
