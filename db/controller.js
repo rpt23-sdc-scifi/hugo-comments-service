@@ -2,6 +2,7 @@ const { User, Song } = require("./models.js");
 
 const getComments = async (filter) => {
   const result = await User.findAll({
+    limit: 1000,
     where: {
       user_id: 1,
     },
@@ -13,6 +14,29 @@ const getComments = async (filter) => {
     },
   });
   console.log(result2);
+
+  const newUser = await User.create({ system_number: 100000000 });
+  console.log("newUser's auto-generated ID:", newUser);
+
+  await User.update({system_number: -100}, {
+    where: {
+      system_number: 100000000
+    }
+  })
+
+  await User.destroy({
+    where: {
+      system_number: -100
+    }
+  });
+
+  const result3 = await User.findAll({
+    where: {
+      system_number: -100
+    },
+  });
+  console.log(result3);
+
 };
 
 getComments();
