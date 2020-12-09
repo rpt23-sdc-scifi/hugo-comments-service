@@ -1,8 +1,6 @@
 const fs = require("fs");
 const csvWriter = require("csv-write-stream");
 const loremIpsum = require("lorem-ipsum").LoremIpsum;
-// const util = require("util");
-// const stream = require("stream");
 const { finished } = require("stream/promises");
 const { once } = require("events");
 
@@ -13,6 +11,10 @@ const { once } = require("events");
 
 // Each table corresponds to a CSV file
 
+const commentsCount = 100000000;
+const usersCount = 10000000;
+const songsCount = 10000000;
+const contentCount = 100000000;
 const maxSongLength = 480; // in seconds
 
 const lorem = new loremIpsum({
@@ -23,15 +25,15 @@ const lorem = new loremIpsum({
 });
 
 const getRandomUserId = (max) => {
-  return Math.floor(Math.random() * max) + 1; // 10 million users
+  return Math.floor(Math.random() * 10000000) + 1; // 10 million users
 };
 
 const getRandomSongId = (max) => {
-  return Math.floor(Math.random() * max) + 1; // 10 million songs
+  return Math.floor(Math.random() * 10000000) + 1; // 10 million songs
 };
 
 const getRandomContentId = (max) => {
-  return Math.floor(Math.random() * max) + 1; // 100 million text comments
+  return Math.floor(Math.random() * 100000000) + 1; // 100 million text comments
 };
 
 const getRandomTimeStamp = (maxTime) => {
@@ -39,21 +41,17 @@ const getRandomTimeStamp = (maxTime) => {
 };
 
 // adding the option {flags: "a"} to writer.pipe means it will append instead of overwriting it; "w" is the default overwrite
-// Note: the "csv-write-stream" module doesn't appear to use promises, so async/await doesn't work
 
-const generateCommentsCSV = async (count) => {
+const generateCommentsCSV = async () => {
   const writer = csvWriter({ sendHeaders: false });
   writer.pipe(fs.createWriteStream("./data/comments.csv"));
 
-  // console.log("readableHighWaterMark: ", writer.readableHighWaterMark);
-  // console.log("writableHighWaterMark: ", writer.writableHighWaterMark);
+  console.log(`adding ${commentsCount} comments... this may take a few minutes...`);
 
-  console.log(`adding ${count} comments... this may take a few minutes...`);
-
-  for (let i = 1; i <= count; i++) {
-    const user_id = getRandomUserId(10000000);
-    const song_id = getRandomSongId(10000000);
-    const content_id = getRandomContentId(100000000);
+  for (let i = 1; i <= commentsCount; i++) {
+    const user_id = getRandomUserId();
+    const song_id = getRandomSongId();
+    const content_id = getRandomContentId();
     const time_stamp = getRandomTimeStamp(maxSongLength);
 
     const record = {
@@ -64,66 +62,83 @@ const generateCommentsCSV = async (count) => {
     };
 
     if (!writer.write(record)) {
-      console.log("buffer max!");
-      // await new Promise((resolve) => writer.once("drain", resolve));
       await once(writer, "drain");
     }
   }
 
   writer.end();
   await finished(writer);
-  console.log("Generate Comments finished");
+  console.log("generateCommentsCSV() finished");
 };
 
-const generateUsersCSV = (count) => {
+const generateUsersCSV = () => {
   const writer = csvWriter({ sendHeaders: false });
   writer.pipe(fs.createWriteStream("./data/users.csv"));
 
-  console.log(`adding ${count} users... this may take a few minutes...`);
+  console.log(`adding ${usersCount} users... this may take a few minutes...`);
 
-  for (let i = 1; i <= count / 10; i++) {
+  for (let i = 1; i <= usersCount; i++) {
     writer.write({
-      system_number: getRandomUserId(count / 10),
+      system_number: getRandomUserId(),
     });
+
+    if (!writer.write(record)) {
+      await once(writer, "drain");
+    }
   }
 
   writer.end();
+  await finished(writer);
+  console.log("generateUsersCSV() finished");
 };
 
 const generateSongsCSV = (count) => {
   const writer = csvWriter({ sendHeaders: false });
   writer.pipe(fs.createWriteStream("./data/songs.csv"));
 
-  console.log(`adding ${count} songs... this may take a few minutes...`);
+  console.log(`adding ${songsCount} songs... this may take a few minutes...`);
 
-  for (let i = 1; i <= count / 10; i++) {
+  for (let i = 1; i <= songsCount; i++) {
     writer.write({
-      system_number: getRandomSongId(count / 10),
+      system_number: getRandomSongId(),
     });
+
+    if (!writer.write(record)) {
+      await once(writer, "drain");
+    }
   }
 
   writer.end();
+  await finished(writer);
+  console.log("generateSongsCSV() finished");
 };
 
-const generateContentCSV = (count) => {
+const generateContentCSV = async () => {
   const writer = csvWriter({ sendHeaders: false });
   writer.pipe(fs.createWriteStream("./data/content.csv"));
 
-  console.log(`adding ${count} contents... this may take a few minutes...`);
+  console.log(`adding ${contentCount} contents... this may take a few minutes...`);
 
-  for (let i = 1; i <= count; i++) {
-    writer.write({
+  for (let i = 1; i <= contentCount; i++) {
+    const record = {
       text: lorem.generateSentences(1),
-    });
+    };
+
+    if (!writer.write(record)) {
+      await once(writer, "drain");
+    }
   }
 
   writer.end();
+  await finished(writer);
+  console.log("generateContentCSV() finished");
 };
 
-const count = 1000000; // number of comments
-
-const generateCSVFiles = async (count) => {
-  await generateCommentsCSV(count);
+const generateCSVFiles = async () => {
+  await generateCommentsCSV();
+  await generateContentCSV();
+  await generateUsersCSV();
+  await generateSongsCSV();
 };
 
-generateCSVFiles(count);
+generateCSVFiles();
