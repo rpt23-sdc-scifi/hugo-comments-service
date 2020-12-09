@@ -97,3 +97,17 @@ LINES TERMINATED BY '\n'
 -- CREATE INDEX `idx_content_id` ON `soundcloud`.`comments` (`content_id` ASC);
 
 -- CREATE INDEX `idx_time_stamp` ON `soundcloud`.`comments` (`time_stamp` ASC);
+
+-- ALTER TABLE comments
+--     ADD CONSTRAINT song_id
+--       FOREIGN KEY (song_id)
+--       REFERENCES songs (song_id)
+--       ON DELETE CASCADE
+--       ON UPDATE CASCADE;
+
+
+--   CONSTRAINT `song_id`
+--     FOREIGN KEY (`song_id`)
+--     REFERENCES `soundcloud`.`songs` (`song_id`)
+--     ON DELETE CASCADE
+--     ON UPDATE CASCADE,

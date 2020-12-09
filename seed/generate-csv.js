@@ -1,6 +1,8 @@
 const fs = require("fs");
 const csvWriter = require("csv-write-stream");
 const loremIpsum = require("lorem-ipsum").LoremIpsum;
+const util = require("util");
+const stream = require("stream");
 
 // In primary "comments" table, generate 100 million records
 // In referenced "songs" table, generate 10 million records
@@ -39,7 +41,8 @@ const getRandomTimeStamp = (maxTime) => {
 
 const generateCommentsCSV = async (count) => {
   const writer = csvWriter({ sendHeaders: false });
-  writer.pipe(fs.createWriteStream("./data/comments-test.csv"));
+  writer.pipe(fs.createWriteStream("./data/comments.csv"));
+  const finished = util.promisify(stream.finished);
 
   // console.log("readableHighWaterMark: ", writer.readableHighWaterMark);
   // console.log("writableHighWaterMark: ", writer.writableHighWaterMark);
@@ -59,15 +62,14 @@ const generateCommentsCSV = async (count) => {
       time_stamp,
     };
 
-    // const result = writer.write(record);
-
     if (!writer.write(record)) {
-      // console.log('buffer max reached: stream draining...');
       await new Promise((resolve) => writer.once("drain", resolve));
     }
   }
 
   writer.end();
+  await finished(writer);
+  return "Generate Comments finished";
 };
 
 const generateUsersCSV = (count) => {
@@ -102,7 +104,7 @@ const generateSongsCSV = (count) => {
 
 const generateContentCSV = (count) => {
   const writer = csvWriter({ sendHeaders: false });
-  writer.pipe(fs.createWriteStream("./data/content-test.csv"));
+  writer.pipe(fs.createWriteStream("./data/content.csv"));
 
   console.log(`adding ${count} contents... this may take a few minutes...`);
 
@@ -115,19 +117,9 @@ const generateContentCSV = (count) => {
   writer.end();
 };
 
-// Because node is crashing if I try to write too many records at once, so I'm doing it in batches of 10 million every 5 minutes
-// const writeInBatches = (writeFunction, count, iterations, currentBatch = 1) => {
-//   writeFunction(count);
-//   if (currentBatch === iterations) {
-//     return;
-//   }
-//   setTimeout(() => {
-//     write_to_csv_in_batches(count, iterations, currentBatch + 1);
-//   }, 300000);
-// };
+// const count = 100000000; // number of comments
 
-// const count = 5; // number of comments
-
-// writeInBatches(generateCommentsCSV, count, 1);
-
-generateCommentsCSV(100000000);
+(async () => {
+  result = await generateCommentsCSV(10000000);
+  console.log(result);
+})();
