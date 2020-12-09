@@ -121,6 +121,6 @@ const writeInBatches = (writeFunction, count, iterations, currentBatch = 1) => {
   }, 300000);
 };
 
-const count = 10000000; // number of comments
+const count = 5; // number of comments
 
 writeInBatches(generateCommentsCSV, count, 1);
