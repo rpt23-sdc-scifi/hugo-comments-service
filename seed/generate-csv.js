@@ -11,10 +11,15 @@ const { once } = require("events");
 
 // Each table corresponds to a CSV file
 
-const commentsCount = 100000000;
-const usersCount = 10000000;
-const songsCount = 10000000;
-const contentCount = 100000000;
+// const commentsCount = 100000000;
+// const usersCount = 10000000;
+// const songsCount = 10000000;
+// const contentCount = 100000000;
+
+const commentsCount = 1000000;
+const usersCount = 100000;
+const songsCount = 100000;
+const contentCount = 1000000;
 const maxSongLength = 480; // in seconds
 
 const lorem = new loremIpsum({
@@ -24,15 +29,15 @@ const lorem = new loremIpsum({
   },
 });
 
-const getRandomUserId = (max) => {
+const getRandomUserId = () => {
   return Math.floor(Math.random() * 10000000) + 1; // 10 million users
 };
 
-const getRandomSongId = (max) => {
+const getRandomSongId = () => {
   return Math.floor(Math.random() * 10000000) + 1; // 10 million songs
 };
 
-const getRandomContentId = (max) => {
+const getRandomContentId = () => {
   return Math.floor(Math.random() * 100000000) + 1; // 100 million text comments
 };
 
@@ -46,7 +51,7 @@ const generateCommentsCSV = async () => {
   const writer = csvWriter({ sendHeaders: false });
   writer.pipe(fs.createWriteStream("./data/comments.csv"));
 
-  console.log(`adding ${commentsCount} comments... this may take a few minutes...`);
+  console.log(`adding ${commentsCount} comments...`);
 
   for (let i = 1; i <= commentsCount; i++) {
     const user_id = getRandomUserId();
@@ -71,16 +76,16 @@ const generateCommentsCSV = async () => {
   console.log("generateCommentsCSV() finished");
 };
 
-const generateUsersCSV = () => {
+const generateUsersCSV = async () => {
   const writer = csvWriter({ sendHeaders: false });
   writer.pipe(fs.createWriteStream("./data/users.csv"));
 
-  console.log(`adding ${usersCount} users... this may take a few minutes...`);
+  console.log(`adding ${usersCount} users...`);
 
   for (let i = 1; i <= usersCount; i++) {
-    writer.write({
+    const record = {
       system_number: getRandomUserId(),
-    });
+    };
 
     if (!writer.write(record)) {
       await once(writer, "drain");
@@ -92,16 +97,16 @@ const generateUsersCSV = () => {
   console.log("generateUsersCSV() finished");
 };
 
-const generateSongsCSV = (count) => {
+const generateSongsCSV = async () => {
   const writer = csvWriter({ sendHeaders: false });
   writer.pipe(fs.createWriteStream("./data/songs.csv"));
 
-  console.log(`adding ${songsCount} songs... this may take a few minutes...`);
+  console.log(`adding ${songsCount} songs...`);
 
   for (let i = 1; i <= songsCount; i++) {
-    writer.write({
+    const record = {
       system_number: getRandomSongId(),
-    });
+    };
 
     if (!writer.write(record)) {
       await once(writer, "drain");
@@ -117,7 +122,7 @@ const generateContentCSV = async () => {
   const writer = csvWriter({ sendHeaders: false });
   writer.pipe(fs.createWriteStream("./data/content.csv"));
 
-  console.log(`adding ${contentCount} contents... this may take a few minutes...`);
+  console.log(`adding ${contentCount} contents...`);
 
   for (let i = 1; i <= contentCount; i++) {
     const record = {
