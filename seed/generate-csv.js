@@ -37,25 +37,34 @@ const getRandomTimeStamp = (maxTime) => {
 // adding the option {flags: "a"} to writer.pipe means it will append instead of overwriting it; "w" is the default overwrite
 // Note: the "csv-write-stream" module doesn't appear to use promises, so async/await doesn't work
 
-const generateCommentsCSV = (count) => {
+const generateCommentsCSV = async (count) => {
   const writer = csvWriter({ sendHeaders: false });
   writer.pipe(fs.createWriteStream("./data/comments-test.csv"));
+
+  // console.log("readableHighWaterMark: ", writer.readableHighWaterMark);
+  // console.log("writableHighWaterMark: ", writer.writableHighWaterMark);
 
   console.log(`adding ${count} comments... this may take a few minutes...`);
 
   for (let i = 1; i <= count; i++) {
-
     const user_id = getRandomUserId(10000000);
     const song_id = getRandomSongId(10000000);
     const content_id = getRandomContentId(100000000);
     const time_stamp = getRandomTimeStamp(maxSongLength);
 
-    writer.write({
+    const record = {
       user_id,
       song_id,
       content_id,
       time_stamp,
-    });
+    };
+
+    // const result = writer.write(record);
+
+    if (!writer.write(record)) {
+      // console.log('buffer max reached: stream draining...');
+      await new Promise((resolve) => writer.once("drain", resolve));
+    }
   }
 
   writer.end();
@@ -68,7 +77,6 @@ const generateUsersCSV = (count) => {
   console.log(`adding ${count} users... this may take a few minutes...`);
 
   for (let i = 1; i <= count / 10; i++) {
-
     writer.write({
       system_number: getRandomUserId(count / 10),
     });
@@ -84,7 +92,6 @@ const generateSongsCSV = (count) => {
   console.log(`adding ${count} songs... this may take a few minutes...`);
 
   for (let i = 1; i <= count / 10; i++) {
-
     writer.write({
       system_number: getRandomSongId(count / 10),
     });
@@ -94,14 +101,12 @@ const generateSongsCSV = (count) => {
 };
 
 const generateContentCSV = (count) => {
-
   const writer = csvWriter({ sendHeaders: false });
   writer.pipe(fs.createWriteStream("./data/content-test.csv"));
 
   console.log(`adding ${count} contents... this may take a few minutes...`);
 
   for (let i = 1; i <= count; i++) {
-
     writer.write({
       text: lorem.generateSentences(1),
     });
@@ -125,4 +130,4 @@ const generateContentCSV = (count) => {
 
 // writeInBatches(generateCommentsCSV, count, 1);
 
-generateCommentsCSV(1000000);
+generateCommentsCSV(100000000);
