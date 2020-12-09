@@ -39,15 +39,15 @@ const getRandomTimeStamp = (maxTime) => {
 
 const generateCommentsCSV = (count) => {
   const writer = csvWriter({ sendHeaders: false });
-  writer.pipe(fs.createWriteStream("./seed/data/comments-test.csv", {flags: "a"}));
+  writer.pipe(fs.createWriteStream("./data/comments-test.csv"));
 
   console.log(`adding ${count} comments... this may take a few minutes...`);
 
   for (let i = 1; i <= count; i++) {
 
-    const user_id = getRandomUserId(count / 10);
-    const song_id = getRandomSongId(count / 10);
-    const content_id = getRandomContentId(count);
+    const user_id = getRandomUserId(10000000);
+    const song_id = getRandomSongId(10000000);
+    const content_id = getRandomContentId(100000000);
     const time_stamp = getRandomTimeStamp(maxSongLength);
 
     writer.write({
@@ -63,7 +63,7 @@ const generateCommentsCSV = (count) => {
 
 const generateUsersCSV = (count) => {
   const writer = csvWriter({ sendHeaders: false });
-  writer.pipe(fs.createWriteStream("./seed/data/users.csv", {flags: "a"}));
+  writer.pipe(fs.createWriteStream("./data/users.csv"));
 
   console.log(`adding ${count} users... this may take a few minutes...`);
 
@@ -79,7 +79,7 @@ const generateUsersCSV = (count) => {
 
 const generateSongsCSV = (count) => {
   const writer = csvWriter({ sendHeaders: false });
-  writer.pipe(fs.createWriteStream("./seed/data/songs.csv", {flags: "a"}));
+  writer.pipe(fs.createWriteStream("./data/songs.csv"));
 
   console.log(`adding ${count} songs... this may take a few minutes...`);
 
@@ -96,7 +96,7 @@ const generateSongsCSV = (count) => {
 const generateContentCSV = (count) => {
 
   const writer = csvWriter({ sendHeaders: false });
-  writer.pipe(fs.createWriteStream("./seed/data/content-test.csv", {flags: "a"}));
+  writer.pipe(fs.createWriteStream("./data/content-test.csv"));
 
   console.log(`adding ${count} contents... this may take a few minutes...`);
 
@@ -111,16 +111,18 @@ const generateContentCSV = (count) => {
 };
 
 // Because node is crashing if I try to write too many records at once, so I'm doing it in batches of 10 million every 5 minutes
-const writeInBatches = (writeFunction, count, iterations, currentBatch = 1) => {
-  writeFunction(count);
-  if (currentBatch === iterations) {
-    return;
-  }
-  setTimeout(() => {
-    write_to_csv_in_batches(count, iterations, currentBatch + 1);
-  }, 300000);
-};
+// const writeInBatches = (writeFunction, count, iterations, currentBatch = 1) => {
+//   writeFunction(count);
+//   if (currentBatch === iterations) {
+//     return;
+//   }
+//   setTimeout(() => {
+//     write_to_csv_in_batches(count, iterations, currentBatch + 1);
+//   }, 300000);
+// };
 
-const count = 5; // number of comments
+// const count = 5; // number of comments
 
-writeInBatches(generateCommentsCSV, count, 1);
+// writeInBatches(generateCommentsCSV, count, 1);
+
+generateCommentsCSV(1000000);

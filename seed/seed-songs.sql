@@ -25,7 +25,7 @@ USE `soundcloud` ;
 -- -----------------------------------------------------
 -- Table `soundcloud`.`songs`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `soundcloud`.`songs` ;
+-- DROP TABLE IF EXISTS `soundcloud`.`songs` ;
 
 CREATE TABLE IF NOT EXISTS `soundcloud`.`songs` (
   `song_id` INT NOT NULL AUTO_INCREMENT,
