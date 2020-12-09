@@ -3,6 +3,7 @@ const csvWriter = require("csv-write-stream");
 const loremIpsum = require("lorem-ipsum").LoremIpsum;
 const util = require("util");
 const stream = require("stream");
+const { once } = require('events');
 
 // In primary "comments" table, generate 100 million records
 // In referenced "songs" table, generate 10 million records
@@ -63,13 +64,15 @@ const generateCommentsCSV = async (count) => {
     };
 
     if (!writer.write(record)) {
-      await new Promise((resolve) => writer.once("drain", resolve));
+      console.log("buffer max!");
+      // await new Promise((resolve) => writer.once("drain", resolve));
+      await once(writer, 'drain');
     }
   }
 
   writer.end();
   await finished(writer);
-  return "Generate Comments finished";
+  console.log("Generate Comments finished");
 };
 
 const generateUsersCSV = (count) => {
@@ -117,9 +120,10 @@ const generateContentCSV = (count) => {
   writer.end();
 };
 
-// const count = 100000000; // number of comments
+const count = 10000000; // number of comments
 
-(async () => {
-  result = await generateCommentsCSV(10000000);
-  console.log(result);
-})();
+const generateCSVFiles = async (count) => {
+  await generateCommentsCSV(count);
+};
+
+generateCSVFiles(count);
