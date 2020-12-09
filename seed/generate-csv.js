@@ -1,9 +1,10 @@
 const fs = require("fs");
 const csvWriter = require("csv-write-stream");
 const loremIpsum = require("lorem-ipsum").LoremIpsum;
-const util = require("util");
-const stream = require("stream");
-const { once } = require('events');
+// const util = require("util");
+// const stream = require("stream");
+const { finished } = require("stream/promises");
+const { once } = require("events");
 
 // In primary "comments" table, generate 100 million records
 // In referenced "songs" table, generate 10 million records
@@ -43,7 +44,6 @@ const getRandomTimeStamp = (maxTime) => {
 const generateCommentsCSV = async (count) => {
   const writer = csvWriter({ sendHeaders: false });
   writer.pipe(fs.createWriteStream("./data/comments.csv"));
-  const finished = util.promisify(stream.finished);
 
   // console.log("readableHighWaterMark: ", writer.readableHighWaterMark);
   // console.log("writableHighWaterMark: ", writer.writableHighWaterMark);
@@ -66,7 +66,7 @@ const generateCommentsCSV = async (count) => {
     if (!writer.write(record)) {
       console.log("buffer max!");
       // await new Promise((resolve) => writer.once("drain", resolve));
-      await once(writer, 'drain');
+      await once(writer, "drain");
     }
   }
 
@@ -120,7 +120,7 @@ const generateContentCSV = (count) => {
   writer.end();
 };
 
-const count = 10000000; // number of comments
+const count = 1000000; // number of comments
 
 const generateCSVFiles = async (count) => {
   await generateCommentsCSV(count);
