@@ -16,10 +16,11 @@ const { once } = require("events");
 // const songsCount = 10000000;
 // const contentCount = 100000000;
 
-const commentsCount = 1000000;
-const usersCount = 100000;
-const songsCount = 100000;
-const contentCount = 1000000;
+const commentsCount = 1000;
+const usersCount = 1000;
+const songsCount = 1000;
+const contentCount = 1000;
+
 const maxSongLength = 480; // in seconds
 
 const lorem = new loremIpsum({

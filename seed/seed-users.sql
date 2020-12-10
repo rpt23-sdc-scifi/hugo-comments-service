@@ -1,5 +1,5 @@
-/*  Execute this file from the command line by typing:
- *    mysql -u root < seed/seed-users.sql
+/*  Execute this file from the command line in seed folder by typing:
+ *    mysql -u root < seed-users.sql
  *  to create the database and the tables.*/
 
 -- schema created from MySQL Workbench

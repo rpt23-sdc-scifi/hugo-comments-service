@@ -1,41 +1,57 @@
-/*  Execute this file from the command line by typing:
- *    mysql -u root < seed/seed-comments.sql
+/*  Execute this file from the command line in seed folder by typing:
+ *    mysql -u root < seed-comments.sql
  *  to create the database and the tables.*/
 
 -- schema created from MySQL Workbench
 
--- SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
--- SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
--- SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+USE `soundcloud-test` ;
 
 -- -----------------------------------------------------
--- Schema test_db_comments
+-- Table `comments`
 -- -----------------------------------------------------
--- -----------------------------------------------------
--- Schema soundcloud
--- -----------------------------------------------------
--- DROP SCHEMA IF EXISTS `soundcloud` ;
+DROP TABLE IF EXISTS `comments` ;
+
+CREATE TABLE IF NOT EXISTS `comments` (
+  `comment_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `user_id` INT(11) NOT NULL,
+  `song_id` INT(11) NOT NULL,
+  `content_id` INT NOT NULL,
+  `time_stamp` INT(11) NOT NULL,
+  PRIMARY KEY (`comment_id`))
+ENGINE = InnoDB;
 
 -- -----------------------------------------------------
--- Schema soundcloud
+-- LOAD CSV DATA FROM FILES
 -- -----------------------------------------------------
--- CREATE SCHEMA IF NOT EXISTS `soundcloud` DEFAULT CHARACTER SET utf8 ;
-USE `soundcloud` ;
+
+LOAD DATA LOCAL INFILE './data/comments.csv'
+INTO TABLE `comments`
+FIELDS TERMINATED BY ','
+LINES TERMINATED BY '\n'
+(user_id, song_id, content_id, time_stamp);
 
 
 -- -----------------------------------------------------
--- Table `soundcloud`.`comments`
+-- CREATE INDEXES AND FOREIGN KEYS
 -- -----------------------------------------------------
--- DROP TABLE IF EXISTS `soundcloud`.`comments` ;
 
--- CREATE TABLE IF NOT EXISTS `soundcloud`.`comments` (
---   `comment_id` INT(11) NOT NULL AUTO_INCREMENT,
---   `user_id` INT(11) NOT NULL,
---   `song_id` INT(11) NOT NULL,
---   `content_id` INT NOT NULL,
---   `time_stamp` INT(11) NOT NULL,
---   PRIMARY KEY (`comment_id`))
--- ENGINE = InnoDB;
+-- ALTER TABLE comments
+--     ADD CONSTRAINT song_id
+--       FOREIGN KEY (song_id)
+--       REFERENCES songs (song_id)
+--       ON DELETE CASCADE
+--       ON UPDATE CASCADE;
+
+ALTER TABLE comments
+    ADD CONSTRAINT idx_user_id
+      FOREIGN KEY idx_user_id (user_id)
+      REFERENCES users (user_id)
+      ON DELETE CASCADE
+      ON UPDATE CASCADE;
 
 -- CREATE INDEX `idx_user_id` ON `soundcloud`.`comments` (`user_id` ASC);
 
@@ -45,26 +61,17 @@ USE `soundcloud` ;
 
 -- CREATE INDEX `idx_time_stamp` ON `soundcloud`.`comments` (`time_stamp` ASC);
 
--- -----------------------------------------------------
--- LOAD CSV DATA FROM FILES
--- -----------------------------------------------------
 
-LOAD DATA LOCAL INFILE './data/comments.csv'
-INTO TABLE `soundcloud`.`comments`
-FIELDS TERMINATED BY ','
-LINES TERMINATED BY '\n'
-(user_id, song_id, content_id, time_stamp);
-
-
--- SET SQL_MODE=@OLD_SQL_MODE;
--- SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
--- SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 
 
 
 
 
+-- Old Create Table with foreign keys:
 
 -- CREATE TABLE IF NOT EXISTS `soundcloud`.`comments` (
 --   `comment_id` INT(11) NOT NULL AUTO_INCREMENT,
@@ -98,16 +105,4 @@ LINES TERMINATED BY '\n'
 
 -- CREATE INDEX `idx_time_stamp` ON `soundcloud`.`comments` (`time_stamp` ASC);
 
--- ALTER TABLE comments
---     ADD CONSTRAINT song_id
---       FOREIGN KEY (song_id)
---       REFERENCES songs (song_id)
---       ON DELETE CASCADE
---       ON UPDATE CASCADE;
 
-
---   CONSTRAINT `song_id`
---     FOREIGN KEY (`song_id`)
---     REFERENCES `soundcloud`.`songs` (`song_id`)
---     ON DELETE CASCADE
---     ON UPDATE CASCADE,
