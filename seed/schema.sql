@@ -10,11 +10,11 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 -- -----------------------------------------------------
 -- Drop / create database
 -- -----------------------------------------------------
-DROP DATABASE IF EXISTS `soundcloud-test` ;
+DROP DATABASE IF EXISTS `soundcloud` ;
 
-CREATE DATABASE IF NOT EXISTS `soundcloud-test` DEFAULT CHARACTER SET utf8 ;
+CREATE DATABASE IF NOT EXISTS `soundcloud` DEFAULT CHARACTER SET utf8 ;
 
-USE `soundcloud-test` ;
+USE `soundcloud` ;
 
 -- -----------------------------------------------------
 -- Table `comments`
