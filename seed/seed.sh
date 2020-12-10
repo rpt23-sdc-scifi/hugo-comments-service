@@ -2,22 +2,18 @@
 
 # Add comments to CSV files
 
-echo 'RUN generate-csv.js';
+echo 'Generating CSV data files...';
 
 node /Users/hugo/hack-reactor/sdc/hugo-comments-service/seed/generate-csv.js
 
-echo 'generate-csv.js script FINISHED';
-
-echo 'Creating schema...'
+echo 'Creating database and table schemas...'
 
 mysql -u root < /Users/hugo/hack-reactor/sdc/hugo-comments-service/seed/schema.sql
 
-echo 'Creating comments table and loading in CSV data...'
+echo 'Loading CSV data into tables...'
 
-echo 'Creating content table and loading in CSV data...'
-
-echo 'Creating songs table and loading in CSV data...'
-
-echo 'Creating users table and loading in CSV data...'
+mysql -u root < /Users/hugo/hack-reactor/sdc/hugo-comments-service/seed/load-data.sql
 
 echo 'Creating indexes and foreign keys...'
+
+mysql -u root < /Users/hugo/hack-reactor/sdc/hugo-comments-service/seed/indexes.sql
