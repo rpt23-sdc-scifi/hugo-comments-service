@@ -1,3 +1,6 @@
+# to investigate later: how to refactor this script to use RELATIVE PATHS, so that the script can work on another computer, for example an EC2 instance
+# https://www.tjelvarolsson.com/blog/using-relative-paths-in-linux-scripts/
+
 # run this seed script to generate 100 million comments and load them into the database
 
 # Add comments to CSV files
