@@ -20,3 +20,5 @@ mysql -u root < /Users/hugo/hack-reactor/sdc/hugo-comments-service/seed/load-dat
 echo 'Creating indexes and foreign keys...'
 
 mysql -u root < /Users/hugo/hack-reactor/sdc/hugo-comments-service/seed/indexes.sql
+
+echo 'Seed script FINISHED!'

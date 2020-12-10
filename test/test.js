@@ -10,10 +10,10 @@ chai.use(chaiHttp);
 // Existing comment data: comment #1 (already loaded into database)
 let existingComment = {
   comment_id: 1,
-  user_id: 987987,
-  song_id: 65,
-  content: "YES! Greatest song.",
-  time_stamp: 100,
+  user_id: 7640571,
+  song_id: 2593226,
+  content: "Aute veniam anim anim nisi.",
+  time_stamp: 342,
 };
 
 let newComment = {
@@ -45,6 +45,7 @@ describe("/GET comments by song ID", () => {
       .end((err, res) => {
         res.should.have.status(200);
         res.body.data.should.be.a("array");
+        res.body.data.should.have.lengthOf.above(0);
         done();
       });
   });
