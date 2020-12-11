@@ -1,33 +1,20 @@
-const mongoose = require("mongoose");
+const { Sequelize } = require('sequelize');
 
-const database = "soundcloud";
-
-mongoose.connect(`mongodb://localhost/${database}`, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useCreateIndex: true,
-  useFindAndModify: false,
+// Option 2: Passing parameters separately (other dialects)
+const sequelize = new Sequelize('soundcloud', 'root', '', {
+  host: 'localhost',
+  dialect: 'mysql'
 });
 
-const db = mongoose.connection;
+const verifyConnection = async () => {
+  try {
+    await sequelize.authenticate();
+    console.log('Sequelize connection has been established successfully.');
+  } catch (error) {
+    console.error('Unable to connect to the MySQL database:', error);
+  }
+}
 
-db.on("error", console.error.bind(console, "connection error:"));
+verifyConnection();
 
-db.once("open", function () {
-  console.log(`mongodb connected to database "${database}"!`);
-});
-
-const dropDatabase = async () => {
-  await db.dropDatabase();
-  console.log(`database "${database}" dropped`);
-};
-
-const dropCollection = async () => {
-  await db.dropCollection("comments");
-  console.log("comments collection dropped");
-};
-
-module.exports = {
-  dropDatabase,
-  dropCollection,
-};
+module.exports = sequelize;

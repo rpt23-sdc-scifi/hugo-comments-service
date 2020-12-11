@@ -1,0 +1,176 @@
+
+JOIN QUERY ACROSS TABLES (MATCHES ALL RECORDS):
+
+SELECT
+    comments.comment_id,
+    users.system_number AS user_id,
+    songs.system_number AS songs_id,
+    content.text AS content,
+    comments.time_stamp
+FROM
+    comments,
+    users,
+    songs,
+    content
+WHERE
+    comments.user_id = users.user_id
+        AND comments.song_id = songs.song_id
+        AND comments.content_id = content.content_id;
+
+>> OR:
+
+SELECT
+    c.comment_id,
+    u.system_number AS user_id,
+    s.system_number AS songs_id,
+    t.text AS content,
+    c.time_stamp
+FROM
+    comments c
+INNER JOIN
+    users u USING (user_id)
+INNER JOIN
+    songs s USING (song_id)
+INNER JOIN
+    content t USING (content_id)
+
+-------
+
+QUERY TO SEARCH COMMENTS BY SONG:
+
+SELECT
+    comments.comment_id,
+    users.system_number AS user_id,
+    songs.system_number AS songs_id,
+    content.text AS content,
+    comments.time_stamp
+FROM
+    comments,
+    users,
+    songs,
+    content
+WHERE
+    comments.user_id = users.user_id
+        AND comments.song_id = songs.song_id
+        AND comments.content_id = content.content_id
+        AND songs.system_number = 218749;
+
+>> OR:
+
+SELECT
+    c.comment_id,
+    u.system_number AS user_id,
+    s.system_number AS songs_id,
+    t.text AS content,
+    c.time_stamp
+FROM
+    comments c
+INNER JOIN
+    users u USING (user_id)
+INNER JOIN
+    songs s USING (song_id)
+INNER JOIN
+    content t USING (content_id)
+WHERE
+    s.system_number = 18;
+
+-------
+
+QUERY TO SEARCH COMMENTS BY USER:
+
+SELECT
+    comments.comment_id,
+    users.system_number AS user_id,
+    songs.system_number AS songs_id,
+    content.text AS content,
+    comments.time_stamp
+FROM
+    comments,
+    users,
+    songs,
+    content
+WHERE
+    comments.user_id = users.user_id
+        AND comments.song_id = songs.song_id
+        AND comments.content_id = content.content_id
+        AND users.system_number = 6419676;
+
+>> OR:
+
+SELECT
+    c.comment_id,
+    u.system_number AS user_id,
+    s.system_number AS songs_id,
+    t.text AS content,
+    c.time_stamp
+FROM
+    comments c
+INNER JOIN
+    users u USING (user_id)
+INNER JOIN
+    songs s USING (song_id)
+INNER JOIN
+    content t USING (content_id)
+WHERE
+    u.system_number = 2730112;
+
+-------
+
+QUERY TO SEARCH COMMENTS BY CONTENT:
+
+SELECT
+    comments.comment_id,
+    users.system_number AS user_id,
+    songs.system_number AS songs_id,
+    content.text AS content,
+    comments.time_stamp
+FROM
+    comments,
+    users,
+    songs,
+    content
+WHERE
+    comments.user_id = users.user_id
+        AND comments.song_id = songs.song_id
+        AND comments.content_id = content.content_id
+        AND content.text = "Magna ut sunt reprehenderit mollit officia aute.";
+
+>> OR:
+
+SELECT
+    c.comment_id,
+    u.system_number AS user_id,
+    s.system_number AS songs_id,
+    t.text AS content,
+    c.time_stamp
+FROM
+    comments c
+INNER JOIN
+    users u USING (user_id)
+INNER JOIN
+    songs s USING (song_id)
+INNER JOIN
+    content t USING (content_id)
+WHERE
+    t.text = "Ullamco qui cillum anim labore velit ea.";
+
+-------
+
+QUERY TO SEARCH COMMENTS BY UNIQUE COMMENT ID:
+
+SELECT
+    c.comment_id,
+    u.system_number AS user_id,
+    s.system_number AS songs_id,
+    t.text AS content,
+    c.time_stamp
+FROM
+    comments c
+INNER JOIN
+    users u USING (user_id)
+INNER JOIN
+    songs s USING (song_id)
+INNER JOIN
+    content t USING (content_id)
+WHERE
+    c.comment_id = 10000000;
