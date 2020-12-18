@@ -39,6 +39,7 @@ router.get("/comments/:id", async (req, res) => {
     // send 404 if request is valid but no results found
     if (comment === null) {
       res.status(404).send({ comment_id: id, message: "no results found" });
+      return;
     }
     res.status(200).send(comment);
   } catch (err) {
