@@ -25,6 +25,7 @@
     "mongoose": "^5.10.7",
     "mysql2": "^2.2.5",
     "nano": "^9.0.1",
+    "newrelic": "^7.0.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "sequelize": "^6.3.5",

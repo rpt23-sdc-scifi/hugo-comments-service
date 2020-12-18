@@ -1,3 +1,5 @@
+require("newrelic");
+
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
@@ -25,7 +27,7 @@ app.use(
 app.use(express.json());
 app.use(cors());
 
-app.use('/api', apiRouter);
+app.use("/api", apiRouter);
 
 app.get("/:current", (req, res) => {
   res.sendFile(path.join(__dirname, "../dist/index.html"));
