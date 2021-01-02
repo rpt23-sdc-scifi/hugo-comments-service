@@ -7,21 +7,33 @@ const myFailRate = new Rate("failed requests");
 const TrendRTT = new Trend("RTT");
 
 export let options = {
-  stages: [
-    // { duration: "2m", target: 100, rps: 100 },
-    // { duration: '2m', target: 100, rps },
-    // { duration: '2m', target: 200, rps },
-    // { duration: '2m', target: 300, rps },
-    // { duration: '2m', target: 400, rps },
-    // { duration: '4m', target: 0, rps },
-    { duration: "30s", target: 500, rps: 500 },
-    // { duration: "30s", target: 500, rps: 500 },
-    // { duration: "2m", target: 1000, rps: 1000 },
-  ],
+  vus: 100,
+  duration: "10s",
+  // stages: [
+  //   // { duration: "2m", target: 100, rps: 100 },
+  //   // { duration: '2m', target: 100, rps },
+  //   // { duration: '2m', target: 200, rps },
+  //   // { duration: '2m', target: 300, rps },
+  //   // { duration: '2m', target: 400, rps },
+  //   // { duration: '4m', target: 0, rps },
+  //   { duration: "10s", target: 200},
+  //   // { duration: "30s", target: 500, rps: 500 },
+  //   // { duration: "2m", target: 1000, rps: 1000 },
+
+  //   // { duration: '30s', target: 100 }, // below normal load
+  //   // { duration: '30s', target: 100 },
+  //   // { duration: '2m', target: 200 }, // normal load
+  //   // { duration: '5m', target: 200 },
+  //   // { duration: '2m', target: 300 }, // around the breaking point
+  //   // { duration: '5m', target: 300 },
+  //   // { duration: '2m', target: 400 }, // beyond the breaking point
+  //   // { duration: '5m', target: 400 },
+  //   // { duration: '10m', target: 0 }, // scale down. Recovery stage.
+  // ],
   thresholds: {
-    // threshold on a custom metric: 10% or less of requests return anything other than a 200-response
-    "failed requests": ["rate<0.1"],
-    // threshold on standard metric: 90% of requests must finish within 300ms, 95% within 500, and 99.9% within 1.5s.
+    // threshold on a custom metric: 2% or less of requests return a 400 response (error / invalid request)
+    "failed requests": ["rate<0.02"],
+    // threshold on standard metric: 90% of requests must finish within 500ms, 95% within 800, and 99.9% within 1.5s.
     http_req_duration: [
       "p(90) < 500",
       "p(95) < 800",
@@ -62,26 +74,24 @@ export default function () {
   const resUserQuery = http.get(
     `http://localhost:4000/api/comments?user_id=${userId}`
   );
-  myFailRate.add(resUserQuery.status !== 200);
+  myFailRate.add(resUserQuery.status === 400);
   sleep(1);
 
-  // const songId = Math.ceil(Math.random() * 10000000);
-  // const resSongQuery = http.get(
-  //   `http://localhost:4000/api/comments?song_id=${songId}`
-  // );
-  // myFailRate.add(resSongQuery.status !== 200);
-  // sleep(1);
+  const songId = Math.ceil(Math.random() * 10000000);
+  const resSongQuery = http.get(
+    `http://localhost:4000/api/comments?song_id=${songId}`
+  );
+  myFailRate.add(resSongQuery.status === 400);
+  sleep(1);
 
-  // const content = "Labore exercitation voluptate consectetur reprehenderit.";
-  // const resContentQuery = http.get(
-  //   `http://localhost:4000/api/comments?content=${content}`
-  // );
-  // myFailRate.add(resContentQuery.status !== 200);
-  // sleep(1);
+  const content = encodeURIComponent("Lorem ad aliquip et minim.");
+  const resContentQuery = http.get(
+    `http://localhost:4000/api/comments?content=${content}`
+  );
+  myFailRate.add(resContentQuery.status !== 200);
+  sleep(1);
 
   // TrendRTT.add(res.timings.duration);
-  // myFailRate.add(res.status !== 200);
-  // sleep(1);
 }
 
 // export let options = {
