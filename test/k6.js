@@ -42,14 +42,6 @@ export let options = {
 
 /*
 // get comments by comment id
-http://localhost:4000/api/comments/100000000
-// get comments by song id
-http://localhost:4000/api/comments/100000000
-// get comments by song id
-http://localhost:4000/api/comments/100000000
-// get comments by song id
-http://localhost:4000/api/comments/100000000
-
 user_id, song_id, content
 http://localhost:4000/api/comments?user_id=7640571
 
@@ -66,9 +58,9 @@ export default function () {
   myFailRate.add(resCommentQuery.status !== 200);
   sleep(1);
 
-  const userId = Math.ceil(Math.random() * 10000000);
+  const userId = Math.floor(Math.random() * 10000000) + 1;
   const resUserQuery = http.get(
-    `http://localhost:4000/api/comments?user_id=${7640571}`
+    `http://localhost:4000/api/comments?user_id=${userId}`
   );
   myFailRate.add(resUserQuery.status !== 200);
   sleep(1);

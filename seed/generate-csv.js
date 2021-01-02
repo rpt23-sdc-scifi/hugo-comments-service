@@ -26,15 +26,15 @@ const lorem = new loremIpsum({
 });
 
 const getRandomUserId = () => {
-  return Math.floor(Math.random() * 10000000) + 1; // 10 million users
+  return Math.floor(Math.random() * 10000000) + 1; // range: 10 million users
 };
 
 const getRandomSongId = () => {
-  return Math.floor(Math.random() * 10000000) + 1; // 10 million songs
+  return Math.floor(Math.random() * 10000000) + 1; // range: 10 million songs
 };
 
 const getRandomContentId = () => {
-  return Math.floor(Math.random() * 100000000) + 1; // 100 million text comments
+  return Math.floor(Math.random() * 100000000) + 1; // range: 100 million text comments
 };
 
 const getRandomTimeStamp = (maxTime) => {
