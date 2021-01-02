@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "seed": "node seed.js",
-    "test": "mocha",
+    "seed": "`node` seed.js",
+    "test": "mocha --exit",
     "server": "nodemon server/index.js",
     "build": "webpack --mode=production -d --watch",
     "start": "webpack-dev-server --open --mode=development"

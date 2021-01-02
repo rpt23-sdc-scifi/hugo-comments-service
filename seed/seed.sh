@@ -1,14 +1,24 @@
+# to investigate later: how to refactor this script to use RELATIVE PATHS, so that the script can work on another computer, for example an EC2 instance
+# https://www.tjelvarolsson.com/blog/using-relative-paths-in-linux-scripts/
 
-echo 'RUN generate-csv.js';
+# run this seed script to generate 100 million comments and load them into the database
 
-# Add X amount of comments to CSV
+# Add comments to CSV files
+
+echo 'Generating CSV data files...';
+
 node /Users/hugo/hack-reactor/sdc/hugo-comments-service/seed/generate-csv.js
 
+echo 'Creating database and table schemas...'
 
-echo 'generate-csv.js script FINISHED';
+mysql -u root < /Users/hugo/hack-reactor/sdc/hugo-comments-service/seed/schema.sql
 
-# After time interval, load comments into shell script
-# mysql -u root < seed/seed-comments.sql
+echo 'Loading CSV data into tables...'
 
-# // add timeouts in this file
-# // look at bash syntax for do loops
+mysql -u root < /Users/hugo/hack-reactor/sdc/hugo-comments-service/seed/load-data.sql
+
+echo 'Creating indexes and foreign keys...'
+
+mysql -u root < /Users/hugo/hack-reactor/sdc/hugo-comments-service/seed/indexes.sql
+
+echo 'Seed script FINISHED!'
