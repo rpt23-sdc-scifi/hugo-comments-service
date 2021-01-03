@@ -182,7 +182,6 @@ export function getCommentsApi() {
   myFailRate.add(resContentQuery.status !== 200);
 }
 
-hugo@Hugos-MacBook-Pro hugo-comments-service % k6 run test/k6.js
 
           /\      |‾‾| /‾‾/   /‾‾/
      /\  /  \     |  |/  /   /  /
@@ -232,3 +231,221 @@ rps_1500 • [--------------------------------------] waiting        0m24.0s
 ERRO[0104] some thresholds have failed
 
 # API POST REQUESTS:
+
+import http from "k6/http";
+
+import { Rate } from "k6/metrics";
+
+const myFailRate = new Rate("failed requests");
+const maxSongLength = 480; // in seconds
+
+export let options = {
+  discardResponseBodies: true,
+  scenarios: {
+    rps_100: {
+      executor: "constant-arrival-rate",
+      exec: "postCommentsApi",
+      rate: 100,
+      timeUnit: "1s",
+      duration: "30s",
+      preAllocatedVUs: 100,
+      maxVUs: 200,
+    },
+    rps_500: {
+      executor: "constant-arrival-rate",
+      exec: "postCommentsApi",
+      rate: 500,
+      timeUnit: "1s",
+      duration: "30s",
+      startTime: "30s",
+      preAllocatedVUs: 500,
+      maxVUs: 1000,
+    },
+    rps_750: {
+      executor: "constant-arrival-rate",
+      exec: "postCommentsApi",
+      rate: 750,
+      timeUnit: "1s",
+      duration: "30s",
+      startTime: "1m",
+      preAllocatedVUs: 1000,
+      maxVUs: 2000,
+    },
+    rps_1000: {
+      executor: "constant-arrival-rate",
+      exec: "postCommentsApi",
+      rate: 1000,
+      timeUnit: "1s",
+      duration: "30s",
+      startTime: "1m30s",
+      preAllocatedVUs: 1500,
+      maxVUs: 3000,
+    },
+    rps_1500: {
+      executor: "constant-arrival-rate",
+      exec: "postCommentsApi",
+      rate: 1500,
+      timeUnit: "1s",
+      duration: "30s",
+      startTime: "2m",
+      preAllocatedVUs: 2000,
+      maxVUs: 3000,
+    },
+  },
+  thresholds: {
+    // threshold (custom metric): 2% or less of requests return a 400 response (error / invalid request)
+    "failed requests": [{ threshold: "rate<0.02", abortOnFail: true }],
+    // threshold broken up by scenarios: 90% of requests must finish within 500ms, 95% within 800, and 99.9% within 1.5s.
+    "http_req_duration{scenario:rps_100}": [
+      {
+        threshold: "p(90) < 500",
+        abortOnFail: true,
+      },
+      {
+        threshold: "p(95) < 800",
+        abortOnFail: true,
+      },
+      {
+        threshold: "p(99.9) < 2000",
+        abortOnFail: true,
+      },
+      {
+        threshold: "avg < 700",
+        abortOnFail: true,
+      },
+    ],
+    "http_req_duration{scenario:rps_500}": [
+      {
+        threshold: "p(90) < 500",
+        abortOnFail: true,
+      },
+      {
+        threshold: "p(95) < 800",
+        abortOnFail: true,
+      },
+      {
+        threshold: "p(99.9) < 2000",
+        abortOnFail: true,
+      },
+      {
+        threshold: "avg < 700",
+        abortOnFail: true,
+      },
+    ],
+    "http_req_duration{scenario:rps_750}": [
+      {
+        threshold: "p(90) < 500",
+        abortOnFail: true,
+      },
+      {
+        threshold: "p(95) < 800",
+        abortOnFail: true,
+      },
+      {
+        threshold: "p(99.9) < 2000",
+        abortOnFail: true,
+      },
+      {
+        threshold: "avg < 700",
+        abortOnFail: true,
+      },
+    ],
+    "http_req_duration{scenario:rps_1000}": [
+      {
+        threshold: "p(90) < 500",
+        abortOnFail: true,
+      },
+      {
+        threshold: "p(95) < 800",
+        abortOnFail: true,
+      },
+      {
+        threshold: "p(99.9) < 2000",
+        abortOnFail: true,
+      },
+      {
+        threshold: "avg < 700",
+        abortOnFail: true,
+      },
+    ],
+    "http_req_duration{scenario:rps_1500}": [
+      {
+        threshold: "p(90) < 500",
+        abortOnFail: true,
+      },
+      {
+        threshold: "p(95) < 800",
+        abortOnFail: true,
+      },
+      {
+        threshold: "p(99.9) < 2000",
+        abortOnFail: true,
+      },
+      {
+        threshold: "avg < 700",
+        abortOnFail: true,
+      },
+    ],
+  },
+};
+
+export function postCommentsApi() {
+  const url = "http://localhost:4000/api/comments";
+  let headers = { "Content-Type": "application/json" };
+  let data = {
+    user_id: Math.ceil(Math.random() * 10000000),
+    song_id: Math.ceil(Math.random() * 10000000),
+    content: "k6 placeholder text",
+    time_stamp: Math.floor(Math.random() * maxSongLength),
+  };
+
+  let res = http.post(url, JSON.stringify(data), { headers: headers });
+  myFailRate.add(res.status !== 201);
+}
+
+
+          /\      |‾‾| /‾‾/   /‾‾/
+     /\  /  \     |  |/  /   /  /
+    /  \/    \    |     (   /   ‾‾\
+   /          \   |  |\  \ |  (‾)  |
+  / __________ \  |__| \__\ \_____/ .io
+
+  execution: local
+     script: test/k6_api_post.js
+     output: -
+
+  scenarios: (100.00%) 5 scenarios, 6000 max VUs, 3m0s max duration (incl. graceful stop):
+           * rps_100: 100.00 iterations/s for 30s (maxVUs: 100-200, exec: postCommentsApi, gracefulStop: 30s)
+           * rps_500: 500.00 iterations/s for 30s (maxVUs: 500-1000, exec: postCommentsApi, startTime: 30s, gracefulStop: 30s)
+           * rps_750: 750.00 iterations/s for 30s (maxVUs: 1000-2000, exec: postCommentsApi, startTime: 1m0s, gracefulStop: 30s)
+           * rps_1000: 1000.00 iterations/s for 30s (maxVUs: 1500-3000, exec: postCommentsApi, startTime: 1m30s, gracefulStop: 30s)
+           * rps_1500: 1500.00 iterations/s for 30s (maxVUs: 2000-3000, exec: postCommentsApi, startTime: 2m0s, gracefulStop: 30s)
+
+
+running (0m32.0s), 0000/3560 VUs, 3075 complete and 559 interrupted iterations
+rps_100  ✓ [======================================] 100/100 VUs    30s        100 iters/s
+rps_500  ✗ [=>------------------------------------] 0559/0559 VUs  02.0s/30s  500 iters/s
+rps_750  • [--------------------------------------] waiting        0m28.0s
+rps_1000 • [--------------------------------------] waiting        0m58.0s
+rps_1500 • [--------------------------------------] waiting        1m28.0s
+
+    data_received..............: 1.0 MB 32 kB/s
+    data_sent..................: 838 kB 26 kB/s
+    dropped_iterations.........: 363    11.336165/s
+  ✓ failed requests............: 0.00%  ✓ 0      ✗ 3075
+    http_req_blocked...........: avg=16.05µs  min=2µs      med=4µs     max=751µs    p(90)=7µs      p(95)=149µs
+    http_req_connecting........: avg=9.24µs   min=0s       med=0s      max=398µs    p(90)=0s       p(95)=110.29µs
+    http_req_duration..........: avg=65.7ms   min=5.44ms   med=17.47ms max=1.82s    p(90)=216.68ms p(95)=291.93ms
+    ✓ { scenario:rps_100 }.....: avg=43.38ms  min=5.44ms   med=17.14ms max=368.05ms p(90)=111ms    p(95)=272.58ms
+    ✗ { scenario:rps_500 }.....: avg=971.01ms min=110.76ms med=1.02s   max=1.82s    p(90)=1.64s    p(95)=1.7s
+    http_req_receiving.........: avg=35.39µs  min=18µs     med=33µs    max=4.02ms   p(90)=44µs     p(95)=50µs
+    http_req_sending...........: avg=25.09µs  min=14µs     med=23µs    max=95µs     p(90)=33µs     p(95)=43µs
+    http_req_tls_handshaking...: avg=0s       min=0s       med=0s      max=0s       p(90)=0s       p(95)=0s
+    http_req_waiting...........: avg=65.64ms  min=5.4ms    med=17.41ms max=1.82s    p(90)=216.61ms p(95)=291.87ms
+    http_reqs..................: 3075   96.0295/s
+    iteration_duration.........: avg=65.9ms   min=5.58ms   med=17.68ms max=1.82s    p(90)=216.85ms p(95)=292.15ms
+    iterations.................: 3075   96.0295/s
+    vus........................: 559    min=100  max=559
+    vus_max....................: 3559   min=3500 max=3559
+
+ERRO[0039] some thresholds have failed
