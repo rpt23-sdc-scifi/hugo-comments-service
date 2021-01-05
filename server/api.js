@@ -15,29 +15,14 @@ redisClient.on("error", (err) => {
   console.log(err);
 });
 
-redisClient.on("ready", () => {
-  redisTest();
-});
-
 // Promisify redisClient
 const redisGet = promisify(redisClient.get).bind(redisClient);
 const redisSet = promisify(redisClient.set).bind(redisClient);
-
-const redisTest = async () => {
-  try {
-    await redisSet("user:lastname", "wakefield");
-    const result = await redisGet("user:lastname");
-    console.log("result: ", result);
-  } catch (err) {
-    console.error(err);
-  }
-};
 
 // API: get all comments that match search critiera
 router.get("/comments", async (req, res) => {
   try {
     let { user_id, song_id, content } = req.query;
-    console.log(req.query);
 
     // create redisKey string
     let redisKey = "";
