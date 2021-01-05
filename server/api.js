@@ -7,21 +7,31 @@ const db = require("../db/controller.js");
 
 // The Comments API is served at the "/api" path, i.e. "/api/comments"
 
-// Creating and connecting redis client to local instance (port 6379)
-const redisClient = redis.createClient(6379);
+// Creating and connecting redis client to local instance (default is port 6379)
+const redisClient = redis.createClient();
 
-// Log Redis Error
+// Log Redis Errors
 redisClient.on("error", (err) => {
   console.log(err);
 });
 
-// redisClient.set("key", "value", redis.print);
-// redisClient.get("key", redis.print);
+redisClient.on("ready", () => {
+  redisTest();
+})
 
-// promisify redisClient
-const getRedis = promisify(redisClient.get).bind(redisClient);
-console.log(getRedis);
-getRedis("key").then(console.log).catch(console.error);
+// Promisify redisClient
+const redisGet = promisify(redisClient.get).bind(redisClient);
+const redisSet = promisify(redisClient.set).bind(redisClient);
+
+const redisTest = async () => {
+  try {
+    await redisSet("user:lastname", "wakefield");
+    const result = await redisGet("user:lastname");
+    console.log('result: ', result);
+  } catch (err) {
+    console.error(err);
+  }
+};
 
 // API: get all comments that match search critiera
 router.get("/comments", async (req, res) => {
