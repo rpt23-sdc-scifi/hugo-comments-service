@@ -17,7 +17,7 @@ redisClient.on("error", (err) => {
 
 redisClient.on("ready", () => {
   redisTest();
-})
+});
 
 // Promisify redisClient
 const redisGet = promisify(redisClient.get).bind(redisClient);
@@ -27,7 +27,7 @@ const redisTest = async () => {
   try {
     await redisSet("user:lastname", "wakefield");
     const result = await redisGet("user:lastname");
-    console.log('result: ', result);
+    console.log("result: ", result);
   } catch (err) {
     console.error(err);
   }
@@ -37,19 +37,41 @@ const redisTest = async () => {
 router.get("/comments", async (req, res) => {
   try {
     let { user_id, song_id, content } = req.query;
+    console.log(req.query);
 
-    user_id = Number(user_id);
-    song_id = Number(song_id);
+    // create redisKey string
+    let redisKey = "";
+    if (user_id) {
+      user_id = Number(user_id);
+      redisKey = redisKey.concat(`user:${user_id}`);
+    }
+    if (song_id) {
+      song_id = Number(song_id);
+      redisKey = redisKey.concat(`song:${song_id}`);
+    }
+    if (content) {
+      redisKey = redisKey.concat(`content:${content}`);
+    }
+    if (redisKey === "") {
+      redisKey = null;
+    }
+    console.log("redisKey: ", redisKey);
 
-    // retrieve data from redis if key exists
+    let comments = JSON.parse(await redisGet(redisKey));
 
-    // else, retrieve data from database
-    const comments = await db.getComments(user_id, song_id, content);
+    // else, retrieve data from database and create redis key
+    if (comments === null) {
+      comments = await await db.getComments(user_id, song_id, content);
+      if (comments) {
+        await redisSet(redisKey, JSON.stringify(comments));
+      }
+    }
 
     const result = {
       count: comments.length,
       data: comments,
     };
+
     // send 404 if request is valid but no results found
     if (comments.length === 0) {
       res.status(404).send(result);
@@ -70,7 +92,7 @@ router.get("/comments/:id", async (req, res) => {
     // retrieve data from redis if key exists
     let comment = JSON.parse(await redisGet(`comment:${id}`));
 
-    // else, retrieve data from database
+    // else, retrieve data from database and create redis key
     if (comment === null) {
       comment = await db.getCommentByID(id);
       if (comment) {
