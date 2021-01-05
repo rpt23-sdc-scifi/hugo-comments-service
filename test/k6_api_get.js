@@ -33,7 +33,7 @@ export let options = {
       timeUnit: "4s",
       duration: "2m",
       startTime: "4m",
-      preAllocatedVUs: 1000,
+      preAllocatedVUs: 750,
       maxVUs: 10000,
     },
     rps_1000: {
@@ -43,7 +43,7 @@ export let options = {
       timeUnit: "4s",
       duration: "2m",
       startTime: "6m",
-      preAllocatedVUs: 1500,
+      preAllocatedVUs: 1000,
       maxVUs: 10000,
     },
     rps_1500: {
@@ -53,7 +53,7 @@ export let options = {
       timeUnit: "4s",
       duration: "2m",
       startTime: "8m",
-      preAllocatedVUs: 2000,
+      preAllocatedVUs: 1500,
       maxVUs: 10000,
     },
     rps_2000: {
@@ -73,7 +73,7 @@ export let options = {
       timeUnit: "4s",
       duration: "2m",
       startTime: "12m",
-      preAllocatedVUs: 2000,
+      preAllocatedVUs: 2500,
       maxVUs: 10000,
     },
     rps_3000: {
@@ -83,7 +83,7 @@ export let options = {
       timeUnit: "4s",
       duration: "2m",
       startTime: "14m",
-      preAllocatedVUs: 2000,
+      preAllocatedVUs: 3000,
       maxVUs: 10000,
     },
   },
@@ -94,109 +94,177 @@ export let options = {
     'http_req_duration{scenario:rps_100}': [
       {
         threshold: "p(90) < 500",
-        // abortOnFail: true,
+        abortOnFail: true,
+        delayAbortEval: '15s',
       },
       {
         threshold: "p(95) < 800",
-        // abortOnFail: true,
+        abortOnFail: true,
+        delayAbortEval: '15s',
       },
       {
         threshold: "p(99.9) < 2000",
-        // abortOnFail: true,
+        abortOnFail: true,
+        delayAbortEval: '15s',
       },
       {
         threshold: "avg < 700",
-        // abortOnFail: true,
+        abortOnFail: true,
+        delayAbortEval: '15s',
       },
     ],
     'http_req_duration{scenario:rps_500}': [
       {
         threshold: "p(90) < 500",
-        // abortOnFail: true,
+        abortOnFail: true,
+        delayAbortEval: '15s',
       },
       {
         threshold: "p(95) < 800",
-        // abortOnFail: true,
+        abortOnFail: true,
+        delayAbortEval: '15s',
       },
       {
         threshold: "p(99.9) < 2000",
-        // abortOnFail: true,
+        abortOnFail: true,
+        delayAbortEval: '15s',
       },
       {
         threshold: "avg < 700",
-        // abortOnFail: true,
+        abortOnFail: true,
+        delayAbortEval: '15s',
       },
     ],
     'http_req_duration{scenario:rps_750}': [
       {
         threshold: "p(90) < 500",
-        // abortOnFail: true,
+        abortOnFail: true,
+        delayAbortEval: '15s',
       },
       {
         threshold: "p(95) < 800",
-        // abortOnFail: true,
+        abortOnFail: true,
+        delayAbortEval: '15s',
       },
       {
         threshold: "p(99.9) < 2000",
-        // abortOnFail: true,
+        abortOnFail: true,
+        delayAbortEval: '15s',
       },
       {
         threshold: "avg < 700",
-        // abortOnFail: true,
+        abortOnFail: true,
+        delayAbortEval: '15s',
       },
     ],
     'http_req_duration{scenario:rps_1000}': [
       {
         threshold: "p(90) < 500",
-        // abortOnFail: true,
+        abortOnFail: true,
+        delayAbortEval: '15s',
       },
       {
         threshold: "p(95) < 800",
-        // abortOnFail: true,
+        abortOnFail: true,
+        delayAbortEval: '15s',
       },
       {
         threshold: "p(99.9) < 2000",
-        // abortOnFail: true,
+        abortOnFail: true,
+        delayAbortEval: '15s',
       },
       {
         threshold: "avg < 700",
-        // abortOnFail: true,
+        abortOnFail: true,
+        delayAbortEval: '15s',
       },
     ],
     'http_req_duration{scenario:rps_1500}': [
       {
         threshold: "p(90) < 500",
-        // abortOnFail: true,
+        abortOnFail: true,
+        delayAbortEval: '15s',
       },
       {
         threshold: "p(95) < 800",
-        // abortOnFail: true,
+        abortOnFail: true,
+        delayAbortEval: '15s',
       },
       {
         threshold: "p(99.9) < 2000",
-        // abortOnFail: true,
+        abortOnFail: true,
+        delayAbortEval: '15s',
       },
       {
         threshold: "avg < 700",
-        // abortOnFail: true,
+        abortOnFail: true,
+        delayAbortEval: '15s',
       },
     ],
     'http_req_duration{scenario:rps_2000}': [
       {
         threshold: "p(90) < 500",
-        // abortOnFail: true,
+        abortOnFail: true,
+        delayAbortEval: '15s',
       },
       {
         threshold: "p(95) < 800",
-        // abortOnFail: true,
+        abortOnFail: true,
+        delayAbortEval: '15s',
       },
       {
         threshold: "p(99.9) < 2000",
-        // abortOnFail: true,
+        abortOnFail: true,
+        delayAbortEval: '15s',
       },
       {
         threshold: "avg < 700",
-        // abortOnFail: true,
+        abortOnFail: true,
+        delayAbortEval: '15s',
+      },
+    ],
+    'http_req_duration{scenario:rps_2500}': [
+      {
+        threshold: "p(90) < 500",
+        abortOnFail: true,
+        delayAbortEval: '15s',
+      },
+      {
+        threshold: "p(95) < 800",
+        abortOnFail: true,
+        delayAbortEval: '15s',
+      },
+      {
+        threshold: "p(99.9) < 2000",
+        abortOnFail: true,
+        delayAbortEval: '15s',
+      },
+      {
+        threshold: "avg < 700",
+        abortOnFail: true,
+        delayAbortEval: '15s',
+      },
+    ],
+    'http_req_duration{scenario:rps_3000}': [
+      {
+        threshold: "p(90) < 500",
+        abortOnFail: true,
+        delayAbortEval: '15s',
+      },
+      {
+        threshold: "p(95) < 800",
+        abortOnFail: true,
+        delayAbortEval: '15s',
+      },
+      {
+        threshold: "p(99.9) < 2000",
+        abortOnFail: true,
+        delayAbortEval: '15s',
+      },
+      {
+        threshold: "avg < 700",
+        abortOnFail: true,
+        delayAbortEval: '15s',
       },
     ],
   },
