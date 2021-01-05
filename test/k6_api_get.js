@@ -56,6 +56,36 @@ export let options = {
       preAllocatedVUs: 2000,
       maxVUs: 10000,
     },
+    rps_2000: {
+      executor: "constant-arrival-rate",
+      exec: "getCommentsApi",
+      rate: 2000,
+      timeUnit: "4s",
+      duration: "2m",
+      startTime: "10m",
+      preAllocatedVUs: 2000,
+      maxVUs: 10000,
+    },
+    rps_2500: {
+      executor: "constant-arrival-rate",
+      exec: "getCommentsApi",
+      rate: 2500,
+      timeUnit: "4s",
+      duration: "2m",
+      startTime: "12m",
+      preAllocatedVUs: 2000,
+      maxVUs: 10000,
+    },
+    rps_3000: {
+      executor: "constant-arrival-rate",
+      exec: "getCommentsApi",
+      rate: 3000,
+      timeUnit: "4s",
+      duration: "2m",
+      startTime: "14m",
+      preAllocatedVUs: 2000,
+      maxVUs: 10000,
+    },
   },
   thresholds: {
     // threshold (custom metric): 2% or less of requests return a 400 response (error / invalid request)
@@ -64,37 +94,37 @@ export let options = {
     'http_req_duration{scenario:rps_100}': [
       {
         threshold: "p(90) < 500",
-        abortOnFail: true,
+        // abortOnFail: true,
       },
       {
         threshold: "p(95) < 800",
-        abortOnFail: true,
+        // abortOnFail: true,
       },
       {
         threshold: "p(99.9) < 2000",
-        abortOnFail: true,
+        // abortOnFail: true,
       },
       {
         threshold: "avg < 700",
-        abortOnFail: true,
+        // abortOnFail: true,
       },
     ],
     'http_req_duration{scenario:rps_500}': [
       {
         threshold: "p(90) < 500",
-        abortOnFail: true,
+        // abortOnFail: true,
       },
       {
         threshold: "p(95) < 800",
-        abortOnFail: true,
+        // abortOnFail: true,
       },
       {
         threshold: "p(99.9) < 2000",
-        abortOnFail: true,
+        // abortOnFail: true,
       },
       {
         threshold: "avg < 700",
-        abortOnFail: true,
+        // abortOnFail: true,
       },
     ],
     'http_req_duration{scenario:rps_750}': [
@@ -151,23 +181,41 @@ export let options = {
         // abortOnFail: true,
       },
     ],
+    'http_req_duration{scenario:rps_2000}': [
+      {
+        threshold: "p(90) < 500",
+        // abortOnFail: true,
+      },
+      {
+        threshold: "p(95) < 800",
+        // abortOnFail: true,
+      },
+      {
+        threshold: "p(99.9) < 2000",
+        // abortOnFail: true,
+      },
+      {
+        threshold: "avg < 700",
+        // abortOnFail: true,
+      },
+    ],
   },
 };
 
 export function getCommentsApi() {
-  const commentId = Math.ceil(Math.random() * 100000000);
+  const commentId = Math.ceil(Math.random() * 1000000) + 99000000;
   const resCommentQuery = http.get(
     `http://localhost:4000/api/comments/${commentId}`
   );
   myFailRate.add(resCommentQuery.status !== 200);
 
-  const userId = Math.ceil(Math.random() * 10000000);
+  const userId = Math.ceil(Math.random() * 1000000) + 9000000;
   const resUserQuery = http.get(
     `http://localhost:4000/api/comments?user_id=${userId}`
   );
   myFailRate.add(resUserQuery.status !== 200 && resUserQuery.status !== 404);
 
-  const songId = Math.ceil(Math.random() * 10000000);
+  const songId = Math.ceil(Math.random() * 1000000) + 9000000;
   const resSongQuery = http.get(
     `http://localhost:4000/api/comments?song_id=${songId}`
   );

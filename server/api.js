@@ -18,6 +18,7 @@ redisClient.on("error", (err) => {
 // Promisify redisClient
 const redisGet = promisify(redisClient.get).bind(redisClient);
 const redisSet = promisify(redisClient.set).bind(redisClient);
+const redisDel = promisify(redisClient.del).bind(redisClient);
 
 // API: get all comments that match search critiera
 router.get("/comments", async (req, res) => {
@@ -132,6 +133,10 @@ router.delete("/comments/:id", async (req, res) => {
   try {
     const id = Number(req.params.id);
     const comment_id = await db.deleteComment(id);
+
+    // delete comment from redis
+    await redisDel(`comment:${id}`);
+
     res
       .status(200)
       .send({ comment_id, message: "successfully deleted comment" });
