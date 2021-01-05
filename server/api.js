@@ -1,9 +1,27 @@
 const express = require("express");
 const router = express.Router();
+const redis = require("redis");
+const { promisify } = require("util");
+
 const db = require("../db/controller.js");
-const redis = require('redis');
 
 // The Comments API is served at the "/api" path, i.e. "/api/comments"
+
+// Creating and connecting redis client to local instance (port 6379)
+const redisClient = redis.createClient(6379);
+
+// Log Redis Error
+redisClient.on("error", (err) => {
+  console.log(err);
+});
+
+// redisClient.set("key", "value", redis.print);
+// redisClient.get("key", redis.print);
+
+// promisify redisClient
+const getRedis = promisify(redisClient.get).bind(redisClient);
+console.log(getRedis);
+getRedis("key").then(console.log).catch(console.error);
 
 // API: get all comments that match search critiera
 router.get("/comments", async (req, res) => {
