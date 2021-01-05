@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../db/controller.js");
+const redis = require('redis');
 
 // The Comments API is served at the "/api" path, i.e. "/api/comments"
 

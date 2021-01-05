@@ -14,7 +14,7 @@ export let options = {
       timeUnit: "4s",
       duration: "2m",
       preAllocatedVUs: 100,
-      maxVUs: 200,
+      maxVUs: 10000,
     },
     rps_500: {
       executor: "constant-arrival-rate",
@@ -24,7 +24,7 @@ export let options = {
       duration: "2m",
       startTime: "2m",
       preAllocatedVUs: 500,
-      maxVUs: 1000,
+      maxVUs: 10000,
     },
     rps_750: {
       executor: "constant-arrival-rate",
@@ -34,7 +34,7 @@ export let options = {
       duration: "2m",
       startTime: "4m",
       preAllocatedVUs: 1000,
-      maxVUs: 2000,
+      maxVUs: 10000,
     },
     rps_1000: {
       executor: "constant-arrival-rate",
@@ -44,7 +44,7 @@ export let options = {
       duration: "2m",
       startTime: "6m",
       preAllocatedVUs: 1500,
-      maxVUs: 3000,
+      maxVUs: 10000,
     },
     rps_1500: {
       executor: "constant-arrival-rate",
@@ -54,7 +54,7 @@ export let options = {
       duration: "2m",
       startTime: "8m",
       preAllocatedVUs: 2000,
-      maxVUs: 3000,
+      maxVUs: 10000,
     },
   },
   thresholds: {
