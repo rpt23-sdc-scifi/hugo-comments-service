@@ -41,6 +41,9 @@ router.get("/comments", async (req, res) => {
     user_id = Number(user_id);
     song_id = Number(song_id);
 
+    // retrieve data from redis if key exists
+
+    // else, retrieve data from database
     const comments = await db.getComments(user_id, song_id, content);
 
     const result = {
@@ -63,13 +66,24 @@ router.get("/comments", async (req, res) => {
 router.get("/comments/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const comment = await db.getCommentByID(id);
+
+    // retrieve data from redis if key exists
+    let comment = JSON.parse(await redisGet(`comment:${id}`));
+
+    // else, retrieve data from database
+    if (comment === null) {
+      comment = await db.getCommentByID(id);
+      if (comment) {
+        await redisSet(`comment:${id}`, JSON.stringify(comment));
+      }
+    }
 
     // send 404 if request is valid but no results found
     if (comment === null) {
       res.status(404).send({ comment_id: id, message: "no results found" });
       return;
     }
+
     res.status(200).send(comment);
   } catch (err) {
     console.error(err);
