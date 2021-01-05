@@ -120,6 +120,7 @@ const updateComment = async (id, data) => {
   const { user_id, song_id, content, time_stamp } = data;
 
   const comment = await Comment.findByPk(id);
+  const originalComment = getCommentByID(id);
 
   if (user_id) {
     comment.user_id = await findOrCreateReferenceData(
@@ -153,7 +154,7 @@ const updateComment = async (id, data) => {
   await comment.save();
   await comment.reload();
 
-  return comment.toJSON().comment_id;
+  return originalComment;
 };
 
 const deleteComment = async (id) => {

@@ -19,6 +19,7 @@ redisClient.on("error", (err) => {
 const redisGet = promisify(redisClient.get).bind(redisClient);
 const redisSet = promisify(redisClient.set).bind(redisClient);
 const redisDel = promisify(redisClient.del).bind(redisClient);
+const redisExists = promisify(redisClient.exists).bind(redisClient);
 
 // API: get all comments that match search critiera
 router.get("/comments", async (req, res) => {
@@ -104,6 +105,9 @@ router.post("/comments", async (req, res) => {
   try {
     const data = req.body;
     const comment_id = await db.saveComment(data);
+
+    // should a redis key be created for a new comment?
+
     res
       .status(201)
       .send({ comment_id, message: "successfully created comment" });
@@ -118,10 +122,24 @@ router.patch("/comments/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const data = req.body;
-    const comment_id = await db.updateComment(id, data);
+    const originalComment = await db.updateComment(id, data);
+
+    // cache invalidation -- delete all associated redis keys of ORIGINAL record
+    await redisDel(`comment:${id}`); // delete comment:id key
+    await redisDel(`user:${data.user_id}`); // delete user:id key
+    await redisDel(`song:${data.song_id}`); // delete song:id key
+    await redisDel(`content:${data.content}`); // delete content:text key
+    // delete all combinations of user/song/content keys (user:song, user:content, song:content, user:song:content)
+    await redisDel(`user:${data.user_id}song:${data.song_id}`);
+    await redisDel(`user:${data.user_id}content:${data.content}`);
+    await redisDel(`song:${data.song_id}content:${data.content}`);
+    await redisDel(`user:${data.user_id}song:${data.song_id}content:${data.content}`);
+
+    // cache invalidation -- delete all associated redis keys of NEW record
+
     res
       .status(200)
-      .send({ comment_id, message: "successfully updated comment" });
+      .send({ originalComment: originalComment, message: "successfully updated comment" });
   } catch (err) {
     console.log(err);
     res.status(400).send({ error: err.message });
