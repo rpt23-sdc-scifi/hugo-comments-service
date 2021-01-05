@@ -121,25 +121,34 @@ router.post("/comments", async (req, res) => {
 router.patch("/comments/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const data = req.body;
-    const originalComment = await db.updateComment(id, data);
+    const newData = req.body;
+    const originalData = await db.updateComment(id, newData);
 
     // cache invalidation -- delete all associated redis keys of ORIGINAL record
     await redisDel(`comment:${id}`); // delete comment:id key
-    await redisDel(`user:${data.user_id}`); // delete user:id key
-    await redisDel(`song:${data.song_id}`); // delete song:id key
-    await redisDel(`content:${data.content}`); // delete content:text key
+    await redisDel(`user:${originalData.user_id}`); // delete user:id key
+    await redisDel(`song:${originalData.song_id}`); // delete song:id key
+    await redisDel(`content:${originalData.content}`); // delete content:text key
     // delete all combinations of user/song/content keys (user:song, user:content, song:content, user:song:content)
-    await redisDel(`user:${data.user_id}song:${data.song_id}`);
-    await redisDel(`user:${data.user_id}content:${data.content}`);
-    await redisDel(`song:${data.song_id}content:${data.content}`);
-    await redisDel(`user:${data.user_id}song:${data.song_id}content:${data.content}`);
+    await redisDel(`user:${originalData.user_id}song:${originalData.song_id}`);
+    await redisDel(`user:${originalData.user_id}content:${originalData.content}`);
+    await redisDel(`song:${originalData.song_id}content:${originalData.content}`);
+    await redisDel(`user:${originalData.user_id}song:${originalData.song_id}content:${originalData.content}`);
 
     // cache invalidation -- delete all associated redis keys of NEW record
+    await redisDel(`comment:${id}`); // delete comment:id key
+    await redisDel(`user:${newData.user_id}`); // delete user:id key
+    await redisDel(`song:${newData.song_id}`); // delete song:id key
+    await redisDel(`content:${newData.content}`); // delete content:text key
+    // delete all combinations of user/song/content keys (user:song, user:content, song:content, user:song:content)
+    await redisDel(`user:${newData.user_id}song:${newData.song_id}`);
+    await redisDel(`user:${newData.user_id}content:${newData.content}`);
+    await redisDel(`song:${newData.song_id}content:${newData.content}`);
+    await redisDel(`user:${newData.user_id}song:${newData.song_id}content:${newData.content}`);
 
     res
       .status(200)
-      .send({ originalComment: originalComment, message: "successfully updated comment" });
+      .send({ originalComment: originalData, message: "successfully updated comment" });
   } catch (err) {
     console.log(err);
     res.status(400).send({ error: err.message });
