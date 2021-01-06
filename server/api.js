@@ -25,30 +25,33 @@ const redisExists = promisify(redisClient.exists).bind(redisClient);
 router.get("/comments", async (req, res) => {
   try {
     let { user_id, song_id, content } = req.query;
+    console.log("query", req.query);
+
+    user_id = Number(user_id);
+    song_id = Number(song_id);
 
     // create redisKey string
     let redisKey = "";
     if (user_id) {
-      user_id = Number(user_id);
       redisKey = redisKey.concat(`user:${user_id}`);
     }
     if (song_id) {
-      song_id = Number(song_id);
       redisKey = redisKey.concat(`song:${song_id}`);
     }
     if (content) {
       redisKey = redisKey.concat(`content:${content}`);
     }
-    if (redisKey === "") {
-      redisKey = null;
-    }
     console.log("redisKey: ", redisKey);
+
+    if (redisKey === "") {
+      throw new Error("invalid search parameters");
+    }
 
     let comments = JSON.parse(await redisGet(redisKey));
 
     // else, retrieve data from database and create redis key
-    if (comments === null) {
-      comments = await await db.getComments(user_id, song_id, content);
+    if (!comments) {
+      comments = await db.getComments(user_id, song_id, content);
       if (comments) {
         await redisSet(redisKey, JSON.stringify(comments));
       }
@@ -131,9 +134,15 @@ router.patch("/comments/:id", async (req, res) => {
     await redisDel(`content:${originalData.content}`); // delete content:text key
     // delete all combinations of user/song/content keys (user:song, user:content, song:content, user:song:content)
     await redisDel(`user:${originalData.user_id}song:${originalData.song_id}`);
-    await redisDel(`user:${originalData.user_id}content:${originalData.content}`);
-    await redisDel(`song:${originalData.song_id}content:${originalData.content}`);
-    await redisDel(`user:${originalData.user_id}song:${originalData.song_id}content:${originalData.content}`);
+    await redisDel(
+      `user:${originalData.user_id}content:${originalData.content}`
+    );
+    await redisDel(
+      `song:${originalData.song_id}content:${originalData.content}`
+    );
+    await redisDel(
+      `user:${originalData.user_id}song:${originalData.song_id}content:${originalData.content}`
+    );
 
     // cache invalidation -- delete all associated redis keys of NEW record
     await redisDel(`comment:${id}`); // delete comment:id key
@@ -144,11 +153,14 @@ router.patch("/comments/:id", async (req, res) => {
     await redisDel(`user:${newData.user_id}song:${newData.song_id}`);
     await redisDel(`user:${newData.user_id}content:${newData.content}`);
     await redisDel(`song:${newData.song_id}content:${newData.content}`);
-    await redisDel(`user:${newData.user_id}song:${newData.song_id}content:${newData.content}`);
+    await redisDel(
+      `user:${newData.user_id}song:${newData.song_id}content:${newData.content}`
+    );
 
-    res
-      .status(200)
-      .send({ originalComment: originalData, message: "successfully updated comment" });
+    res.status(200).send({
+      originalComment: originalData,
+      message: "successfully updated comment",
+    });
   } catch (err) {
     console.log(err);
     res.status(400).send({ error: err.message });
