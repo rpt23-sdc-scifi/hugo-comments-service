@@ -8,7 +8,7 @@
     "test": "mocha test/test.js --exit",
     "server": "nodemon server/index.js",
     "start": "node server/index.js",
-    "build": "webpack --mode=production -d --watch",
+    "build": "webpack --mode=production -d --watch"
   },
   "keywords": [],
   "author": "",
