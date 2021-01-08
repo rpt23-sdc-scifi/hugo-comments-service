@@ -1,11 +1,14 @@
+require("newrelic");
+require("dotenv").config();
+
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
 const expressStaticGzip = require("express-static-gzip");
 const apiRouter = require("./api.js");
 
-// open connectiong to the database
-require("../db/connect");
+// open connection to the database
+// require("../db/connect");
 
 const port = 4000;
 
@@ -25,7 +28,7 @@ app.use(
 app.use(express.json());
 app.use(cors());
 
-app.use('/api', apiRouter);
+app.use("/api", apiRouter);
 
 app.get("/:current", (req, res) => {
   res.sendFile(path.join(__dirname, "../dist/index.html"));

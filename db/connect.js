@@ -1,8 +1,11 @@
 const { Sequelize } = require('sequelize');
 
-// Option 2: Passing parameters separately (other dialects)
-const sequelize = new Sequelize('soundcloud', 'root', '', {
-  host: 'localhost',
+const host = process.env.DB_HOST;
+const user = process.env.DB_USER;
+const password = process.env.DB_PASS;
+
+const sequelize = new Sequelize('soundcloud', user, password, {
+  host: host,
   dialect: 'mysql'
 });
 

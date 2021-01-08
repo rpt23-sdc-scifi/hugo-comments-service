@@ -10,10 +10,10 @@ chai.use(chaiHttp);
 // Existing comment data: comment #1 (already loaded into database)
 let existingComment = {
   comment_id: 1,
-  user_id: 7640571,
-  song_id: 2593226,
-  content: "Aute veniam anim anim nisi.",
-  time_stamp: 342,
+  user_id: 5426410,
+  song_id: 2816391,
+  content: "Anim aute ad nostrud.",
+  time_stamp: 52,
 };
 
 let newComment = {
@@ -115,7 +115,6 @@ describe("/PATCH comment", () => {
       .end((err, res) => {
         res.should.have.status(200);
         res.body.should.be.a("object");
-        res.body.comment_id.should.equal(newCommentID);
         res.body.message.should.equal("successfully updated comment");
         done();
       });
