@@ -17,6 +17,7 @@
     "brotli-webpack-plugin": "^1.1.0",
     "compression-webpack-plugin": "^6.0.5",
     "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
     "express-static-gzip": "^2.1.0",
     "mysql2": "^2.2.5",
     "nano": "^9.0.1",
