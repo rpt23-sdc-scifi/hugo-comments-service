@@ -4,7 +4,7 @@ const express = require("express");
 const cors = require("cors");
 const path = require("path");
 const expressStaticGzip = require("express-static-gzip");
-// const apiRouter = require("./api.js");
+const apiRouter = require("./api.js");
 
 // open connection to the database
 // require("../db/connect");
@@ -27,7 +27,7 @@ app.use(
 app.use(express.json());
 app.use(cors());
 
-// app.use("/api", apiRouter);
+app.use("/api", apiRouter);
 
 app.get("/:current", (req, res) => {
   res.sendFile(path.join(__dirname, "../dist/index.html"));

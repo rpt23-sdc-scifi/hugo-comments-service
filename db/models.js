@@ -20,6 +20,7 @@ const User = sequelize.define(
   {
     // Other model options go here
     timestamps: false,
+    tableName: "users",
     indexes: [
       {
         name: "idx_system_number",
@@ -50,6 +51,7 @@ Song.init(
     // Other model options go here
     sequelize, // We need to pass the connection instance
     modelName: "Song", // We need to choose the model name
+    tableName: "songs",
     timestamps: false,
     indexes: [
       {
@@ -111,16 +113,16 @@ const Comment = sequelize.define(
       allowNull: false,
       references: {
         model: Song,
-        key: "song_id"
-      }
+        key: "song_id",
+      },
     },
     content_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
         model: Content,
-        key: "content_id"
-      }
+        key: "content_id",
+      },
     },
     time_stamp: {
       type: DataTypes.INTEGER,
@@ -130,6 +132,7 @@ const Comment = sequelize.define(
   {
     // Other model options go here
     timestamps: false,
+    tableName: "comments",
     indexes: [
       {
         name: "idx_user_id",
@@ -153,30 +156,29 @@ const Comment = sequelize.define(
 
 // Add associations / foreign keys
 User.hasMany(Comment, {
-  foreignKey: "user_id"
+  foreignKey: "user_id",
 });
 Comment.belongsTo(User, {
-  foreignKey: "user_id"
+  foreignKey: "user_id",
 });
 
 Song.hasMany(Comment, {
-  foreignKey: "song_id"
+  foreignKey: "song_id",
 });
 Comment.belongsTo(Song, {
-  foreignKey: "song_id"
+  foreignKey: "song_id",
 });
 
 Content.hasMany(Comment, {
-  foreignKey: "content_id"
+  foreignKey: "content_id",
 });
 Comment.belongsTo(Content, {
-  foreignKey: "content_id"
+  foreignKey: "content_id",
 });
-
 
 module.exports = {
   User,
   Song,
   Content,
-  Comment
+  Comment,
 };
