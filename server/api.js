@@ -173,7 +173,7 @@ router.delete("/comments/:id", async (req, res) => {
     const id = Number(req.params.id);
     const comment_id = await db.deleteComment(id);
 
-    // delete comment from redis
+    // cache invalidation: delete comment from redis
     await redisDel(`comment:${id}`);
 
     res
@@ -186,3 +186,11 @@ router.delete("/comments/:id", async (req, res) => {
 });
 
 module.exports = router;
+
+/*
+Refactor: store each comment as a KEY, then look for it
+"SCAN command?", or using SETS
+"user.id.12312:song.id.23:coment.fsdfdasadsf"
+redis.get(pattern="user.id123")
+redis.get(pattern="user.id123:song.id.324")
+*/
