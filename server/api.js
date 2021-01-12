@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const db = require("../db/controller.js");
-const redis = require("./redis.js");
+const redis = require("./redis.js"); // this is a promisified client instance of the Redis npm package
 
 // The Comments API is served at the "/api" path, i.e. "/api/comments"
 
@@ -32,13 +32,13 @@ router.get("/comments", async (req, res) => {
       throw new Error("invalid search parameters");
     }
 
-    let comments = JSON.parse(await redisGet(redisKey));
+    let comments = JSON.parse(await redis.get(redisKey));
 
     // else, retrieve data from database and create redis key
     if (!comments) {
       comments = await db.getComments(user_id, song_id, content);
       if (comments) {
-        await redisSet(redisKey, JSON.stringify(comments));
+        await redis.set(redisKey, JSON.stringify(comments));
       }
     }
 
@@ -65,13 +65,13 @@ router.get("/comments/:id", async (req, res) => {
     const { id } = req.params;
 
     // retrieve data from redis if key exists
-    let comment = JSON.parse(await redisGet(`comment:${id}`));
+    let comment = JSON.parse(await redis.get(`comment:${id}`));
 
     // else, retrieve data from database and create redis key
     if (comment === null) {
       comment = await db.getCommentByID(id);
       if (comment) {
-        await redisSet(`comment:${id}`, JSON.stringify(comment));
+        await redis.set(`comment:${id}`, JSON.stringify(comment));
       }
     }
 
@@ -113,32 +113,32 @@ router.patch("/comments/:id", async (req, res) => {
     const originalData = await db.updateComment(id, newData);
 
     // cache invalidation -- delete all associated redis keys of ORIGINAL record
-    await redisDel(`comment:${id}`); // delete comment:id key
-    await redisDel(`user:${originalData.user_id}`); // delete user:id key
-    await redisDel(`song:${originalData.song_id}`); // delete song:id key
-    await redisDel(`content:${originalData.content}`); // delete content:text key
+    await redis.del(`comment:${id}`); // delete comment:id key
+    await redis.del(`user:${originalData.user_id}`); // delete user:id key
+    await redis.del(`song:${originalData.song_id}`); // delete song:id key
+    await redis.del(`content:${originalData.content}`); // delete content:text key
     // delete all combinations of user/song/content keys (user:song, user:content, song:content, user:song:content)
-    await redisDel(`user:${originalData.user_id}song:${originalData.song_id}`);
-    await redisDel(
+    await redis.del(`user:${originalData.user_id}song:${originalData.song_id}`);
+    await redis.del(
       `user:${originalData.user_id}content:${originalData.content}`
     );
-    await redisDel(
+    await redis.del(
       `song:${originalData.song_id}content:${originalData.content}`
     );
-    await redisDel(
+    await redis.del(
       `user:${originalData.user_id}song:${originalData.song_id}content:${originalData.content}`
     );
 
     // cache invalidation -- delete all associated redis keys of NEW record
-    await redisDel(`comment:${id}`); // delete comment:id key
-    await redisDel(`user:${newData.user_id}`); // delete user:id key
-    await redisDel(`song:${newData.song_id}`); // delete song:id key
-    await redisDel(`content:${newData.content}`); // delete content:text key
+    await redis.del(`comment:${id}`); // delete comment:id key
+    await redis.del(`user:${newData.user_id}`); // delete user:id key
+    await redis.del(`song:${newData.song_id}`); // delete song:id key
+    await redis.del(`content:${newData.content}`); // delete content:text key
     // delete all combinations of user/song/content keys (user:song, user:content, song:content, user:song:content)
-    await redisDel(`user:${newData.user_id}song:${newData.song_id}`);
-    await redisDel(`user:${newData.user_id}content:${newData.content}`);
-    await redisDel(`song:${newData.song_id}content:${newData.content}`);
-    await redisDel(
+    await redis.del(`user:${newData.user_id}song:${newData.song_id}`);
+    await redis.del(`user:${newData.user_id}content:${newData.content}`);
+    await redis.del(`song:${newData.song_id}content:${newData.content}`);
+    await redis.del(
       `user:${newData.user_id}song:${newData.song_id}content:${newData.content}`
     );
 
@@ -159,7 +159,7 @@ router.delete("/comments/:id", async (req, res) => {
     const comment_id = await db.deleteComment(id);
 
     // cache invalidation: delete comment from redis
-    await redisDel(`comment:${id}`);
+    await redis.del(`comment:${id}`);
 
     res
       .status(200)
@@ -173,7 +173,11 @@ router.delete("/comments/:id", async (req, res) => {
 module.exports = router;
 
 /*
-Refactor: store each comment as a KEY, then look for it
+Refactor:
+
+This update path is AWFUL -- need to redesign how redis stores keys
+
+store each comment as a KEY, then look for it
 "SCAN command?", or using SETS
 "user.id.12312:song.id.23:coment.fsdfdasadsf"
 redis.get(pattern="user.id123")

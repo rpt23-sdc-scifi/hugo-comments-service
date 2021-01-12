@@ -4,15 +4,15 @@ const { promisify } = require("util");
 const host = process.env.REDIS_HOST;
 const password = process.env.REDIS_PASS;
 
+// redis in the dev environment doesn't have a password, must delete from options for connect to work
+const options = password ? { host, password } : { host };
+
 // Creating and connecting to redis client, either in development or production (default port is port 6379)
-const client = redis.createClient({
-  host,
-  password,
-});
+const client = redis.createClient(options);
 
 // Redis connected
 client.on("ready", (msg) => {
-  console.log(`Connected to Redis at IP ${host}:`, msg);
+  console.log(`Connected to Redis at IP ${host}!`);
 });
 
 // Log Redis Errors
@@ -30,5 +30,5 @@ module.exports = {
   get,
   set,
   del,
-  rexistsedisExists,
+  exists,
 };
