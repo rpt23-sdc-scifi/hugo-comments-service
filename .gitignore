@@ -2,3 +2,4 @@ node_modules/
 dist/
 newrelic_agent.log
 .env
+update.sh
