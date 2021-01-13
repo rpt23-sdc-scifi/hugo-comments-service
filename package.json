@@ -14,7 +14,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.20.0",
+    "axios": "^0.21.1",
     "brotli-webpack-plugin": "^1.1.0",
     "compression-webpack-plugin": "^6.0.5",
     "cors": "^2.8.5",
